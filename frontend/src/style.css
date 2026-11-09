@@ -163,3 +163,28 @@ footer .eyebrow { color: #f8ce50; font-size: 9px; }
   footer { flex-direction: column; padding-top: 35px; padding-bottom: 35px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
+
+/* Nationwide M1: explicit geographic search and genuine route results. */
+button:disabled { cursor: not-allowed; opacity: .55; transform: none; }
+.genuine-planner { display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
+.location-search { min-width: 0; }
+.location-search input { font-size: 13px; }
+.search-button { margin-top: 9px; padding: 9px 12px; border: 1px solid #8195a4; border-radius: 6px; background: white; color: #193243; font-size: 11px; }
+.calculate-button { grid-column: 1 / -1; justify-self: start; }
+.place-results { list-style: none; padding: 0; margin: 10px 0; max-height: 240px; overflow-y: auto; border: 1px solid #b9c8d2; border-radius: 6px; }
+.place-results button { text-align: left; width: 100%; padding: 12px; border: 0; border-bottom: 1px solid #e0e8ec; background: white; color: #193243; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+.place-results button:hover { background: #fff7d6; transform: none; }
+.location-search>p, .selected-place { font-size: 11px; line-height: 1.7; overflow-wrap: anywhere; }
+.selected-place { color: #244b61; }
+.geographic-map { width: 100%; height: 440px; border-radius: 8px; z-index: 0; background: #e8edf0; }
+.map-credit { font-size: 10px; color: #536b7c; line-height: 1.8; }
+.map-credit a { text-decoration: underline; }
+.map-warning, .error-message { border: 1px solid #b95d42; background: #fff1e9; color: #7a321c; padding: 12px; border-radius: 6px; line-height: 1.7; font-size: 12px; }
+.map-warning button { display: block; margin-top: 6px; text-decoration: underline; background: none; border: none; color: inherit; }
+.empty-state { padding: 25px; border: 1px dashed #a7bac8; border-radius: 9px; font-size: 13px; line-height: 1.8; color: #536b7c; }
+.comparison-note { font-size: 12px; line-height: 1.8; background: #fff6d2; border-radius: 6px; padding: 12px; }
+.source-details { font-size: 10px; color: #536b7c; line-height: 1.8; }
+.route-tag { line-height: 1.7; }
+.leaflet-container { font-family: inherit; }
+.leaflet-control-attribution { font-size: 9px !important; }
+@media(max-width:680px) { .genuine-planner { grid-template-columns: 1fr; } .geographic-map { height: 330px; } .route-layout>* { min-width: 0; } }

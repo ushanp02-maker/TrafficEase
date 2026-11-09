@@ -6,15 +6,18 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0"
+    "preview": "vite preview --host 0.0.0.0",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
+    "leaflet": "^1.9.4",
     "react": "19.2.0",
     "react-dom": "19.2.0"
   },
   "devDependencies": {
-    "vite": "7.2.2",
+    "@playwright/test": "^1.56.1",
+    "@tailwindcss/vite": "4.1.17",
     "tailwindcss": "4.1.17",
-    "@tailwindcss/vite": "4.1.17"
+    "vite": "7.2.2"
   }
 }
