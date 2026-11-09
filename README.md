@@ -1,6 +1,6 @@
 # TrafficEase
 
-HNDSE Emerging Technologies coursework: a Sri Lanka-focused smart routing, experimental AI congestion prediction and AR navigation project. This milestone builds the initial development foundation, focused on Colombo.
+HNDSE Emerging Technologies coursework: a Sri Lanka-focused smart routing, experimental AI congestion prediction and AR navigation project. The target application supports Sri Lanka nationwide wherever usable data is available. The current implementation remains an explicitly labeled Colombo journey demonstration.
 
 ## What exists
 
@@ -8,9 +8,9 @@ HNDSE Emerging Technologies coursework: a Sri Lanka-focused smart routing, exper
 - `backend/`: Java 17 / Spring Boot REST service; `GET /api/health` reports process health only.
 - `ai-service/`: Python / FastAPI service; `GET /health` explicitly reports an untrained model. Scikit-learn and Pandas dependencies are installed for future work.
 - `database/schema.sql`: MySQL 8 roads, observations and predictions schema with provenance labels, foreign keys and synthetic-data flags.
-- `docs/architecture.md`: boundaries and next-stage requirements; `infra/`: deployment notes.
+- `docs/requirements.md`: authoritative nationwide specification; `docs/architecture.md`: target system design; `docs/milestones.md`: staged delivery and acceptance checks; `infra/`: deployment notes.
 
-The original repository contained only this README and a Java-oriented `.gitignore`. Development uses `development/foundation`; nothing has been deployed or pushed.
+The original repository contained only this README and a Java-oriented `.gitignore`. Development now uses `vidura`; the completed foundation is on GitHub. No AWS deployment has been performed.
 
 ## Prerequisites
 
@@ -64,3 +64,7 @@ The schema creates and selects `trafficease`; the account must have database/tab
 No provider routing, real traffic, trained model, camera/compass/GPS integration, AR.js/A-Frame runtime, administrator dashboard or authentication yet. Those belong to subsequent milestones. Synthetic training and predictions must be clearly experimental and separate from any future live traffic results. AR must provide reliability fallbacks and be designed for stationary users or passengers. GPS alone cannot visually recognize roads. Do not retain provider-restricted data without permission. AWS deployment is deferred.
 
 See `docs/validation.md` for checks and their outcomes.
+
+## Nationwide development roadmap
+
+The updated specification replaces the earlier Colombo-first product scope. See [requirements](docs/requirements.md), [architecture](docs/architecture.md) and [milestones](docs/milestones.md). The first functional milestone is nationwide geographic search and genuine route calculations; provider access, coverage, licensing and traffic/future capabilities must be verified before integration. Architecture documents describe planned behavior, not completed functionality. The current UI does not yet calculate real routes or forecasts.
