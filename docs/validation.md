@@ -57,3 +57,20 @@ Not exercised or implemented: live traffic, geographic map tiles, geocoding, GPS
 ## Reusable cloud configuration
 
 The draft service could not verify the current draft, and the attempted install/start configuration save returned `INVALID_ARGUMENT`; persistence is unconfirmed. No publication was performed. Tested installation steps are retained in `docs/cloud-install.sh`, with startup and proxy/trust instructions in `README.md` and `docs/cloud-setup.md`. The helper assumes the verified tools retained in this cloud filesystem.
+
+## Java 17 compatibility update
+
+The backend now targets Java 17 via `java.version`; Spring Boot 3.5.7's parent also defaults to Java 17 and derives `maven.compiler.release` from that property. No other backend compiler overrides or Java 21-specific source features/APIs were found. Dependencies remain unchanged.
+
+Verified with Temurin JDK **17.0.17+10**, including `java`, `javac` and Maven reporting Java 17:
+
+```sh
+cd /workspace/TrafficEase/backend
+export JAVA_HOME=/workspace/tools/jdk-17.0.17+10
+export PATH="$JAVA_HOME/bin:/workspace/tools/apache-maven-3.9.11/bin:$PATH"
+mvn -B -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts \
+  -s /workspace/tools/maven-settings.xml \
+  -Dmaven.repo.local=/workspace/.cache/m2 clean verify
+```
+
+Result: **BUILD SUCCESS**, 1 test passed, 0 failures/errors/skips. Compiled application bytecode is class-file major version 61 (Java 17). The packaged JAR was started on Java 17 using port 8081 to avoid the existing development server, and `/api/health` returned status `ok` and service `trafficease-backend`. The temporary validation server was stopped afterward. Frontend and Python service files were unchanged.

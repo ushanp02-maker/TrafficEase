@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd /workspace/TrafficEase
-export JAVA_HOME=/workspace/tools/jdk-21.0.9+10
+export JAVA_HOME=/workspace/tools/jdk-17.0.17+10
 export PATH="$JAVA_HOME/bin:/workspace/tools/apache-maven-3.9.11/bin:$PATH"
 python - <<'PY'
 import os

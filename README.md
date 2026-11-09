@@ -5,7 +5,7 @@ HNDSE Emerging Technologies coursework: a Sri Lanka-focused smart routing, exper
 ## What exists
 
 - `frontend/`: React 19, Vite 7 and Tailwind 4 responsive dashboard, route planner, AI and AR navigation views. Selectable route cards use fixed illustrative Colombo Fort–Wellawatte values and an SVG schematic, **not a geographic map or live traffic**. Custom inputs do not generate real routes.
-- `backend/`: Java 21 / Spring Boot REST service; `GET /api/health` reports process health only.
+- `backend/`: Java 17 / Spring Boot REST service; `GET /api/health` reports process health only.
 - `ai-service/`: Python / FastAPI service; `GET /health` explicitly reports an untrained model. Scikit-learn and Pandas dependencies are installed for future work.
 - `database/schema.sql`: MySQL 8 roads, observations and predictions schema with provenance labels, foreign keys and synthetic-data flags.
 - `docs/architecture.md`: boundaries and next-stage requirements; `infra/`: deployment notes.
@@ -14,7 +14,7 @@ The original repository contained only this README and a Java-oriented `.gitigno
 
 ## Prerequisites
 
-Node.js 22.12+ (tested on 24), npm, JDK 21, Maven 3.9+, Python 3.12 and optionally MySQL 8. No API keys or paid integrations are required. Use this existing checkout in isolated cloud tasks; no additional Git worktree is needed.
+Node.js 22.12+ (tested on 24), npm, JDK 17, Maven 3.9+, Python 3.12 and optionally MySQL 8. No API keys or paid integrations are required. Use this existing checkout in isolated cloud tasks; no additional Git worktree is needed.
 
 ## Install and validate
 
@@ -31,7 +31,9 @@ ai-service/.venv/bin/pip install -r ai-service/requirements.lock.txt
 
 Python direct dependencies are declared in `requirements.txt`; `requirements.lock.txt` freezes the validated full dependency set.
 
-In this cloud machine, export `JAVA_HOME=/workspace/tools/jdk-21.0.9+10` (the base image has only a JRE). Maven is at `/workspace/tools/apache-maven-3.9.11/bin/mvn`. If home caches are unwritable, pass `--cache /workspace/.cache/npm` to npm and `-Dmaven.repo.local=/workspace/.cache/m2` to Maven, together with `-s /workspace/tools/maven-settings.xml` for the cloud proxy and `-Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts` for CA trust. See `docs/cloud-setup.md`. Pip can use `--cache-dir /workspace/.cache/pip`.
+In this cloud machine, export `JAVA_HOME=/workspace/tools/jdk-17.0.17+10` (the base image has only a JRE). Maven is at `/workspace/tools/apache-maven-3.9.11/bin/mvn`. If home caches are unwritable, pass `--cache /workspace/.cache/npm` to npm and `-Dmaven.repo.local=/workspace/.cache/m2` to Maven, together with `-s /workspace/tools/maven-settings.xml` for the cloud proxy and `-Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts` for CA trust. See `docs/cloud-setup.md`. Pip can use `--cache-dir /workspace/.cache/pip`.
+
+For IntelliJ IDEA, select JDK 17 as the Project SDK, the backend module SDK and Maven Runner JRE, then reload Maven. Confirm `java -version`, `javac -version` and `mvn -version` use Java 17. Spring Boot 3.5.7 supports Java 17; no backend dependency downgrade is needed.
 
 ## Run locally
 

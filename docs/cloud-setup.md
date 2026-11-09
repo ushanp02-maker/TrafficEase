@@ -2,12 +2,12 @@
 
 Use the existing `/workspace/TrafficEase` checkout; cloud tasks are already isolated. Do not create another worktree by default.
 
-The base image has Node 24 and Python 3.12, but only a Java 21 runtime. A local Temurin JDK 21.0.9+10 and Maven 3.9.11 were downloaded from their official release distributions into `/workspace/tools`, with SHA-256 (JDK) and SHA-512 (Maven) verification. The JDK digest was verified using the official GitHub release asset metadata when the separate checksum endpoint returned 504. TLS verification remained enabled.
+The base image has Node 24 and Python 3.12, but only a Java 21 runtime. A local Temurin JDK 17.0.17+10 and Maven 3.9.11 were downloaded from their official release distributions into `/workspace/tools`, with SHA-256 (JDK) and SHA-512 (Maven) verification. The JDK digest was verified using the official GitHub release asset metadata to check the archive against its published digest. TLS verification remained enabled.
 
 For Maven in this machine:
 
 ```sh
-export JAVA_HOME=/workspace/tools/jdk-21.0.9+10
+export JAVA_HOME=/workspace/tools/jdk-17.0.17+10
 export PATH="$JAVA_HOME/bin:/workspace/tools/apache-maven-3.9.11/bin:$PATH"
 cd /workspace/TrafficEase/backend
 mvn -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts \
