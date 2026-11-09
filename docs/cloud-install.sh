@@ -15,5 +15,6 @@ npm ci --prefix frontend --cache /workspace/.cache/npm --no-audit --no-fund
 npm run build --prefix frontend
 python -m venv ai-service/.venv
 ai-service/.venv/bin/pip install --cache-dir /workspace/.cache/pip -r ai-service/requirements.lock.txt
+(cd ai-service && .venv/bin/python train.py)
 (cd ai-service && .venv/bin/python -m pytest -q)
 (cd backend && mvn -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts -s /workspace/tools/maven-settings.xml -Dmaven.repo.local=/workspace/.cache/m2 verify)

@@ -34,6 +34,8 @@ Create labeled synthetic scenarios, reproducible training/evaluation, model regi
 
 Acceptance: dataset/model provenance, leakage-aware evaluation, metrics and synthetic-only caveats; tests for missing features, unsupported regions, seven-day limits and untrained model; later real-data validation is a separate gate.
 
+Status: M3 implemented with an explicitly synthetic model and model card. See [M3 setup/evaluation](m3-forecasting.md). No speed/ETA model was justified by the synthetic category targets, and no predictions override routing. Real-data validation remains a separate release gate.
+
 ## M4 — AR contextual recommendations
 
 Prototype camera/GPS/heading lifecycle and mapped candidate-road selection; reuse destination/departure and routing contracts. Overlay supported information only when alignment is reliable. Add manual/map fallback and stationary/passenger guidance.
