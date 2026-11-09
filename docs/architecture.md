@@ -4,7 +4,7 @@ Status: target architecture, not a claim of implemented functionality. The updat
 
 ## Inspected implementation
 
-The repository currently contains React/Vite/Tailwind UI with fixed Colombo Fort–Wellawatte sample cards and an SVG schematic; Java 17 / Spring Boot 3.5.7 with `/api/health`; FastAPI with `/health` reporting `not_trained`; and a MySQL 8 bootstrap schema. The services are not connected to the UI or database. No geographic search, routing provider, traffic feed, model training, sensors, authentication or AWS deployment exists. Existing screenshots and test results document that foundation, not the target capabilities below.
+The repository currently contains React/Vite/Tailwind UI with fixed Colombo Fort–Wellawatte sample cards and an SVG schematic; Java 17 / Spring Boot 3.5.7 with `/api/health`; FastAPI with `/health` reporting `not_trained`; and a MySQL 8 bootstrap schema. M1 now connects the UI to Java geographic search and OSRM routing endpoints with a Leaflet geographic map. Live geocoding and basemap validation remain blocked by cloud network settings; see [m1-routing.md](m1-routing.md). Database integration, traffic feeds, model training, sensors, authentication and AWS deployment remain unimplemented. Existing screenshots and test results document that foundation, not the target capabilities below.
 
 ## Components and boundaries
 

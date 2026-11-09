@@ -24,3 +24,7 @@ Next: permit `router.project-osrm.org` in environment Internet access settings f
 - Basemap: verify attribution, tile usage and compatibility with the selected routing provider before adding requests.
 - Traffic/current/future estimates: no provider credentials are configured in the inspected environment. Evaluate Google Routes or alternatives against Sri Lankan geographic and temporal coverage, fees and storage/display restrictions. No traffic-aware or seven-day claim is supported yet.
 - Weather: select a source with appropriate historic/forecast horizon and license before using future weather as a model feature.
+
+## M1 update
+
+The original CONNECT 403 OSRM blocker is resolved. OSRM routing, developer-approved public Nominatim and standard OSM tiles are now integrated for this single-instance coursework prototype, with policy limits and attribution. Nominatim/tiles remain denied by the cloud allowlist; live end-to-end search/map validation is pending. See [M1 provider decisions and verification](m1-routing.md) and [coverage evidence](m1-coverage.md). Earlier notes above are historical; they do not describe the current OSRM connectivity status.

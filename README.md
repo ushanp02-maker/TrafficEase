@@ -1,11 +1,11 @@
 # TrafficEase
 
-HNDSE Emerging Technologies coursework: a Sri Lanka-focused smart routing, experimental AI congestion prediction and AR navigation project. The target application supports Sri Lanka nationwide wherever usable data is available. The current implementation remains an explicitly labeled Colombo journey demonstration.
+HNDSE Emerging Technologies coursework: a Sri Lanka-focused smart routing, experimental AI congestion prediction and AR navigation project. The target application supports Sri Lanka nationwide wherever usable data is available. M1 now implements nationwide geographic search and genuine baseline road routing; provider coverage and network availability remain limited.
 
 ## What exists
 
-- `frontend/`: React 19, Vite 7 and Tailwind 4 responsive dashboard, route planner, AI and AR navigation views. Selectable route cards use fixed illustrative Colombo Fort–Wellawatte values and an SVG schematic, **not a geographic map or live traffic**. Custom inputs do not generate real routes.
-- `backend/`: Java 17 / Spring Boot REST service; `GET /api/health` reports process health only.
+- `frontend/`: React 19, Vite 7 and Tailwind 4 responsive dashboard, route planner, AI and AR navigation views. Explicit Nominatim place selection, Leaflet/OpenStreetMap map and genuine OSRM route geometry, durations/distances and scoped comparisons. No live traffic or future estimates.
+- `backend/`: Java 17 / Spring Boot REST service; `GET /api/health` reports process health only; `/api/locations` and `/api/routes` provide validated search and road routing.
 - `ai-service/`: Python / FastAPI service; `GET /health` explicitly reports an untrained model. Scikit-learn and Pandas dependencies are installed for future work.
 - `database/schema.sql`: MySQL 8 roads, observations and predictions schema with provenance labels, foreign keys and synthetic-data flags.
 - `docs/requirements.md`: authoritative nationwide specification; `docs/architecture.md`: target system design; `docs/milestones.md`: staged delivery and acceptance checks; `infra/`: deployment notes.
@@ -45,9 +45,9 @@ npm run dev --prefix frontend
 (cd ai-service && .venv/bin/python -m uvicorn main:app --host 0.0.0.0 --port 8000)
 ```
 
-Frontend uses port 5173, backend 8080 and AI service 8000. Check services with `curl -f http://localhost:8080/api/health` and `curl -f http://localhost:8000/health`. FastAPI exposes interactive API documentation at `/docs`. Frontend is currently a standalone UI and does not call these services.
+Frontend uses port 5173, backend 8080 and AI service 8000. Check services with `curl -f http://localhost:8080/api/health` and `curl -f http://localhost:8000/health`. FastAPI exposes interactive API documentation at `/docs`. Frontend calls Spring Boot through Vite’s same-origin `/api` proxy. Production needs an equivalent reverse proxy. The AI service remains independent.
 
-Each component has an `.env.example`. Vite loads `.env.local` when needed; Spring and Uvicorn require exported shell variables (they do not automatically load these templates). No variables are needed by default. Never commit credentials.
+Each component has an `.env.example`. Vite loads `.env.local` when needed; Spring and Uvicorn require exported shell variables (they do not automatically load these templates). Prototype defaults require no credentials. Provider endpoints/limits and public geocoder opt-out are configurable; see `docs/m1-routing.md`. Never commit credentials.
 
 ## Optional database setup
 
@@ -61,10 +61,10 @@ The schema creates and selects `trafficease`; the account must have database/tab
 
 ## Scope and limitations
 
-No provider routing, real traffic, trained model, camera/compass/GPS integration, AR.js/A-Frame runtime, administrator dashboard or authentication yet. Those belong to subsequent milestones. Synthetic training and predictions must be clearly experimental and separate from any future live traffic results. AR must provide reliability fallbacks and be designed for stationary users or passengers. GPS alone cannot visually recognize roads. Do not retain provider-restricted data without permission. AWS deployment is deferred.
+Baseline provider routing is implemented. Live geocoding and tiles are currently blocked in the cloud pending Internet allowlist changes. No real traffic, trained model, camera/compass/GPS integration, AR.js/A-Frame runtime, administrator dashboard or authentication yet. Those belong to subsequent milestones. Synthetic training and predictions must be clearly experimental and separate from any future live traffic results. AR must provide reliability fallbacks and be designed for stationary users or passengers. GPS alone cannot visually recognize roads. Do not retain provider-restricted data without permission. AWS deployment is deferred.
 
 See `docs/validation.md` for checks and their outcomes.
 
 ## Nationwide development roadmap
 
-The updated specification replaces the earlier Colombo-first product scope. See [requirements](docs/requirements.md), [architecture](docs/architecture.md) and [milestones](docs/milestones.md). The first functional milestone is nationwide geographic search and genuine route calculations; provider access, coverage, licensing and traffic/future capabilities must be verified before integration. Architecture documents describe planned behavior, not completed functionality. The current UI does not yet calculate real routes or forecasts.
+The updated specification replaces the earlier Colombo-first product scope. See [requirements](docs/requirements.md), [architecture](docs/architecture.md) and [milestones](docs/milestones.md). The first functional milestone is nationwide geographic search and genuine route calculations; provider access, coverage, licensing and traffic/future capabilities must be verified before integration. Architecture documents describe planned behavior, not completed functionality. The UI now requests genuine road routes; it does not calculate traffic forecasts. See [M1 setup and test results](docs/m1-routing.md) and [sampled coverage](docs/m1-coverage.md).

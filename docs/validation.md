@@ -80,3 +80,7 @@ Result: **BUILD SUCCESS**, 1 test passed, 0 failures/errors/skips. Compiled appl
 Restyled the frontend using the supplied reference: navy gradients, golden yellow accents, top navigation, a curved coastal road illustration and raised feature cards. Existing demo warnings, route selection and planned-feature boundaries remain.
 
 Validation: Vite production build passed. Chromium/Playwright checks passed for navigation, hero journey button, route selection and custom journey warning, with no JavaScript runtime errors. Checked widths of 320, 390, 768, 1024 and 1440 pixels with no horizontal overflow. Desktop and mobile screenshots were refreshed. Backend and AI service files were unchanged.
+
+## M1 nationwide routing
+
+See [M1 verification](m1-routing.md) for the current checks: 28 Java tests, 8 browser tests, frontend build, real OSRM coverage samples and packaged-backend smoke checks. Live geocoding/tiles validation remains blocked by network access; fixture-based tests do not establish live provider availability. Original foundation screenshots and test reports above are historical.
