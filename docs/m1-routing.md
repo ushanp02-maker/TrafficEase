@@ -4,7 +4,7 @@
 
 Implemented on `vidura`: explicit nationwide Nominatim search, selected-place REST contracts, OSRM driving routes, real GeoJSON on a Leaflet geographic map, duration/distance comparisons, snapping validation, provider identification/rate limits/cache, responsive navy/yellow UI and honest loading/unavailable/error states. No hardcoded route results remain in the application. Test fixtures exist only in tests.
 
-Live OSRM requests and the packaged backend have been verified. **Live Nominatim search and OSM basemap tile rendering remain unverified in this cloud environment**: both destinations are denied by its Internet allowlist. Their integrations are implemented and tested with controlled fixtures/failure cases, not described as live end-to-end validation. M1's full acceptance gate remains open until those destinations are allowed and search/selection/map checks are repeated with real providers. AI, AR, forecasts and AWS are outside this milestone.
+Live OSRM requests and the packaged backend have been verified. **Live Nominatim search, OSRM routing and OSM basemap tile rendering have now passed together on sampled journeys in all nine provinces**. See [live verification](m1-live-verification.md) for current evidence, the transient provider failure and remaining coverage limits. AI, AR, forecasts and AWS are outside this milestone.
 
 ## Provider decisions and policies
 
@@ -27,10 +27,10 @@ Use JDK 17. Start Spring Boot as documented in the root README, then `npm run de
 Required environment Internet destinations:
 
 - `router.project-osrm.org` — currently reachable.
-- `nominatim.openstreetmap.org` — currently blocked; needed by Spring Boot.
-- `tile.openstreetmap.org` — currently blocked; needed by the browser.
+- `nominatim.openstreetmap.org` — reachable; used by Spring Boot.
+- `tile.openstreetmap.org` — reachable; used by the browser.
 
-The environment draft service also failed to load during this task; no network settings were changed or published. Add missing destinations in environment settings, then retry actual requests. On a laptop these domains must likewise be accessible. Cloud Java commands use `-Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts` to trust the supplied proxy CA; never disable certificate checks. Ordinary laptop installations use their normal trusted HTTPS configuration.
+The user has added and published the required network destinations. The agent did not replace or publish environment settings during verification. On a laptop these domains must likewise be accessible. Cloud Java commands use `-Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts` to trust the supplied proxy CA; never disable certificate checks. Ordinary laptop installations use their normal trusted HTTPS configuration.
 
 `backend/.env.example` lists optional service URLs, identification and snap threshold. Export values before starting Java; Spring does not auto-load this file. `frontend/.env.example` lists the same-origin API base and tile URL. Vite client variables are public and build-time; never place secrets there. Tiles load directly from the browser; do not use a restrictive no-referrer policy. Changing tile providers requires reviewing attribution and usage rights.
 
@@ -61,13 +61,13 @@ npm run test:e2e
 PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium npm run test:e2e
 ```
 
-Current-run results:
+Initial implementation-run results (historical; superseded by the live follow-up):
 
 - Java 17 clean build and executable JAR: **28 tests passed**, no failures/errors/skips. Covers country/coordinate validation, cache and opt-out, search shape, no-route/malformed geometry/negative duration, identical and tied winners, independent comparisons, expired/unknown selections, 2776 m snapping and independent offset checks, API errors, identification, throttling and provider failures.
 - Frontend production build: passed. Browser suite: **8 tests passed**, covering explicit search/no autocomplete, selection, geometry rendering, comparison/alternatives, empty and error states, denied tiles, loading, stale-response cancellation, navigation and widths 320–1440 px. Browser API responses and tiles are controlled test fixtures; this does not establish live geocoder/map availability.
 - Real packaged backend process smoke: `/api/health` succeeds. Actual blocked Nominatim request becomes structured 503 `PROVIDER_UNAVAILABLE`, no fake results.
 - Packaged backend integration smoke: a **local fixture geocoder** supplied Kandy/Matale coordinates, then the backend called **real OSRM**, returning one route and **1862 real geometry vertices**, with snapping below 300 m. This verifies the Java HTTP/proxy/OSRM path but is not a live Nominatim end-to-end test.
 - Real OSRM coverage probes: nine province-level journeys, serial requests more than one second apart; see [m1-coverage.md](m1-coverage.md). Nine returned routes; eight met the 300 m snapping threshold. This is sampled evidence, not nationwide coverage proof.
-- Current screenshots `m1-desktop.png` / `m1-mobile.png` show the actual tile-denial fallback, not a functioning basemap or fixture route. Earlier `dashboard-*.png` are historical foundation screenshots.
+- Initial screenshots showed tile denial. Current `m1-desktop.png` / `m1-mobile.png` have been replaced with the real live Kandy–Matale route and loaded geographic tiles. Earlier `dashboard-*.png` are historical foundation screenshots.
 
-Outstanding acceptance checks: allow live geocoding and tiles, test actual name selection and map display across regions/languages, and repeat selected journeys end-to-end. Provider service limits and incomplete mapping can still prevent routes even with network access. No deployment or environment publication was performed.
+Live search/selection/routing/map checks have since passed on nine sampled provincial journeys, documented in [live verification](m1-live-verification.md). Further language-variant and cross-province checks remain. Provider service limits and incomplete mapping can still prevent routes even with network access. No deployment or environment publication was performed.

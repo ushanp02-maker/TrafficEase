@@ -61,7 +61,7 @@ The schema creates and selects `trafficease`; the account must have database/tab
 
 ## Scope and limitations
 
-Baseline provider routing is implemented. Live geocoding and tiles are currently blocked in the cloud pending Internet allowlist changes. No real traffic, trained model, camera/compass/GPS integration, AR.js/A-Frame runtime, administrator dashboard or authentication yet. Those belong to subsequent milestones. Synthetic training and predictions must be clearly experimental and separate from any future live traffic results. AR must provide reliability fallbacks and be designed for stationary users or passengers. GPS alone cannot visually recognize roads. Do not retain provider-restricted data without permission. AWS deployment is deferred.
+Baseline provider routing is implemented. Live geocoding, OSRM routes and map tiles have now been verified together; see `docs/m1-live-verification.md` for the sampled journeys and limits. No real traffic, trained model, camera/compass/GPS integration, AR.js/A-Frame runtime, administrator dashboard or authentication yet. Those belong to subsequent milestones. Synthetic training and predictions must be clearly experimental and separate from any future live traffic results. AR must provide reliability fallbacks and be designed for stationary users or passengers. GPS alone cannot visually recognize roads. Do not retain provider-restricted data without permission. AWS deployment is deferred.
 
 See `docs/validation.md` for checks and their outcomes.
 

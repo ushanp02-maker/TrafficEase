@@ -20,7 +20,7 @@ Acceptance: real searches and routes for representative journeys in Western, Cen
 
 Automated tests cover parsing, coordinates/country checks, no-route responses, single/multiple alternatives, identical winners, ties, invalid numbers, upstream timeouts/quota failures and stale frontend requests. Browser checks cover search selection, map/results, loading/no-data/error states and mobile layout. External smoke checks must be identified separately from fixtures.
 
-Status: M1 integration implemented and automated checks pass; live geocoding/tiles acceptance checks remain blocked by the cloud allowlist. OSRM is reachable, with nine sampled province-level probes documented in [m1-coverage.md](m1-coverage.md). See [m1-routing.md](m1-routing.md) for endpoints, policies, test results and pending checks. No credentialed traffic provider is configured.
+Status: M1 integration implemented; automated checks pass and the complete live search-to-map flow has now passed on a sampled journey in each of nine provinces. See [live verification](m1-live-verification.md), including one transient provider failure and its successful targeted rerun. OSRM is reachable, with nine sampled province-level probes documented in [m1-coverage.md](m1-coverage.md). See [m1-routing.md](m1-routing.md) for endpoints, policies, test results and pending checks. No credentialed traffic provider is configured.
 
 ## M2 — Departure planning and licensed traffic information
 

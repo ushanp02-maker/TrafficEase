@@ -36,3 +36,7 @@ PY
 ```
 
 Run the backend with the same Maven options and `spring-boot:run` in place of `verify`, or run `java -jar target/trafficease-backend-0.1.0-SNAPSHOT.jar` after packaging. Node and Python startup commands are in the root README. Processes must be restarted after environment restoration.
+
+## Live browser map verification
+
+The M1 live verification helper requires the environment-provided CA to be trusted and Chromium to have access to its NSS certificate database. Sandboxed Chromium may fail with `ERR_CERT_AUTHORITY_INVALID` if it cannot initialize that database, even when curl and Java succeed. In this task an approved browser command outside the execution sandbox resolved certificate-store access while preserving full TLS validation. Do not disable certificate checks. See [live verification](m1-live-verification.md) for the evidence and deliberate, rate-limited command.

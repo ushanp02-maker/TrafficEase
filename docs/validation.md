@@ -84,3 +84,7 @@ Validation: Vite production build passed. Chromium/Playwright checks passed for 
 ## M1 nationwide routing
 
 See [M1 verification](m1-routing.md) for the current checks: 28 Java tests, 8 browser tests, frontend build, real OSRM coverage samples and packaged-backend smoke checks. Live geocoding/tiles validation remains blocked by network access; fixture-based tests do not establish live provider availability. Original foundation screenshots and test reports above are historical.
+
+## Live M1 acceptance follow-up
+
+With the published three-domain network policy, real provider browser flows were tested without mocked search/routing responses or map tiles. See [live verification](m1-live-verification.md) for the exact samples, screenshots and browser certificate setup. Java 17 clean build: 28 tests passed. Browser regression suite: 8 passed. Frontend production build passed. Historical network-denial notes above are superseded by the new live results.

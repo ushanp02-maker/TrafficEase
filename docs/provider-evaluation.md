@@ -28,3 +28,7 @@ Next: permit `router.project-osrm.org` in environment Internet access settings f
 ## M1 update
 
 The original CONNECT 403 OSRM blocker is resolved. OSRM routing, developer-approved public Nominatim and standard OSM tiles are now integrated for this single-instance coursework prototype, with policy limits and attribution. Nominatim/tiles remain denied by the cloud allowlist; live end-to-end search/map validation is pending. See [M1 provider decisions and verification](m1-routing.md) and [coverage evidence](m1-coverage.md). Earlier notes above are historical; they do not describe the current OSRM connectivity status.
+
+## Live integration verification update
+
+The three-domain allowlist is now applied. Real Nominatim search and selection, OSRM route calculations and OSM tile rendering have been exercised through the browser and Java 17 backend without API/tile mocks. This resolves the earlier connectivity blockers; see [live verification](m1-live-verification.md) for sampled results and remaining limits. Public providers remain best-effort, single-instance prototype services. No paid API or account was added.
