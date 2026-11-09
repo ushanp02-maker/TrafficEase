@@ -22,3 +22,22 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# Frontend
+node_modules/
+dist/
+# Java
+target/
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+# Local configuration (keep templates)
+.env
+.env.*
+!.env.example
+# Editor and OS
+.idea/
+.vscode/
+.DS_Store
