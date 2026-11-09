@@ -17,7 +17,7 @@ Validated in the current Linux cloud machine on 2026-11-09. Branch: `development
 | MySQL constraints | Negative insert checks | Passed: synthetic/non-experimental prediction rejected (3819); invalid road reference rejected (1452) |
 | Patch whitespace | `git diff --check` | Passed |
 
-Screenshots: `dashboard-desktop.png` and `dashboard-mobile.png`. They intentionally show a custom journey warning and a selected alternate demo route. Browser tooling was installed outside the repository at `/workspace/.cache/trafficease-browser`; it is not an application runtime dependency. The temporary MySQL container and its fixtures were removed after validation.
+Screenshots: `dashboard-desktop.png` and `dashboard-mobile.png`. They show the updated navy-and-yellow interface and the illustrative Colombo journey. Browser tooling was installed outside the repository at `/workspace/.cache/trafficease-browser`; it is not an application runtime dependency. The temporary MySQL container and its fixtures were removed after validation.
 
 Initial setup failures were resolved: unwritable home caches (workspace caches), missing Maven (checksum-verified local install), missing JDK compiler (checksum-verified Temurin install), Maven proxy and CA trust (explicit proxy settings and system truststore). No signature, checksum or TLS verification was disabled.
 
@@ -74,3 +74,9 @@ mvn -B -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts \
 ```
 
 Result: **BUILD SUCCESS**, 1 test passed, 0 failures/errors/skips. Compiled application bytecode is class-file major version 61 (Java 17). The packaged JAR was started on Java 17 using port 8081 to avoid the existing development server, and `/api/health` returned status `ok` and service `trafficease-backend`. The temporary validation server was stopped afterward. Frontend and Python service files were unchanged.
+
+## Navy and yellow visual update
+
+Restyled the frontend using the supplied reference: navy gradients, golden yellow accents, top navigation, a curved coastal road illustration and raised feature cards. Existing demo warnings, route selection and planned-feature boundaries remain.
+
+Validation: Vite production build passed. Chromium/Playwright checks passed for navigation, hero journey button, route selection and custom journey warning, with no JavaScript runtime errors. Checked widths of 320, 390, 768, 1024 and 1440 pixels with no horizontal overflow. Desktop and mobile screenshots were refreshed. Backend and AI service files were unchanged.
