@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './style.css';
 import RoutePlanner from './RoutePlanner.jsx';
+import ForecastPanel from './ForecastPanel.jsx';
 
 const sections = ['Dashboard', 'Route Planner', 'AI Predictions', 'AR Navigation'];
 function App() {
@@ -44,11 +45,12 @@ function App() {
         ['04','◇','Made for home','Search Sri Lankan locations, wherever mapped road data is available.','Dashboard']
       ].map(([n,icon,title,body,target])=><button className="capability" key={n} onClick={()=>setPage(target)}><div className="capability-top"><span className="capability-icon">{icon}</span><span>{n}</span></div><h2>{title}</h2><p>{body}</p><span className="card-link">Explore <span aria-hidden="true">→</span></span></button>)}</section>
     </div>
-    <main id="journey"><div className="content-heading"><div><p className="eyebrow">LESS GUESSWORK. MORE GOING.</p><h2>Your next journey starts here.</h2></div><span className="pill">NATIONWIDE · BASELINE ROUTING</span></div>
-      <div className="notice"><b>Baseline road routing</b><span>OSRM durations are not live traffic or future forecasts. Geographic coverage and road access vary.</span></div>
+    <main id="journey"><div className="content-heading"><div><p className="eyebrow">LESS GUESSWORK. MORE GOING.</p><h2>{page==='AI Predictions'?'Explore a hypothetical traffic scenario.':'Your next journey starts here.'}</h2></div><span className="pill">{page==='AI Predictions'?'EXPERIMENTAL AI':'NATIONWIDE · BASELINE ROUTING'}</span></div>
+      {page!=='AI Predictions'&&<div className="notice"><b>Baseline road routing</b><span>OSRM durations are not live traffic or future forecasts. Geographic coverage and road access vary.</span></div>}
       {(page==='Dashboard'||page==='Route Planner')&&<RoutePlanner/>}
-      {(page==='Dashboard'||page==='AI Predictions'||page==='AR Navigation')&&<section className="feature-grid">{page!=='AR Navigation'&&<article className="feature"><span className="feature-icon">◷</span><span className="pill">EXPERIMENTAL · PLANNED</span><h2>Ahead of the rush.</h2><p>Future AI predictions will explore time, weather and road patterns using clearly labeled synthetic data. No trained model or real-world validation yet.</p><button className="text-button" onClick={()=>setPage('AI Predictions')}>Explore AI predictions →</button></article>}{page!=='AI Predictions'&&<article className="feature dark"><span className="feature-icon">⌖</span><span className="pill">AR LAB · PLANNED</span><h2>See another way.</h2><p>Future camera guidance will combine GPS, compass and road geometry, with a map fallback. Intended for stationary users or passengers.</p><button className="text-button" onClick={()=>setPage('AR Navigation')}>Explore AR navigation →</button></article>}</section>}
-      <footer><div><a className="brand" href="#">TrafficEase<span className="brand-dot">→</span></a><p>Small detours. Better journeys.</p></div><div><span className="eyebrow">BUILT FOR SRI LANKA</span><p>AI + Cloud + AR · HNDSE coursework</p><small>Baseline routing only. No live traffic data.</small></div></footer>
+      {page==='AI Predictions'&&<ForecastPanel/>}
+      {(page==='Dashboard'||page==='AR Navigation')&&<section className="feature-grid">{page!=='AR Navigation'&&<article className="feature"><span className="feature-icon">◷</span><span className="pill">EXPERIMENTAL · SYNTHETIC</span><h2>Ahead of the rush.</h2><p>Explore congestion categories from a synthetic-data model using fictional road, time, weather and holiday scenarios. Not validated against actual Sri Lankan traffic.</p><button className="text-button" onClick={()=>setPage('AI Predictions')}>Explore AI predictions →</button></article>}{page!=='AI Predictions'&&<article className="feature dark"><span className="feature-icon">⌖</span><span className="pill">AR LAB · PLANNED</span><h2>See another way.</h2><p>Future camera guidance will combine GPS, compass and road geometry, with a map fallback. Intended for stationary users or passengers.</p><button className="text-button" onClick={()=>setPage('AR Navigation')}>Explore AR navigation →</button></article>}</section>}
+      <footer><div><a className="brand" href="#">TrafficEase<span className="brand-dot">→</span></a><p>Small detours. Better journeys.</p></div><div><span className="eyebrow">BUILT FOR SRI LANKA</span><p>AI + Cloud + AR · HNDSE coursework</p><small>Baseline routing & experimental scenarios. No live traffic data.</small></div></footer>
     </main>
   </div>;
 }
