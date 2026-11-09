@@ -1,0 +1,518 @@
+{
+  "modelVersion": "synthetic-v1-4058148f38bb4d73",
+  "modelType": "random_forest",
+  "trainedAt": "2026-11-09T18:20:39.652838+00:00",
+  "experimental": true,
+  "dataSource": "SYNTHETIC",
+  "datasetVersion": "hypothetical-lk-v1",
+  "datasetSha256": "fc6478856ef84500d449c0bb692f6c347aab5021c09c982192c34c5c82f2604b",
+  "seed": 20261109,
+  "features": [
+    "region",
+    "road_class",
+    "lanes",
+    "speed_limit_kph",
+    "hour",
+    "weekday",
+    "is_holiday",
+    "weather"
+  ],
+  "classes": [
+    "LOW",
+    "MODERATE",
+    "HIGH"
+  ],
+  "parameters": {
+    "n_estimators": 120,
+    "max_depth": 14,
+    "min_samples_leaf": 5,
+    "random_state": 20261109,
+    "n_jobs": 2,
+    "class_weight": "balanced"
+  },
+  "libraries": {
+    "python": "3.12.14",
+    "sklearn": "1.7.2",
+    "pandas": "2.3.3"
+  },
+  "artifactSha256": "44570db8ad727b838f8fbcef58e4c68e4b10a0c08fb2e45d39a17e73a0413ff8",
+  "trainingRows": 31104,
+  "totalGeneratedRows": 77760,
+  "selectionRule": "Highest validation macro-F1 only; no refit on validation/test",
+  "heldoutRoadIds": [
+    "western-urban",
+    "central-local",
+    "southern-highway",
+    "northern-urban",
+    "eastern-local",
+    "north-western-highway",
+    "north-central-urban",
+    "uva-local",
+    "sabaragamuwa-highway"
+  ],
+  "splitRanges": {
+    "train": {
+      "rows": 31104,
+      "first": "2025-01-01T00:00:00+05:30",
+      "last": "2025-03-13T23:00:00+05:30",
+      "roadIds": [
+        "central-highway",
+        "central-urban",
+        "eastern-highway",
+        "eastern-urban",
+        "north-central-highway",
+        "north-central-local",
+        "north-western-local",
+        "north-western-urban",
+        "northern-highway",
+        "northern-local",
+        "sabaragamuwa-local",
+        "sabaragamuwa-urban",
+        "southern-local",
+        "southern-urban",
+        "uva-highway",
+        "uva-urban",
+        "western-highway",
+        "western-local"
+      ]
+    },
+    "validation": {
+      "rows": 10368,
+      "first": "2025-03-14T00:00:00+05:30",
+      "last": "2025-04-06T23:00:00+05:30",
+      "roadIds": [
+        "central-highway",
+        "central-urban",
+        "eastern-highway",
+        "eastern-urban",
+        "north-central-highway",
+        "north-central-local",
+        "north-western-local",
+        "north-western-urban",
+        "northern-highway",
+        "northern-local",
+        "sabaragamuwa-local",
+        "sabaragamuwa-urban",
+        "southern-local",
+        "southern-urban",
+        "uva-highway",
+        "uva-urban",
+        "western-highway",
+        "western-local"
+      ]
+    },
+    "test": {
+      "rows": 10368,
+      "first": "2025-04-07T00:00:00+05:30",
+      "last": "2025-04-30T23:00:00+05:30",
+      "roadIds": [
+        "central-highway",
+        "central-urban",
+        "eastern-highway",
+        "eastern-urban",
+        "north-central-highway",
+        "north-central-local",
+        "north-western-local",
+        "north-western-urban",
+        "northern-highway",
+        "northern-local",
+        "sabaragamuwa-local",
+        "sabaragamuwa-urban",
+        "southern-local",
+        "southern-urban",
+        "uva-highway",
+        "uva-urban",
+        "western-highway",
+        "western-local"
+      ]
+    },
+    "unseen_road_test": {
+      "rows": 5184,
+      "first": "2025-04-07T00:00:00+05:30",
+      "last": "2025-04-30T23:00:00+05:30",
+      "roadIds": [
+        "central-local",
+        "eastern-local",
+        "north-central-urban",
+        "north-western-highway",
+        "northern-urban",
+        "sabaragamuwa-highway",
+        "southern-highway",
+        "uva-local",
+        "western-urban"
+      ]
+    }
+  },
+  "evaluation": {
+    "majority_baseline": {
+      "validation": {
+        "rows": 10368,
+        "accuracy": 0.5015432098765432,
+        "macro_f1": 0.22267899965741692,
+        "confusion_matrix": [
+          [
+            5200,
+            0,
+            0
+          ],
+          [
+            3377,
+            0,
+            0
+          ],
+          [
+            1791,
+            0,
+            0
+          ]
+        ],
+        "class_order": [
+          "LOW",
+          "MODERATE",
+          "HIGH"
+        ],
+        "per_class": {
+          "LOW": {
+            "precision": 0.5015432098765432,
+            "recall": 1.0,
+            "f1-score": 0.6680369989722508,
+            "support": 5200.0
+          },
+          "MODERATE": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 3377.0
+          },
+          "HIGH": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1791.0
+          },
+          "accuracy": 0.5015432098765432,
+          "macro avg": {
+            "precision": 0.16718106995884774,
+            "recall": 0.3333333333333333,
+            "f1-score": 0.22267899965741692,
+            "support": 10368.0
+          },
+          "weighted avg": {
+            "precision": 0.2515455913732663,
+            "recall": 0.5015432098765432,
+            "f1-score": 0.33504942078083566,
+            "support": 10368.0
+          }
+        }
+      },
+      "test": {
+        "rows": 10368,
+        "accuracy": 0.4927662037037037,
+        "macro_f1": 0.22006848872520512,
+        "confusion_matrix": [
+          [
+            5109,
+            0,
+            0
+          ],
+          [
+            3327,
+            0,
+            0
+          ],
+          [
+            1932,
+            0,
+            0
+          ]
+        ],
+        "class_order": [
+          "LOW",
+          "MODERATE",
+          "HIGH"
+        ],
+        "per_class": {
+          "LOW": {
+            "precision": 0.4927662037037037,
+            "recall": 1.0,
+            "f1-score": 0.6602054661756154,
+            "support": 5109.0
+          },
+          "MODERATE": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 3327.0
+          },
+          "HIGH": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1932.0
+          },
+          "accuracy": 0.4927662037037037,
+          "macro avg": {
+            "precision": 0.16425540123456792,
+            "recall": 0.3333333333333333,
+            "f1-score": 0.22006848872520512,
+            "support": 10368.0
+          },
+          "weighted avg": {
+            "precision": 0.24281853151256,
+            "recall": 0.4927662037037037,
+            "f1-score": 0.32532694123179196,
+            "support": 10368.0
+          }
+        }
+      },
+      "unseen_road_test": {
+        "rows": 5184,
+        "accuracy": 0.49614197530864196,
+        "macro_f1": 0.22107615609420664,
+        "confusion_matrix": [
+          [
+            2572,
+            0,
+            0
+          ],
+          [
+            1634,
+            0,
+            0
+          ],
+          [
+            978,
+            0,
+            0
+          ]
+        ],
+        "class_order": [
+          "LOW",
+          "MODERATE",
+          "HIGH"
+        ],
+        "per_class": {
+          "LOW": {
+            "precision": 0.49614197530864196,
+            "recall": 1.0,
+            "f1-score": 0.6632284682826199,
+            "support": 2572.0
+          },
+          "MODERATE": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1634.0
+          },
+          "HIGH": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 978.0
+          },
+          "accuracy": 0.49614197530864196,
+          "macro avg": {
+            "precision": 0.165380658436214,
+            "recall": 0.3333333333333333,
+            "f1-score": 0.22107615609420664,
+            "support": 5184.0
+          },
+          "weighted avg": {
+            "precision": 0.2461568596631611,
+            "recall": 0.49614197530864196,
+            "f1-score": 0.3290554823346641,
+            "support": 5184.0
+          }
+        }
+      }
+    },
+    "random_forest": {
+      "validation": {
+        "rows": 10368,
+        "accuracy": 0.7331211419753086,
+        "macro_f1": 0.7254383722220163,
+        "confusion_matrix": [
+          [
+            4105,
+            1066,
+            29
+          ],
+          [
+            815,
+            1967,
+            595
+          ],
+          [
+            8,
+            254,
+            1529
+          ]
+        ],
+        "class_order": [
+          "LOW",
+          "MODERATE",
+          "HIGH"
+        ],
+        "per_class": {
+          "LOW": {
+            "precision": 0.8329951298701299,
+            "recall": 0.7894230769230769,
+            "f1-score": 0.8106240126382307,
+            "support": 5200.0
+          },
+          "MODERATE": {
+            "precision": 0.5984180103437785,
+            "recall": 0.5824696476162274,
+            "f1-score": 0.5903361344537815,
+            "support": 3377.0
+          },
+          "HIGH": {
+            "precision": 0.7101718532280539,
+            "recall": 0.853713009491904,
+            "f1-score": 0.7753549695740365,
+            "support": 1791.0
+          },
+          "accuracy": 0.7331211419753086,
+          "macro avg": {
+            "precision": 0.7138616644806541,
+            "recall": 0.7418685780104028,
+            "f1-score": 0.7254383722220163,
+            "support": 10368.0
+          },
+          "weighted avg": {
+            "precision": 0.7353732721245236,
+            "recall": 0.7331211419753086,
+            "f1-score": 0.7327807428893055,
+            "support": 10368.0
+          }
+        }
+      },
+      "test": {
+        "rows": 10368,
+        "accuracy": 0.7253086419753086,
+        "macro_f1": 0.7176170002687816,
+        "confusion_matrix": [
+          [
+            3995,
+            1086,
+            28
+          ],
+          [
+            809,
+            1879,
+            639
+          ],
+          [
+            7,
+            279,
+            1646
+          ]
+        ],
+        "class_order": [
+          "LOW",
+          "MODERATE",
+          "HIGH"
+        ],
+        "per_class": {
+          "LOW": {
+            "precision": 0.8303886925795053,
+            "recall": 0.7819534155412018,
+            "f1-score": 0.8054435483870968,
+            "support": 5109.0
+          },
+          "MODERATE": {
+            "precision": 0.5792231812577066,
+            "recall": 0.5647730688307785,
+            "f1-score": 0.5719068634910972,
+            "support": 3327.0
+          },
+          "HIGH": {
+            "precision": 0.7116299178555988,
+            "recall": 0.8519668737060041,
+            "f1-score": 0.7755005889281508,
+            "support": 1932.0
+          },
+          "accuracy": 0.7253086419753086,
+          "macro avg": {
+            "precision": 0.707080597230937,
+            "recall": 0.7328977860259948,
+            "f1-score": 0.7176170002687816,
+            "support": 10368.0
+          },
+          "weighted avg": {
+            "precision": 0.7276620713474247,
+            "recall": 0.7253086419753086,
+            "f1-score": 0.724924031766372,
+            "support": 10368.0
+          }
+        }
+      },
+      "unseen_road_test": {
+        "rows": 5184,
+        "accuracy": 0.7361111111111112,
+        "macro_f1": 0.7298877874212972,
+        "confusion_matrix": [
+          [
+            2005,
+            550,
+            17
+          ],
+          [
+            366,
+            984,
+            284
+          ],
+          [
+            6,
+            145,
+            827
+          ]
+        ],
+        "class_order": [
+          "LOW",
+          "MODERATE",
+          "HIGH"
+        ],
+        "per_class": {
+          "LOW": {
+            "precision": 0.8435002103491797,
+            "recall": 0.7795489891135303,
+            "f1-score": 0.8102646999393817,
+            "support": 2572.0
+          },
+          "MODERATE": {
+            "precision": 0.586063132817153,
+            "recall": 0.602203182374541,
+            "f1-score": 0.5940235436160579,
+            "support": 1634.0
+          },
+          "HIGH": {
+            "precision": 0.7331560283687943,
+            "recall": 0.84560327198364,
+            "f1-score": 0.785375118708452,
+            "support": 978.0
+          },
+          "accuracy": 0.7361111111111112,
+          "macro avg": {
+            "precision": 0.7209064571783758,
+            "recall": 0.7424518144905705,
+            "f1-score": 0.7298877874212972,
+            "support": 5184.0
+          },
+          "weighted avg": {
+            "precision": 0.741538637304398,
+            "recall": 0.7361111111111112,
+            "f1-score": 0.7374097501175915,
+            "support": 5184.0
+          }
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Synthetic-only evaluation; no actual Sri Lankan traffic validation.",
+    "Regions use representative hypothetical arterials, not regional aggregates.",
+    "Weather and holidays are user-selected scenarios, not measured or officially forecast data.",
+    "No calibrated probabilities, road speeds, journey times or routing overrides are produced."
+  ]
+}

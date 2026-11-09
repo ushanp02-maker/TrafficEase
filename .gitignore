@@ -45,3 +45,7 @@ __pycache__/
 # Browser test outputs
 playwright-report/
 test-results/
+
+# Reproducible AI outputs; text evaluation reports are tracked.
+ai-service/artifacts/
+ai-service/data/generated/
