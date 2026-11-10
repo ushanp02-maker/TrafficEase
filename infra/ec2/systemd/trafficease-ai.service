@@ -1,0 +1,37 @@
+[Unit]
+Description=TrafficEase experimental synthetic AI service
+Wants=network-online.target
+After=network-online.target
+StartLimitIntervalSec=120
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=trafficease
+Group=trafficease
+WorkingDirectory=/opt/trafficease/current/ai-service
+EnvironmentFile=/etc/trafficease/ai.env
+ExecStart=/opt/trafficease/current/ai-service/.venv/bin/python -m uvicorn main:app --host 127.0.0.1 --port 8000 --workers 1 --limit-concurrency 8 --timeout-keep-alive 5
+Restart=on-failure
+RestartSec=5
+TimeoutStartSec=90
+TimeoutStopSec=30
+UMask=0027
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/trafficease
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+LockPersonality=yes
+MemoryMax=1G
+TasksMax=64
+
+[Install]
+WantedBy=multi-user.target
