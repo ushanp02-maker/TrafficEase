@@ -77,3 +77,7 @@ See [M3 model card, setup and evaluation](docs/m3-forecasting.md). Train offline
 ## Camera and map navigation prototype (M4)
 
 See [M4 capabilities, HTTPS setup and validation](docs/m4-ar-navigation.md). AR Navigation now offers rear camera, explicit GPS/compass permissions, genuine GPS-origin route geometry and an approximate road/destination-direction HUD with manual map fallback. Remain stationary or use it as a passenger, never as the driver. **Physical smartphone alignment remains unvalidated**; desktop tests use simulated camera/sensor data. No visual road recognition, live traffic, future route forecasts or fabricated alternatives are provided.
+
+## EC2 deployment readiness
+
+See [Ubuntu EC2 deployment guide](docs/ec2-deployment.md) and [readiness test results](docs/ec2-validation.md). One 2-vCPU/4-GiB host with 30-GiB encrypted gp3 is recommended, with Nginx HTTPS, internal Java 17/FastAPI services and optional MySQL 8. Installation, release build/model training, health checks, updates and rollback scripts are under `infra/ec2`. This prepares deployment only; no AWS resources or certificates have been created. Verify actual credits and regional prices before launching.

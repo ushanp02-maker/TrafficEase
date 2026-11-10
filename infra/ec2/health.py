@@ -2,6 +2,7 @@
 """Internal readiness only; never calls public geocoding/routing services."""
 import argparse
 import json
+import ipaddress
 import subprocess
 import sys
 import time
@@ -34,7 +35,10 @@ def check():
         address = line.split()[3]
         host, port = address.rsplit(':', 1)
         if port in ['8000', '8080', '3306', '33060']:
-            require(host in ['127.0.0.1', '[::1]'], f'Internal port {port} is not loopback-only')
+            address_ip = ipaddress.ip_address(host.strip('[]'))
+            if isinstance(address_ip, ipaddress.IPv6Address) and address_ip.ipv4_mapped:
+                address_ip = address_ip.ipv4_mapped
+            require(address_ip.is_loopback, f'Internal port {port} is not loopback-only')
 
 
 if __name__ == '__main__':

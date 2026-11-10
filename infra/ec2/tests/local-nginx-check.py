@@ -54,8 +54,9 @@ def main():
             if auth: headers['Authorization']=authorization
             with opener.open(urllib.request.Request('https://'+DOMAIN+path,headers=headers),timeout=20) as response:
                 return response.status,response.read(),response.headers
-        try: get('/',False);raise AssertionError('UI was not protected')
-        except urllib.error.HTTPError as error: assert error.code==401
+        for path in ['/', '/api/health']:
+            try: get(path,False);raise AssertionError('Endpoint was not protected: '+path)
+            except urllib.error.HTTPError as error: assert error.code==401
         status,html,headers=get('/')
         assert status==200 and b'TrafficEase' in html
         assert 'camera=(self)' in headers['Permissions-Policy']
