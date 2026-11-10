@@ -1,46 +1,47 @@
-# EC2 readiness validation — 10 November 2026
+# Current validation — 11 November 2026 (Asia/Colombo)
 
-No AWS resource, account credential, paid service, real certificate order or public deployment was used. All work is on `vidura`; application design and Java 17 remain unchanged.
+Work is on `vidura`. No AWS resources/credits/account credentials, public deployment or real certificate order were used. The [historical Ubuntu record](ec2-ubuntu-validation.md) is preserved separately and must not be mistaken for current native Amazon Linux installation evidence.
 
-## Application regression checks
+## Application tests
 
-| Check | Result |
+| Check | Current result |
 | --- | --- |
-| Java 17 Maven verification | 41 tests passed |
-| Python 3.12 training and tests | Synthetic model regenerated; 15 tests passed |
-| Frontend geometry/sensor tests | 21 passed |
-| Playwright browser regressions | 25 passed, including routing, forecasts and simulated AR |
+| Java 17 Maven verify, including actual MySQL integration | **55 passed**, none skipped in the enabled test run |
+| Python 3.12 tests | **15 passed**, one upstream Starlette/AnyIO deprecation warning |
+| Frontend geometry/sensor/time unit tests | **24 passed** |
+| Playwright desktop/mobile browser regressions | **29 passed** |
 | Vite production build | Passed |
 
-The Python suite reports one upstream Starlette/AnyIO deprecation warning. No test result establishes real traffic accuracy, nationwide provider completeness or physical smartphone alignment.
+Date tests cover 10 AM → 7 PM, Colombo midnight, offset conversion, past/expired selections, invalid/offsetless timestamps, contradictory modes and the inclusive seven-day horizon. A provider-mock test verifies scheduled context never changes genuine returned route data or adds invented provider traffic parameters. Browser tests cover shared planner → AI → AR context, scheduled map-only behavior, model evaluation access and history opt-in. Existing routing, model error states, camera/sensor permission/cleanup/uncertainty and responsive tests remain passing. Browser sensor/provider fixtures do **not** prove real-phone alignment or live provider availability.
 
-## Actual Ubuntu 24.04 container checks
+Real MySQL **8.0.46 and 8.4.13 LTS** tests verify Flyway migration/re-run, inserts, UTC timestamp preservation, mandatory synthetic provenance, absence of GPS columns, seven-day expiry deletion, capacity refusal and the no-DB profile. API tests verify saving requires explicit opt-in and a storage failure does not alter the inference result.
 
-An isolated amd64 Ubuntu 24.04 container had **no published ports**. The real installer completed with signed APT packages, official Node 22.23.4 and Maven 3.9.11 checksum verification, OpenJDK 17.0.21 and Python 3.12. Cloud proxy/CA settings were test-only configuration; TLS/signature verification stayed enabled.
+## Amazon Linux application/runtime compatibility
 
-Two releases were independently built as an ordinary `deploy` user at their final `/opt/trafficease/releases/<id>` paths. Each build ran Maven (41 tests), Python (15 tests), frontend units (21 tests), Vite compilation and actual offline model training. The venv and generated model loaded successfully from the final path; each prepared release occupied about **447 MiB** in this container, excluding shared caches/toolchains. This is a disk observation, not an EC2 resource benchmark.
+The official Amazon Linux 2023 image and official **amazoncorretto:17-al2023** image were started locally. Observed platform: **Amazon Linux 2023.12.20261102**, x86-64; Corretto **17.0.21**, correct `/usr/lib/jvm/java-17-amazon-corretto.x86_64` path. All 55 Java tests, including real MySQL, passed inside the AL/Corretto container.
 
-The following passed using the actual built Java/FastAPI processes:
+The cloud policy rejected `cdn.amazonlinux.com` with **HTTP 403** when `dnf` requested the native repository mirror list. Therefore **native dnf installation and the complete final-path release activation/rollback lifecycle have not been revalidated on AL2023**. Repository access was requested; no policy bypass, unsigned RPM, disabled TLS check, host-network workaround or unrelated production host was used.
 
-- First activation with no existing `current` link, read-only runtime files, successful update and manual rollback.
-- Deliberately failed readiness on the second release: activation returned failure and restored the previous healthy Java/AI/frontend release.
-- Real backend → FastAPI synthetic inference, provenance and model-readiness health checks.
-- Loopback listeners, including Java's IPv4-mapped IPv6 representation; a deliberately introduced wildcard internal listener was rejected.
-- Deliberately altered JAR rejected by the integrity manifest; restoring the bytes passed verification.
-- Actual Nginx HTTPS with an ephemeral locally trusted CA and hostname verification: password required on UI **and API**, React/SPA rendering, same-origin Java/AI forwarding, security headers and missing/protected paths.
-- Initial plaintext Nginx exposes only the ACME challenge; app/API paths return 503.
-- `nginx -t`, Bash syntax and `systemd-analyze verify` for both installed unit files.
+To test application compatibility despite that limitation, temporary test-only verified tool distributions were used inside the real AL2023 container: official Node **22.23.4** and Maven **3.9.11**, and checksum-verified Astral python-build-standalone CPython **3.12.16**. The production installer still uses **native dnf Python 3.12**, not that standalone download. Maven reused the already resolved dependency cache. Cloud CA/proxy trust was supplied only for tests, with certificate verification enabled. These application checks do not imply that every native package/installation command succeeded.
 
-Test helpers under `infra/ec2/tests/` require `/run/trafficease-disposable-test` and must **never** be installed/run as production service controls. The container does not run systemd as PID 1: `activation-check.sh` uses a service simulator that launches the real applications from the actual unit/environment files. It does not prove boot ordering, kernel sandbox enforcement, cgroup limits or systemd crash recovery. The production units use real systemd, not this simulator. Local TLS testing created no public CA order and never disabled certificate validation.
+Inside AL2023, Node installed the locked frontend dependencies, ran 24 units and built Vite successfully. Python installed the unchanged locked AI dependencies, passed all 15 tests, loaded the trusted model and regenerated it from synthetic data. Model ID remains `synthetic-v1-4058148f38bb4d73`, Random Forest, test macro-F1 **0.7176** / unseen-road **0.7299**, baseline test macro-F1 **0.2201**. These are synthetic benchmark metrics, not actual Sri Lankan traffic accuracy. No model algorithm change or ETA model was introduced.
 
-## Optional MySQL check
+The primary optional deployment uses digest-pinned MySQL **8.4 LTS**. Its authenticated readiness command passed, and an actual dump was gzip/content-checked and restored into a separate disposable schema; both history and Flyway tables were readable. This is not encrypted off-host disaster-recovery validation.
 
-Ubuntu MySQL **8.0.46** installed, the three bootstrap tables were imported, local root `auth_socket` authentication was verified, and both 3306/33060 listened only on 127.0.0.1. The backup script produced a valid gzip dump with a root-only 0700 directory/0600 file. MySQL remains optional and disconnected from the application.
+The exact pinned Certbot **5.9.0** dependency lock installed in `/opt/trafficease-certbot`, and `certbot --version` succeeded. No ACME order/renewal or AWS resource action was executed. Bash/Python syntax checks passed for both platform script sets; relative documentation links were checked. Real AL systemd boot, sandbox/cgroup enforcement and SELinux policies remain manual gates.
 
-The first container lacked a process-reaping PID 1, so Ubuntu's installer timed out waiting for an already-exited temporary MySQL process. Retrying in a disposable container with `--init` resolved that test-environment issue. Tests also caught the cloud shell's permissive inherited umask: deployment scripts now set 022 and explicitly root-own/mode 0644 the generated MySQL and Nginx configuration, preventing MySQL from ignoring a world-writable config. Runtime process control was still simulated; a real systemd boot and a backup restore are manual acceptance checks.
+## Local HTTPS and real-provider integration
 
-## Remaining manual validation
+Actual built Java/FastAPI apps ran inside AL2023 with the optional MySQL profile. An official Nginx container shared only their private container network namespace, using the new AL-style `nginx.conf`/`conf.d` layout, current built frontend and an ephemeral trusted local CA/hostname. This tested real Nginx configuration and TLS, **not installation of Amazon's Nginx RPM**. No application ports were published publicly; no proxy policy was bypassed.
 
-Before any public demo, an operator must verify actual AWS credits/regional pricing and explicitly launch/configure the host; validate security-group reachability, reboot/startup, systemd restrictions/resource limits and realistic memory/CPU load; configure DNS, password access and a trusted certificate; test Certbot renewal; and complete the M4 physical-smartphone checklist. Test off-host backup restoration before keeping valuable data. These were not proven by the container tests.
+Verified: UI/API 401 without Basic auth; authenticated React index/JS assets; sensor/CSP/Referer-compatible headers; same-origin backend health, departure capabilities, actual trained AI inference, explicit SAVED synthetic history and no GPS fields. Certificate verification was enabled throughout; temporary keys/passwords stayed outside Git and were discarded with the test environment.
 
-The official Nominatim and tile policies were re-read from the OSMF operations GitHub sources (their website was proxy-denied), and the OSRM demo policy from its official wiki, on 10 November 2026. They require limited usage, attribution/identification and caching; OSRM explicitly restricts its demo to reasonable non-commercial use and ≤1 request/second. Public Nominatim/OSRM/OSM tiles retain the M1 policy restrictions; deployment tests did not load-test or repeatedly probe donated services. Keep one backend process, explicit geocoder searches, attribution and global rate limits. Production/multiple replicas need provider and rate-limiter review. AWS pricing pages were proxy-denied: guide costs are transparent planning assumptions, not verified current regional quotes or a guarantee of Free Plan eligibility.
+A deliberately limited live probe made **two explicit Nominatim searches** (Kandy, Matale), spaced more than one second apart, then **one OSRM route request** through Nginx → AL Java. It returned **1 genuine route**, **53,877.1 m**, **4,051.5 baseline seconds**, **2,344 geometry vertices**, and endpoint snapping **11.3 m / 178.0 m** (within the 300-m normal planning gate). Future departure context was accepted and explicitly returned `trafficAware=false`, `futureEstimatesSupported=false`, `BASELINE_ONLY`. These are sampled provider outputs at test time, not permanent values, a future ETA or nationwide coverage evidence. Existing nine-province M1 evidence remains separately documented; no coverage sweep/load test was repeated. Frontend geographic drawing is covered by browser fixtures; this new probe is API/proxy evidence, not a new live-browser map/phone test.
+
+Commercial traffic documentation probes (TomTom/HERE/Google) were also policy-denied with HTTP 403. No account, cost/coverage entitlement or map-display license was assumed. See [provider review](m2-provider-review.md).
+
+## Remaining gates
+
+Native AL dnf install and full non-root final-path release lifecycle; actual EC2 launch/credit eligibility/regional pricing, SSH/SG/DNS/reboot/systemd/SELinux/limits; trusted public certificate issuance/renewal; realistic memory/CPU/disk load including optional Docker/MySQL; encrypted off-host backup restoration; and physical Android/iOS camera/GPS/compass validation. AWS pricing pages are blocked, so cost figures are transparent illustrative assumptions, not verified current quotes.
+
+The [implementation matrix](implementation-status.md) distinguishes working demonstration flows, experimental forecasts and external validation. The [beginner launch guide](ec2-deployment.md) provides the manual steps; it does not imply any site has been deployed.

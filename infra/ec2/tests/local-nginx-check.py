@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run INSIDE a disposable Ubuntu test container after a release is built.
+"""Run INSIDE a disposable Amazon Linux test container after a release is built.
 Tests actual TLS with a temporary trusted local CA, never --insecure or a real CA order.
 """
 import base64
@@ -22,7 +22,7 @@ def run(*args):
 def main():
     if not Path('/run/trafficease-disposable-test').exists():
         raise SystemExit('Disposable test marker required; never run on a deployed host')
-    site = Path('/etc/nginx/sites-available/trafficease')
+    site = Path('/etc/nginx/conf.d/trafficease.conf')
     certdir = Path('/etc/letsencrypt/live') / DOMAIN
     certdir.mkdir(parents=True, exist_ok=True)
     # Ephemeral test credentials/certificates stay outside Git. Nothing is ordered remotely.
@@ -36,13 +36,11 @@ def main():
         # Input via stdin, not a password command argument or log output.
         hashed = subprocess.check_output(['htpasswd','-niB','demo'], input=(password+'\n').encode())
         Path('/etc/trafficease/demo.htpasswd').write_bytes(hashed)
-        run('chown','root:www-data','/etc/trafficease/demo.htpasswd')
+        run('chown','root:nginx','/etc/trafficease/demo.htpasswd')
         run('chmod','0640','/etc/trafficease/demo.htpasswd')
         run('chmod','0751','/etc/trafficease')
         template = Path(__file__).resolve().parents[1]/'nginx/https.conf.template'
         site.write_text(template.read_text().replace('__DOMAIN__',DOMAIN))
-        enabled=Path('/etc/nginx/sites-enabled/trafficease')
-        if not enabled.exists(): enabled.symlink_to(site)
         run('nginx','-t')
         run('nginx')
         with Path('/etc/hosts').open('a') as hosts: hosts.write('\n127.0.0.1 deployment.test\n')

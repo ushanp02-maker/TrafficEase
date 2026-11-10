@@ -126,3 +126,9 @@ M4 remains a field-validation prototype. Before relying on it, test real Android
 - Safe stationary/passenger interaction, readability/accessibility, battery/thermal behavior and end-to-end timing on a phone network.
 
 There is no proof of real-world camera alignment, real iOS/Android browser compatibility, full surrounding-road coverage, dynamic traffic awareness, accurate live time savings, world-locked spatial arrows or turn-by-turn safety from these desktop tests. No paid services or AWS deployment occurred.
+
+## M2 departure integration — 11 November 2026
+
+AR shares the planner's Asia/Colombo Leave Now/Later Today/Future Date context. Both manual and GPS route requests send validated departure context, but OSRM geometry/durations remain baseline values. **Scheduled journeys use map planning only**: present camera/GPS/heading cannot establish future conditions, so directional matching/recommendations are suppressed. No future congestion or arrival time is invented.
+
+Add to real-device acceptance: select this evening in Route Planner, navigate to AR, verify the time survives and the map-only notice appears even after camera/sensor permissions; switch to Leave Now and recalculate before testing approximate alignment. Repeat with poor GPS, compass denied, portrait/landscape, background/foreground and Stop sensors. Check that no camera indicator or watch/listener survives leaving the page. These are instructions, not completed field evidence.

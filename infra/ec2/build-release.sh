@@ -12,10 +12,10 @@ repo=$(git -C "$here" rev-parse --show-toplevel)
 [[ -z $(git -C "$repo" status --porcelain) ]] || te_die 'Commit or preserve checkout changes before building a reviewed release.'
 commit=$(git -C "$repo" rev-parse HEAD)
 [[ "$1" == *-"${commit:0:12}" ]] || te_die 'Release ID does not match HEAD.'
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export JAVA_HOME=/usr/lib/jvm/java-17-amazon-corretto.x86_64
 export PATH="$JAVA_HOME/bin:/usr/local/bin:$PATH"
 [[ -x "$JAVA_HOME/bin/javac" ]] || te_die 'Java 17 JDK missing.'
-python3 -c 'import sys; sys.exit(0 if sys.version_info[:2] == (3,12) else "Python 3.12 required")'
+python3.12 -c 'import sys; sys.exit(0 if sys.version_info[:2] == (3,12) else "Python 3.12 required")'
 node -e 'const [a,b]=process.versions.node.split(".").map(Number); if(a<22||(a===22&&b<12))process.exit(1)'
 git -C "$repo" archive "$commit" | tar -xf - -C "$release"
 cd "$release"
@@ -28,7 +28,7 @@ npm run test:unit --prefix frontend
 npm run build --prefix frontend
 mvn -f backend/pom.xml -B verify
 cp backend/target/trafficease-backend-0.1.0-SNAPSHOT.jar backend/app.jar
-python3 -m venv ai-service/.venv
+python3.12 -m venv ai-service/.venv
 ai-service/.venv/bin/python -m pip install -r ai-service/requirements.lock.txt
 (cd ai-service && .venv/bin/python train.py && .venv/bin/python -m pytest -q)
 # Smoke-load the newly generated trusted model; no public provider requests.

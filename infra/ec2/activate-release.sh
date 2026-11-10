@@ -20,6 +20,7 @@ fi
 chown -hR root:root "$release"
 chmod -R go-w "$release"
 chmod -R a+rX "$release"
+if command -v getenforce >/dev/null && [[ $(getenforce) != Disabled ]]; then restorecon -R "$release"; fi
 switch_to() {
     ln -sfn "$1" "$TE_ROOT/.current-next"
     mv -Tf "$TE_ROOT/.current-next" "$TE_ROOT/current"

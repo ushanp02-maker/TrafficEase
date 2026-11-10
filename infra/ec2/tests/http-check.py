@@ -4,7 +4,7 @@ from pathlib import Path
 import subprocess,http.client
 if not Path('/run/trafficease-disposable-test').exists():
  raise SystemExit('Disposable test marker required')
-site=Path('/etc/nginx/sites-available/trafficease')
+site=Path('/etc/nginx/conf.d/trafficease.conf')
 original=site.read_text()
 token=Path('/var/lib/letsencrypt/.well-known/acme-challenge/local-check')
 token.parent.mkdir(parents=True,exist_ok=True);token.write_text('local-only')

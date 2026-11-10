@@ -1,0 +1,7 @@
+[Unit]
+Description=Renew TrafficEase trusted HTTPS certificate
+After=network-online.target nginx.service
+Wants=network-online.target
+[Service]
+Type=oneshot
+ExecStart=/opt/trafficease-certbot/bin/certbot renew --quiet

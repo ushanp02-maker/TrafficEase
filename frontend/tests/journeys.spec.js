@@ -57,3 +57,13 @@ test('history is explicit opt-in and shows storage outcome without changing mode
   await page.getByRole('button', { name: 'View latest shared synthetic scenarios' }).click();
   await expect(page.getByText('History: AVAILABLE. 0 recent scenarios.')).toBeVisible();
 });
+test('model evaluation is accessible and explicitly synthetic', async ({ page }) => {
+  await page.route('**/api/forecasts/model', route => route.fulfill({ json: { experimental: true, dataSource: 'SYNTHETIC', modelStatus: 'ready', metadata: { modelVersion: 'evaluated-fixture', datasetVersion: 'fictional-fixture', features: ['hour','weekday'], evaluation: { majority_baseline: { test: { macro_f1: 0.22 } }, random_forest: { test: { macro_f1: 0.71 } } } } } }));
+  await page.getByRole('navigation').getByRole('button', { name: 'AI Predictions', exact: true }).click();
+  await page.getByRole('button', { name: 'View synthetic model evaluation' }).click();
+  await expect(page.getByText('Version: evaluated-fixture', { exact: false })).toBeVisible();
+  await page.getByText('Training, validation and held-out test metrics', { exact: true }).click();
+  await expect(page.locator('.model-metrics')).toContainText('majority_baseline');
+  await expect(page.locator('.model-metrics')).toContainText('random_forest');
+  await expect(page.getByText('Synthetic-only evaluation cannot establish real Sri Lankan traffic accuracy.', { exact: false })).toBeVisible();
+});

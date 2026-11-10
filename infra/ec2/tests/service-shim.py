@@ -31,11 +31,6 @@ def stop(name):
 
 def start(name):
     stop(name)
-    if name=='mysql':
-        Path('/run/mysqld').mkdir(exist_ok=True)
-        import pwd;user=pwd.getpwnam('mysql');os.chown('/run/mysqld',user.pw_uid,user.pw_gid)
-        subprocess.run(['/usr/sbin/mysqld','--user=mysql','--daemonize'],check=True)
-        return
     config=configparser.ConfigParser(interpolation=None)
     config.read('/etc/systemd/system/'+name+'.service')
     service=config['Service'];environment=dict(os.environ)

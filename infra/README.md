@@ -1,5 +1,5 @@
 # Deployment readiness
 
-`ec2/` prepares a single Ubuntu 24.04 x86-64 host with Nginx, Java 17, FastAPI and an optional local MySQL 8.0 service. No AWS resources have been created. Installation/activation/certificate commands are future operator actions, not an already deployed site.
+`ec2/` is the **Amazon Linux 2023 x86-64** primary target, using Corretto JDK 17, Python 3.12, Node 22, Nginx/systemd and optional loopback-only MySQL 8. The earlier Ubuntu scripts are retained under `ec2-ubuntu/`; never mix platform installers.
 
-Read [the EC2 beginner guide](../docs/ec2-deployment.md) before running scripts. It covers credits/costs, security groups, domain/HTTPS, protected demo access, building trained AI artifacts, atomic activation/rollback, backups and stopping costs.
+Read [the AL2023 beginner guide](../docs/ec2-deployment.md), [current validation](../docs/ec2-validation.md) and [Ubuntu alternative](../docs/ec2-ubuntu-deployment.md). No AWS resource, paid service, credential or public certificate order was created. Full AL dnf installation is still a manual verification gate where the cloud repository is network-blocked.

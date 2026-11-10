@@ -1,194 +1,153 @@
-# Single-instance EC2 deployment guide (readiness, not a deployment)
+# Amazon Linux 2023 EC2 deployment guide
 
-This prepares TrafficEase on **Ubuntu Server 24.04 LTS x86-64**, using **Java 17**, Python 3.12, Node 22 and systemd/Nginx. No AWS resource, account connection, paid purchase, certificate order or deployment has been made by the agent. All cloud-console and host-changing commands below are future operator actions. Work from `vidura`; never merge into or alter `main` for deployment.
+**Primary target: Amazon Linux 2023 x86-64, Corretto JDK 17, Python 3.12, Node 22, Maven, Nginx and systemd.** This is preparation, not an AWS deployment. No AWS resources, credits, credentials or public certificate orders were used. All console/host commands below are future operator steps. Work only from `vidura`. The previous [Ubuntu implementation](ec2-ubuntu-deployment.md) is retained under `infra/ec2-ubuntu/`; do not mix platform installers or overwrite an existing host.
 
-## Proposed architecture and resource budget
+## Architecture and capacity
 
 ```mermaid
 flowchart LR
-    P[Phone / desktop HTTPS] --> N[Nginx :443 + password]
-    N --> F[Static React dist]
-    N --> B[Spring Boot 127.0.0.1:8080]
-    B --> A[FastAPI 127.0.0.1:8000]
-    B --> O[Public OSM / OSRM HTTPS]
-    M[Optional MySQL 8.0 127.0.0.1:3306]
+    Phone[Phone / desktop] -->|HTTPS + demo password| N[Nginx :443]
+    N --> F[Built React files]
+    N --> B[Java 17 / 127.0.0.1:8080]
+    B --> A[FastAPI / 127.0.0.1:8000]
+    B --> Providers[Nominatim + OSRM HTTPS]
+    B -. optional mysql profile .-> M[MySQL 8 / 127.0.0.1:3306]
 ```
 
-Use one public-subnet EC2 instance with an Internet Gateway, encrypted gp3 root volume and no NAT Gateway, load balancer, RDS, ECS, S3 website, Route 53 hosted zone, CloudWatch agent, automatic EBS snapshot schedule or extra Elastic IP. Use an existing domain/DNS provider where available. Optional MySQL is **not integrated with the current application**, so leave it uninstalled unless needed for coursework/schema work.
+Recommend **2 vCPU / 4 GiB RAM**, e.g. regionally available `t3.medium`/`t3a.medium` with **Standard CPU credits**, and **30 GiB encrypted gp3**. This is a capacity estimate, not an EC2 benchmark. Build/train sequentially. Java is capped at 1 GiB with 512 MiB heap; AI uses one worker capped at 1 GiB. Allow OS/Nginx/cache and transient build overhead. Optional MySQL adds a Docker daemon plus database memory; use its 128-MiB buffer pool/20-connection settings and measure total RAM before enabling it on a 4-GiB host. Leave the database off for the cheapest demonstration. Do not force all services/builds onto 1–2 GiB RAM; a 2-GiB instance needs off-host builds and separate capacity testing, with no MySQL.
 
-| Item | Recommendation / estimate |
-| --- | --- |
-| Instance | `t3.medium` or regionally available `t3a.medium`, x86-64, 2 vCPU / 4 GiB RAM; select **Standard** CPU credits, not Unlimited |
-| Lower-memory alternative | 2 vCPU / 2 GiB (`t3.small` / `t3a.small`) only after memory testing, preferably with builds/training elsewhere and no MySQL; not the recommended on-instance build target |
-| Disk | 30 GiB encrypted gp3 recommended for OS/toolchains, dependency caches, 3 releases, model artifacts and logs; 20 GiB may fit but requires more pruning |
-| Runtime memory budget | Java heap 512 MiB plus native overhead (service cap 1 GiB); AI one worker (cap 1 GiB); OS/Nginx/caches roughly 0.5–1 GiB; optional MySQL needs extra memory |
-| Build/training headroom | Node build limited to 768 MiB old-space, Maven heap 512 MiB, synthetic training uses two threads; simultaneous old services + build/train can exceed 2 GiB |
-| Availability | Single host, short service interruption during activation, no redundancy or SLA. Standard T3 CPU throttles after credits are exhausted |
+One host means brief update downtime and no redundancy/SLA. No GPU, load balancer, NAT Gateway, ECS, RDS, S3 website, Route 53 hosted zone, Secrets Manager, CloudWatch agent, automatic snapshots or extra Elastic IP is required. No AWS CLI/IAM role is needed by the application.
 
-These are capacity estimates, not an EC2 load benchmark. Training has only 77,760 synthetic rows; runtime serves a small Random Forest, not a GPU/LLM. No GPU, large instance or paid AI API is needed. Load-test locally without hitting donated OSM services before raising user counts.
+## Cost and Free Plan gate
 
-## Cost and Free Plan constraints
+**Actual eligibility and remaining credits cannot be verified without your console; do not assume any instance is free.** Before launch, check the selected region/type against your AWS Free Plan, credit balance, expiry and payment/upgrade terms. Use the regional AWS calculator and official [EC2](https://aws.amazon.com/ec2/pricing/on-demand/), [EBS](https://aws.amazon.com/ebs/pricing/), [IPv4](https://aws.amazon.com/vpc/pricing/) and [Free Tier](https://aws.amazon.com/free/) pages. The cloud proxy blocks live AWS pricing verification here.
 
-**Do not assume the instance is free.** Check your AWS Billing/Free Tier console for actual remaining credits, expiry, account plan, eligible instance types and region before launching. Newer AWS Free Plans/credit terms differ from legacy EC2 free-hour offers. Credits may not cover every charge, and upgrade/payment terms are account-specific. No balance or eligibility was queried here and no AWS credentials are needed for this repository preparation.
+Illustrative Linux US-East assumptions, **not current regional quotes**: t3.medium $0.0416/hour, 30 GiB gp3 at $0.08/GiB-month, one public IPv4 at $0.005/hour. At 730 hours: $30.37 + $2.40 + $3.65 = **$36.42/month**, before tax, egress, snapshots and other charges. At 40 running hours/month: ~$1.66 compute + $0.20 IPv4 + $2.40 retained disk = **$4.26/month**, before extras. A t3.small example is ~$21.23 continuously but is not the recommended build host. Budget roughly $30–50 for an always-on 4-GiB host until actual regional prices are checked. Amazon Linux itself has no separate paid AMI license in this proposal.
 
-Planning examples using illustrative US-East on-demand Linux rates (not a current quote):
+Choose **Standard**, not Unlimited CPU credits, to avoid surplus-credit billing; Standard may throttle. Minimize active hours. Budget alerts, if your plan supports them, are not spending caps; review their terms and check billing after the first session. No billing automation or paid service is created by this repository.
 
-| Continuous 730-hour month | Compute assumption | 30 GiB gp3 assumption | One public IPv4 assumption | Approximate subtotal |
-| --- | --- | --- | --- | --- |
-| 2 GiB `t3.small` | $0.0208/h = $15.18 | $0.08/GiB-month = $2.40 | $0.005/h = $3.65 | **$21.23/month** |
-| 4 GiB `t3.medium` | $0.0416/h = $30.37 | $2.40 | $3.65 | **$36.42/month** |
+## 1. Manual EC2 and networking setup
 
-For the recommended host running 40 hours/month, the same assumptions give ~$1.66 compute + $0.20 automatic public IPv4 while running + $2.40 retained EBS = **~$4.26**, before taxes, transfer, snapshots and other charges. Regions (including Mumbai), `t3a`, Windows/other AMIs and pricing changes differ. Budget roughly **$30–50/month** for always-on 4 GiB usage until you verify a regional calculator estimate. Do not select paid AMIs/Marketplace images or oversized provisioned disk throughput/IOPS.
+1. Review credits/pricing first. In EC2 Console select the official Amazon-owned **Amazon Linux 2023 x86-64** AMI, 2-vCPU/4-GiB instance, Standard CPU credits, 30-GiB encrypted gp3, a public subnet/Internet Gateway and automatic public IPv4. No paid Marketplace AMI, unnecessary provisioned IOPS or IAM role. Require IMDSv2; metadata hop limit 1.
+2. Use an existing SSH key stored securely on your laptop, outside Git/chat. Do not request/upload AWS access keys or put secrets in EC2 user-data.
+3. Initial security group: **TCP 22 from your current admin IP `/32` only**. Later allow 443 for intended demo viewers (or public with the password gate). Port 80 must be reachable by the public CA for HTTP-01 issuance/renewal. **Never expose 8000, 8080, 3306 or 33060.** No IPv6 is configured by these templates; omit AAAA records unless IPv6 networking/SG/listeners are deliberately prepared.
+4. Allow outbound DNS and HTTP/HTTPS for signed Amazon Linux packages, official tool downloads, PyPI/npm/Maven, Nominatim/OSRM and certificate issuance/validation. Browser tiles load from OSM directly. The default EC2 outbound rule is easiest for a beginner; review restrictions before changing it.
+5. Point an existing DNS hostname's A record to the public IPv4. Use your current DNS provider; no domain purchase/Route 53 service is created. Connect with `ssh -i /path/to/existing-key.pem ec2-user@PUBLIC_IP` (protect the local key permissions). Amazon Linux uses **ec2-user**, not ubuntu.
 
-Official references to check before launch: [EC2 on-demand](https://aws.amazon.com/ec2/pricing/on-demand/), [EBS](https://aws.amazon.com/ebs/pricing/), [public IPv4](https://aws.amazon.com/vpc/pricing/), [Free Tier](https://aws.amazon.com/free/) and [AWS calculator](https://calculator.aws/). The cloud proxy denied the AWS pricing page during preparation, so live regional rates were **not independently verified**. These assumptions must not be presented as guaranteed current prices.
+## 2. Prepare a fresh host
 
-Use **Standard** T3 CPU credits to avoid Unlimited surplus-credit charges; expect throttling rather than extra CPU billing. Minimize active hours and retained volumes. Set a very small billing alert/budget if your plan supports it, but review any alert-service costs; a budget alert is **not a spending cap or automatic shutdown**. Check billing after the first short session. No budget/scheduler/IAM/AWS service is provisioned by these files.
-
-## 1. Manual AWS preparation (do not perform until ready)
-
-1. Review remaining credits, plan expiry and the regional price estimate. Enable MFA for your human AWS account; do not create/upload access keys for these scripts.
-2. In EC2 Console choose the official Canonical Ubuntu **24.04 LTS x86-64** AMI, one eligible 2-vCPU/4-GiB instance, Standard CPU credits, 30-GiB encrypted gp3 and a public subnet/automatic public IPv4. Do not attach an IAM role: this app does not call AWS APIs. Require IMDSv2 and use metadata hop limit 1. Do not put secrets in user-data.
-3. Download/use your existing SSH key securely outside Git. Initial security group: **TCP 22 only from your current admin public IP `/32`**; never world-open SSH. Do not open 8000, 8080, 3306 or 33060. For a demo you can restrict 443 to known viewers' networks; otherwise public 443 is password protected. Open 80 only when the ACME site is configured and certificate issuance/renewal needs it. Public HTTP-01 renewal requires CA reachability on 80.
-4. Outbound DNS plus HTTP/HTTPS package/provider/certificate traffic is needed. The EC2 security-group default outbound rule is simplest for a beginner; do not block Ubuntu mirrors or certificate validation without understanding the dependencies. Backend public service destinations are the existing Nominatim/OSRM hosts; browser map tiles come directly from OSM.
-5. SSH as `ubuntu`, not root, using the correct region/address/key. Point an existing DNS hostname to the instance's public IPv4. Do not add an AAAA record unless IPv6 networking/listeners/SG are explicitly prepared (these templates listen on IPv4). DNS must resolve correctly before certificates. Route 53 is optional and incurs separate charges; no domain purchase is required by the scripts.
-
-## 2. Prepare the host
-
-Clone the public repository as the normal SSH user. No GitHub/AWS token belongs on the host for this public checkout:
+Do not use the installer on existing production infrastructure. It refuses an existing Nginx configuration without its own AL2023 marker. Review any existing workload manually; never remove unrelated sites to bypass this guard.
 
 ```sh
-sudo apt-get update
-sudo apt-get install -y git
+sudo dnf upgrade --refresh -y   # review updates; reboot first if needed
+sudo dnf install -y git
 cd ~
 git clone --branch vidura https://github.com/ushanp02-maker/TrafficEase.git
 cd TrafficEase
-sudo bash infra/ec2/install-host.sh ubuntu
+sudo bash infra/ec2/install-host.sh ec2-user
 ```
 
-The installer checks Ubuntu 24.04 amd64, installs official signed Ubuntu packages, Java 17, Python 3.12/venv, Nginx, Certbot and tools. Node 22.23.4 and Maven 3.9.11 are installed from official HTTPS distributions with published checksum verification. TLS/APT signature verification is never disabled. Review/update these pinned versions for security patches before deployment; readiness is not a formal vulnerability audit. No application source/dependency versions are upgraded implicitly.
+The installer uses signed `dnf` packages: Corretto 17 devel, `python3.12`/`python3.12-pip`, Nginx, httpd-tools and utilities. It does not replace Amazon Linux's system Python 3.9. Application venv creation explicitly uses **python3.12**. Node 22.23.4 and Maven 3.9.11 use official HTTPS distributions and published checksum verification. Certbot 5.9.0 and its tested dependency set have a separate `/opt/trafficease-certbot` venv/lockfile. Review tool/security updates before launch; no dependency policy substitutes for a vulnerability review. TLS/APT/RPM verification must never be disabled.
 
-It creates a locked `trafficease` runtime user, root-controlled release directories and `/etc/trafficease/{backend,ai}.env` from templates **only if absent**. The runtime user has no sudo and cannot modify its sealed code/model. No AWS tooling or credentials are installed. Standard package installation may start Nginx; keep port 80/443 closed in the security group until configuration below. The stock default site is removed. MySQL is not installed by default.
+It creates a locked `trafficease` runtime user, root-controlled release directories and root-owned 0640 `/etc/trafficease/backend.env` and `ai.env` **only if absent**. Build as ec2-user, not root. Runtime cannot modify sealed code/model. Existing env files are preserved. No database credential is created or committed. Default bindings are loopback; FastAPI is not a public Nginx target.
 
-Environment files are root-owned 0640, not committed. The protected demo password is a separate bcrypt htpasswd file. Current API defaults need no paid-provider secret. Never set `SERVER_ADDRESS` to `0.0.0.0`; backend must remain `127.0.0.1:8080`. FastAPI's bind/port/one worker are explicit in systemd. Python's generated artifacts use `MODEL_DIR=/opt/trafficease/current/ai-service/artifacts`. The current services do not connect to MySQL, so no database password is invented.
+AL2023 layout is `/etc/nginx/conf.d/trafficease.conf`, worker user/group `nginx`, and `/usr/lib/jvm/java-17-amazon-corretto.x86_64`. A minimal provided main Nginx file avoids its stock inline default server. The installer preserves the original file, uses a platform marker for repeat runs, installs systemd units and caps journal growth. Where SELinux is active, it keeps enforcement and configures static-content contexts plus the proxy boolean; verify actual AVC denials on the host rather than disabling SELinux. No service is exposed until SG/DNS/HTTPS are configured.
 
-## 3. Build a first release (normal user, not root)
+## 3. Build and activate
 
 ```sh
 cd ~/TrafficEase
 release_id="$(date -u +%Y%m%dT%H%M%SZ)-$(git rev-parse --short=12 HEAD)"
 sudo bash infra/ec2/reserve-release.sh "$release_id" "$(id -un)"
 bash infra/ec2/build-release.sh "$release_id"
-```
-
-The build requires a clean `vidura` checkout and matching commit ID. It archives only committed files—no local `.env`, private key, ignored model or `node_modules` is copied. It runs `npm ci`, geometry tests/frontend build, Maven tests/package, locked Python install, **offline synthetic model generation/training and Python tests**, then smoke-loads the trained model. Model/data are regenerated because binaries are excluded from Git. No public routing/geocoding calls occur during model training or tests. Full browser tests are a pre-release check on a development machine, avoiding heavy browser installation on the small EC2 host.
-
-Everything builds as the SSH user at its **final absolute release path**. This avoids relocating virtualenv interpreter/shebang paths. Runtime gets the executable JAR, built frontend, Python venv, trusted synthetic model and provenance metadata. Generated raw training CSV, frontend dependencies and duplicate Maven outputs are removed to save disk. A ready/integrity manifest is created only after success. No production symlink changes during a failed build; an incomplete release can be inspected and removed manually after confirming it is neither current nor previous.
-
-## 4. Configure initial Nginx and activate services
-
-Use your actual DNS hostname instead of `traffic.example.org`:
-
-```sh
 sudo bash infra/ec2/configure-http.sh traffic.example.org
 sudo bash infra/ec2/activate-release.sh "$release_id"
 sudo python3 infra/ec2/health.py
 ```
 
-Initial Nginx serves only `/.well-known/acme-challenge/` on port 80 and otherwise responds “HTTPS setup required”; it never exposes the app or Basic credentials over plaintext. Unknown hosts are rejected. Activation verifies the manifest, seals ownership read-only, switches `current` atomically, starts the AI/backend units and checks actual model readiness and bridged inference. It rolls back to the old symlink on failure (or stops the first failed deployment). AI failure does not intentionally stop all route service functionality via a hard dependency; the UI has explicit unavailable states, while activation still requires a healthy complete release.
+Replace the hostname. Builds require a clean committed `vidura` checkout and matching release ID. Only committed files are archived. Node tests/build, Maven verification, locked Python install, synthetic model generation/training and Python tests run before a ready manifest is created. No ignored `.env`, private key or model from a laptop is packaged. The trusted model is generated **offline** because artifacts are excluded from Git. Raw training data and duplicate build/dependency outputs are pruned. No public-provider load tests are part of training/builds. Full Playwright regressions belong on the development machine, avoiding browser installation on the small EC2 host.
 
-Systemd restarts failed services with bounded restart rate; one AI worker, small concurrency/Java heap and memory/task caps protect the host. Code/home/system files are protected by systemd sandboxing. Internal health also rejects non-loopback listeners on 8000/8080/3306/33060. Check `sudo ss -ltnp` yourself: only Nginx and SSH should be externally reachable. Local readiness does not test public routing or actual AR alignment.
+Build directly at `/opt/trafficease/releases/<id>` as ec2-user; never relocate its Python venv afterward. Activation verifies the ready/integrity manifest, seals ownership, switches `current` atomically and restarts actual systemd services. It checks model readiness, Java → FastAPI inference, optional DB availability and internal listeners. Failed activation restores the old release; failed builds do not switch it. First install has no previous release. This is not zero downtime or a signed supply-chain artifact system.
 
-## 5. Password protection and trusted HTTPS
+Initial HTTP serves only ACME challenge files and otherwise 503; it does not expose the application/password over plaintext. Review `ss -ltnp`: internal app ports must be loopback-only. `systemd-analyze verify`/container application success does not prove boot, SELinux or resource limits on a real instance.
+
+## 4. Trusted HTTPS and smartphone testing
+
+Before issuing: valid DNS, correct A record, no incorrect AAAA, SG/host firewall allowing 80 and 443, and a configured ACME site.
 
 ```sh
-# Interactive password prompt; do NOT pass a password on the command line or in chat.
-sudo htpasswd -cB /etc/trafficease/demo.htpasswd demo
+sudo htpasswd -cB /etc/trafficease/demo.htpasswd demo  # interactive; no password argument
 sudo bash infra/ec2/enable-https.sh traffic.example.org YOUR_CONTACT_EMAIL
+curl --user demo https://traffic.example.org/api/health  # prompts for password
+sudo /opt/trafficease-certbot/bin/certbot renew --dry-run
+sudo systemctl status trafficease-certbot.timer
 ```
 
-Before certificate issuance, confirm DNS points to the running instance and security group/host firewall allow TCP 80 and 443. The script explicitly contacts Let's Encrypt and accepts its subscriber terms on the future operator's instruction; review those terms first. It requires the password file, obtains a certificate using HTTP-01 webroot, installs the HTTPS template only after validation, and enables the existing Certbot renewal timer with an Nginx reload hook. **No certificate order was placed during repository preparation.** Never commit private keys or htpasswd contents. Use a strong unique demo password; `htpasswd -B` without `-c` adds/replaces users later without deleting other entries.
+The future operator explicitly initiates a Let's Encrypt order/accepts its terms; none was placed during preparation. Certbot uses webroot, followed by validated Nginx TLS configuration, a renewal reload hook and a twice-daily randomized systemd timer. No paid certificate is needed. Do not commit private keys, certificates, htpasswd or host env files. Add later users with `htpasswd -B` without `-c` so existing users are retained.
 
-Then test from your laptop/phone:
+Nginx serves only built `frontend/dist`, protects UI **and API** with Basic auth, preserves `/api` when proxying to Java and strips Basic credentials upstream. API access logs are disabled to avoid location query logging. TLS 1.2/1.3, short HSTS, CSP, anti-framing, sensor Permissions-Policy and OSM-compatible Referrer-Policy are supplied. Keep the tile host in `img-src` if changing maps. The browser uses same-origin HTTPS; private HTTP hops are not mixed content.
+
+Camera/GPS/compass require trusted HTTPS on the real hostname (or localhost for simulation). An HTTP public IP, self-signed warning bypass or disabled TLS check is not valid device evidence. Run the [M4 phone checklist](m4-ar-navigation.md). Scheduled departures intentionally use map planning, not future camera recommendations. No real-world alignment/turn-by-turn accuracy has been verified.
+
+## 5. Optional MySQL 8 profile
+
+Default: database **off**, no JDBC connection or startup dependency. The optional installer adds backend ordering after authenticated database readiness; disabling/removing that profile should also remove its optional systemd drop-in if the database is no longer wanted. Enable only if shared synthetic history helps the demonstration and RAM/disk measurements permit. AL2023's MariaDB packages are **not MySQL 8**; this implementation uses a digest-pinned official MySQL 8.4 LTS container, managed by systemd, loopback-published **only** on 3306, X plugin disabled, 128-MiB buffer pool and 20 connections. Docker is installed only by this optional action. The two dedicated secret files are read-only bind mounts with private SELinux relabeling (`:Z`); no whole host configuration directory is relabeled. Verify this on the actual host. No cloud database or paid storage service is created.
+
+The operator must provision two locally generated root-owned 0600 secret files, never paste them into chat/Git. Example future host commands (run locally in an interactive root shell, never with shell tracing):
 
 ```sh
-curl --user demo https://traffic.example.org/api/health
-# curl prompts for the password; never use -k/--insecure.
-sudo certbot renew --dry-run  # on EC2, once, after DNS/TLS are correct
+sudo -i
+umask 077
+openssl rand -base64 36 > /etc/trafficease/mysql-root-password
+openssl rand -base64 36 > /etc/trafficease/mysql-app-password
+exit
+sudo bash infra/ec2/install-mysql.sh
+sudo systemctl status trafficease-mysql
 ```
 
-Nginx serves only `frontend/dist`; `/api/` forwards unchanged to Java on loopback, and API access logs are disabled to avoid location query logging. FastAPI/MySQL are not proxy targets and have no public endpoint. Basic authentication protects both UI and API, then its Authorization header is stripped before Java. TLS 1.2/1.3, short HSTS (no preload/subdomain lock-in), CSP, anti-framing, camera/GPS/orientation Permissions-Policy and a tile-compatible Referrer-Policy are configured. Keep the OSM tile hostname in `img-src` when changing map providers. All API requests remain HTTPS same-origin; the internal HTTP hop is not browser mixed content.
+First startup creates only database `trafficease` and its schema-scoped app account. Existing volumes keep their credentials: changing files is **not** a password rotation. The installer refuses an unmanaged named container or volume; never delete volumes to fix credentials. Docker volumes/images are disk usage, not a separately provisioned AWS service. Keep Docker access limited to root; membership in its group is effectively root access.
 
-Real smartphone camera/GPS/compass testing requires a valid trusted certificate and the actual hostname—not an HTTP public IP, an invalid certificate or a disabled browser security check. Top-level browser use is recommended; no cross-origin iframe permission workaround is configured. Run the [M4 real-device checklist](m4-ar-navigation.md). HTTPS enables APIs but does not validate physical AR alignment.
+Use `sudoedit /etc/trafficease/backend.env` to add the following metadata and set `DB_PASSWORD` to the locally held app secret **in that protected file only**, using your editor, not a CLI argument:
 
-## 6. Updates and rollback
+```text
+SPRING_PROFILES_ACTIVE=mysql
+DB_URL="jdbc:mysql://127.0.0.1:3306/trafficease?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true&sslMode=DISABLED&allowPublicKeyRetrieval=true"
+DB_USER=trafficease
+```
 
-Before updating, run the full existing test suites on the reviewed `vidura` revision. On EC2:
+Do not put these secrets in Vite variables. Restart only the backend, then run health. Flyway V1 creates a dedicated synthetic history table; it does not turn the old schema into observed data. Existing legacy bootstrap tables can be baselined at version 0 and are preserved. Schema-scoped DDL privileges support migrations; no global MySQL privileges or public SQL account is required. Hikari has at most two connections. Startup fails honestly if the explicitly enabled database profile cannot connect/migrate. The default no-DB profile still serves routes/AI/AR without MySQL. See [persistence design/tests](persistence.md).
+
+## 6. Updates, rollback, backup and safe shutdown
 
 ```sh
 cd ~/TrafficEase
-bash infra/ec2/update.sh
-```
-
-This requires a clean `vidura` checkout, pulls only fast-forward `origin/vidura`, reserves a new release, builds/tests it and activates it. Build failure leaves the old release running. Activation failure tries to restore the old release and reports failure even if rollback succeeds. There is a short interruption during service restarts; this is not zero-downtime deployment. Env/Nginx/systemd changes are separate reviewed administrative operations, not silently overwritten by updates.
-
-Manual rollback:
-
-```sh
-sudo bash infra/ec2/rollback.sh
+bash infra/ec2/update.sh        # clean vidura, fast-forward pull, build/test, activate
+sudo bash infra/ec2/rollback.sh # restore previous code/model/frontend
 sudo python3 infra/ec2/health.py
+sudo bash infra/ec2/prune-releases.sh          # dry run
+sudo bash infra/ec2/prune-releases.sh --apply # review first; keeps current/previous/newest 3
+sudo bash infra/ec2/backup-mysql.sh            # optional DB only
 ```
 
-Keep `current` and `previous` until verification is complete. First deployment has no previous rollback target. Rollback covers code/model/frontend together, **not** future database migrations, secrets, Nginx or unit-file changes. With future schema changes, design backward-compatible migrations and database restore separately. To control disk:
+Env, systemd and Nginx changes require separate review; update does not silently overwrite them. Rollback does not undo schema migrations, secrets, units or proxy changes. V1 is additive; future migrations must remain backward-compatible or include tested restore plans. Do not rename ready releases/venvs. Failed/incomplete builds can be inspected and manually removed only after confirming they are not active.
 
-```sh
-sudo bash infra/ec2/prune-releases.sh          # dry run, review paths
-sudo bash infra/ec2/prune-releases.sh --apply # keeps current/previous and newest 3
-```
+Backups are root-only transactional gzip dumps under `/var/backups/trafficease` with partial files removed on failure. Copy encrypted verified backups securely off-host and test restoration before valuable data exists. Local files/volumes are not disaster recovery. Back up protected env/certificate keys separately, never inside the public frontend or an unencrypted shared dump. Model artifacts can be regenerated from matching code/locks. No snapshot schedule/S3 backup subscription is created; snapshots, retained EBS and remote storage may charge.
 
-Never rename/move a release containing its Python venv. Watch `df -h`; dependency caches and retained releases use space even after stopping services. Remove only known unused releases/caches after checking active paths.
+Operational commands: `sudo systemctl status nginx trafficease-ai trafficease-backend`, `sudo journalctl -u trafficease-backend -u trafficease-ai -n 80 --no-pager`, `sudo nginx -t`, `sudo python3 ~/TrafficEase/infra/ec2/health.py`, `free -h`, `df -h`, `sudo ss -ltnp`. Journal retention is bounded; default Nginx log rotation remains relevant. Avoid sharing secrets/personal-location logs. No paid monitoring is enabled.
 
-## 7. Optional MySQL 8.0 and backup
+When finished, save/back up work, stop app units (and optional `trafficease-mysql`), then **EC2 Console → Stop instance**. Do not terminate until backups are verified. Compute stops billing; EBS, snapshots and retained Elastic IPs can continue charging. Automatic public IPv4 normally changes after stop/start: update DNS before phone tests/renewal. Confirm no unused volumes/IPs/NAT gateways/load balancers remain. Enabled services start on normal boot; renewal requires a running host/correct DNS/port 80. Long stops can let certificates expire. Stopping app processes alone does **not** stop EC2 compute billing.
 
-Leave this off for the lowest-cost demo. If needed:
+## Troubleshooting and release limits
 
-```sh
-sudo bash infra/ec2/install-mysql.sh
-sudo mysqladmin ping
-sudo bash infra/ec2/backup-mysql.sh
-```
+- `dnf` fails: verify current AL2023 release, signed repo access, DNS/proxy/CA and `cdn.amazonlinux.com`; do not disable signature/TLS validation. Container policy blocked that host during preparation.
+- Java/Python path: verify `javac -version` is Corretto 17 and `python3.12 --version`; never repoint system `python3`. Venv paths must stay at their final release location.
+- Nginx 502/403: check unit/loopback port, root permissions and SELinux AVCs. Never open 8080/8000 publicly or disable SELinux as a shortcut.
+- AI unavailable: regenerate trusted artifacts with the build script; verify metadata/checksum/library versions. Never load an untrusted pickle or substitute fake outputs.
+- MySQL profile fails: check unit, first-start logs, secret permissions/unchanged volume credentials, Flyway validation and memory. Disable the optional profile for a no-DB demo; preserve the volume rather than deleting data.
+- Certificate fails: check DNS/AAAA/80/webroot/CA limits and timer/hook. Do not use `-k` or an invalid certificate for smartphone evidence.
+- OOM/disk/CPU throttling: inspect local journals and capacity; keep 4 GiB, avoid concurrent builds/MySQL if necessary, prune reviewed releases, use Standard credits and recheck cost before resizing.
+- Public providers 429/503: wait, retain explicit errors and respect limits; do not retry in loops or manufacture routes.
 
-Ubuntu MySQL 8.0 binds both classic and X ports to loopback; SG must still exclude 3306/33060. The script applies only the current non-dropping bootstrap schema. Root uses Ubuntu's local socket authentication, with no hardcoded root password. The app has no database client yet, so no unused SQL credential is created. Before a future integration, create a least-privilege application account interactively, disable SQL history for password entry, and keep its secret only in the protected backend environment—not command arguments, Git or user-data.
+Nominatim, OSRM demo and OSM tiles are appropriate **only for this deliberately chosen low-volume coursework demonstration**, subject to [the recorded policies](m1-routing.md). One backend process/global limits, explicit geocoder Search buttons, caching/identification/attribution and browser Referer remain required. OSRM is reasonable non-commercial use at ≤1 request/second, with no uptime/data guarantee. Larger/public production usage needs reviewed hosted/self-hosted providers/shared limits. Synthetic forecasts are never real traffic or route ETAs.
 
-Backups are root-only compressed transactional dumps under `/var/backups/trafficease`, with partial files removed on failure. A local backup is **not** disaster recovery. Securely copy verified encrypted backups off the instance before termination or destructive work; test restoration on a separate local/test DB. Do not upload sensitive traffic/GPS data or secrets without retention/encryption review. No automatic S3, snapshots or paid backup service is created. EBS snapshots, retained volumes and remote storage can incur charges. Model artifacts can be regenerated, but preserve the matching code/lockfile/model report. Protect certificate keys/environment/password files separately; do not place them inside the public frontend directory or unencrypted shared backup.
-
-## 8. Operations, logs and stopping safely
-
-Useful commands on the host:
-
-```sh
-sudo systemctl status nginx trafficease-ai trafficease-backend
-sudo journalctl -u trafficease-ai -u trafficease-backend -n 80 --no-pager
-sudo nginx -t
-sudo python3 ~/TrafficEase/infra/ec2/health.py
-free -h
-df -h
-sudo ss -ltnp
-```
-
-Journald is capped (100 MiB persistent/50 MiB runtime, seven-day retention); Ubuntu Nginx log rotation remains enabled. Do not paste secrets or full personal-location logs into support chats. There is no CloudWatch agent/paid monitoring by default. Inspect EC2 console status/billing manually; a healthy process is not proof of provider availability or model/AR accuracy.
-
-When finished: save work/backups, `sudo systemctl stop trafficease-backend trafficease-ai`, stop optional MySQL, then use **EC2 Console → Stop instance**. Do not terminate until backups are verified. Stopping the EC2 instance stops compute billing, **not EBS/snapshot/retained Elastic-IP charges**. An automatically assigned public IPv4 is normally released on stop; an Elastic IP may continue billing while idle. A restarted instance may have a new IPv4: update DNS before renewing certificates/phone tests. Ensure no extra volumes, snapshots, IPs, NAT gateways or load balancers remain accidentally billable. App systemd units restart after a normal host boot; Certbot renewal needs DNS/port 80 correct and a running host. Long shutdowns can let certificates expire.
-
-## Troubleshooting and limitations
-
-- 502/API unreachable: confirm Java unit/port 8080; Nginx path must preserve `/api`. Do not open 8080 publicly as a fix.
-- AI unavailable: confirm Python unit, trusted artifact checksum/library versions and `MODEL_DIR`; rebuild a release to retrain, never download an untrusted pickle. Do not substitute fake forecasts.
-- Camera/GPS unavailable: verify trusted HTTPS, site permissions, top-level browser and M4 device support; map fallback is available when sensors/geometry are unreliable.
-- Search/routing 429/503: public services are best effort and application-wide rate-limited. Wait, check connectivity and do not bypass quota limits or generate sample routes.
-- OOM/service restart: inspect journals, memory and disk; use 4 GiB, avoid MySQL/build concurrency, reduce demo traffic or build elsewhere. Never switch to an expensive instance without revisiting credits.
-- Failed certificate/renewal: check A record, expired/incorrect AAAA, port 80, Nginx ACME webroot and CA rate limits. Do not disable TLS checks.
-- Failed activation rollback: inspect the preserved release IDs/unit state; current/previous should point only below `/opt/trafficease/releases`. First deployment has no old release to recover. Avoid destructive resets.
-
-Public Nominatim, OSRM demo and OSM tiles remain appropriate **only for this deliberately chosen low-volume non-commercial coursework prototype**, subject to their policies. Password protection is not unlimited usage permission. See [M1 policy record](m1-routing.md): explicit searches only, no autocomplete/bulk scraping, app-wide ≤1 new geocoder/OSRM request/sec, proper User-Agent/attribution/cache/Referer and one backend process. Real production/multiple replicas require reviewed hosted/self-hosted providers and shared limits. No live traffic, reliable seven-day real forecasts, true shortest-distance optimization or real-world AR alignment is claimed.
-
-Deployment readiness testing is recorded in [ec2-validation.md](ec2-validation.md). Local/container success is not an EC2 boot, CA issuance, security-group or real-phone validation.
+Read [current validation](ec2-validation.md) and [implementation matrix](implementation-status.md) before declaring launch readiness. Exact manual gates remain: account/region cost verification, real host install/boot/SELinux/resource-limit checks, SG reachability, DNS/trusted certificate/renewal, backup restore and physical Android/iOS validation. These files neither authorize nor prove a deployed AWS site.

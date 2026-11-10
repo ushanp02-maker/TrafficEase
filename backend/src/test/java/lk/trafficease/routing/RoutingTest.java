@@ -115,4 +115,18 @@ class RoutingTest {
         assertEquals(400,assertThrows(ApiFailure.class, () -> service.calculate(new RouteRequest("1","2"))).status);
         verifyNoInteractions(provider);
     }
+    @Test void scheduledDeparturePreservesGenuineBaselineRoutesWithoutProviderTrafficParameters() throws Exception {
+        var selected = mock(LocationService.class);
+        when(selected.selected("1")).thenReturn(origin); when(selected.selected("2")).thenReturn(destination);
+        when(provider.get(eq("routing"), anyString())).thenReturn(routeBody());
+        var service = new RouteService(provider, selected, "https://router.project-osrm.org", 300);
+        var baseline = service.calculate(new RouteRequest("1", "2"));
+        String tomorrow = java.time.ZonedDateTime.now(JourneyTime.ZONE).plusDays(1).withHour(19).withMinute(0).withSecond(0).withNano(0).toOffsetDateTime().toString();
+        var scheduled = service.calculate(new RouteRequest("1", "2", "FUTURE_DATE", tomorrow));
+        assertEquals(baseline.routes(), scheduled.routes());
+        assertEquals("BASELINE_ROUTING_ESTIMATE", scheduled.estimateKind());
+        assertEquals("FUTURE_DATE", scheduled.departure().mode());
+        assertFalse(scheduled.departure().futureEstimatesSupported());
+        verify(provider, times(2)).get(eq("routing"), eq("https://router.project-osrm.org/route/v1/driving/80.63,7.29;80.62,7.47?geometries=geojson&overview=full&alternatives=true&steps=false&generate_hints=false"));
+    }
 }

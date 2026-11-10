@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Only inside a disposable Ubuntu container, after TWO separately built ready releases.
+# Only inside a disposable Amazon Linux container, after TWO separately built ready releases.
 set -euo pipefail
 [[ -e /run/trafficease-disposable-test ]] || { echo 'Disposable test marker required'; exit 1; }
 here=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)

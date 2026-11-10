@@ -14,7 +14,7 @@ The original repository contained only this README and a Java-oriented `.gitigno
 
 ## Prerequisites
 
-Node.js 22.12+ (tested on 24), npm, JDK 17, Maven 3.9+, Python 3.12 and optionally MySQL 8. No API keys or paid integrations are required. Use this existing checkout in isolated cloud tasks; no additional Git worktree is needed.
+Node.js 22.12+ (tested on 22.23.4 in Amazon Linux and 24 in development), npm, JDK 17, Maven 3.9+, Python 3.12 and optionally MySQL 8. No API keys or paid integrations are required. Use this existing checkout in isolated cloud tasks; no additional Git worktree is needed.
 
 ## Install and validate
 
@@ -43,10 +43,10 @@ Use separate terminals from the repository root:
 ```sh
 npm run dev --prefix frontend
 (cd backend && mvn spring-boot:run)
-(cd ai-service && .venv/bin/python -m uvicorn main:app --host 0.0.0.0 --port 8000)
+(cd ai-service && .venv/bin/python -m uvicorn main:app --host 127.0.0.1 --port 8000)
 ```
 
-Frontend uses port 5173, backend 8080 and AI service 8000. Check services with `curl -f http://localhost:8080/api/health` and `curl -f http://localhost:8000/health`. FastAPI exposes interactive API documentation at `/docs`. Frontend calls Spring Boot through Vite’s same-origin `/api` proxy. Production needs an equivalent reverse proxy. The AI Predictions page calls the separate FastAPI service through Spring Boot; its synthetic outputs never override OSRM routes.
+Frontend uses port 5173, backend 8080 and AI service 8000. Check services with `curl -f http://localhost:8080/api/health` and `curl -f http://localhost:8000/health`. FastAPI exposes interactive API documentation at `/docs`. Frontend calls Spring Boot through Vite’s same-origin `/api` proxy. The primary Amazon Linux deployment includes an equivalent Nginx HTTPS proxy. The AI Predictions page calls the separate FastAPI service through Spring Boot; its synthetic outputs never override OSRM routes.
 
 Each component has an `.env.example`. Vite loads `.env.local` when needed; Spring and Uvicorn require exported shell variables (they do not automatically load these templates). Prototype defaults require no credentials. Provider endpoints/limits and public geocoder opt-out are configurable; see `docs/m1-routing.md`. Never commit credentials.
 
@@ -58,11 +58,11 @@ With a local MySQL 8 server and an authorized account:
 mysql -u YOUR_USER -p < database/schema.sql
 ```
 
-The schema creates and selects `trafficease`; the account must have database/table creation privileges. Password is requested interactively. The script creates missing tables without dropping data; it is a bootstrap schema, not a migration system. Services do not yet connect to MySQL. Datetimes are UTC by convention; future UI presentation should use Asia/Colombo.
+The schema creates and selects `trafficease`; the account must have database/table creation privileges. Password is requested interactively. The script creates missing tables without dropping data; it is a bootstrap schema, not a migration system. Default services do not connect to MySQL; the opt-in `mysql` profile enables Flyway-managed synthetic scenario history. See [persistence](docs/persistence.md). Database timestamps use UTC; user-facing forecast/history controls use Asia/Colombo.
 
 ## Scope and limitations
 
-Baseline provider routing is implemented. Live geocoding, OSRM routes and map tiles have now been verified together; see `docs/m1-live-verification.md` for the sampled journeys and limits. A synthetic-only model is now trained for M3. No real traffic validation, validated real-device AR alignment, world-anchored AR runtime, administrator dashboard or authentication yet. M4 now implements a sensor-assisted camera HUD and manual map fallback. Those belong to subsequent milestones. Synthetic training and predictions must be clearly experimental and separate from any future live traffic results. AR must provide reliability fallbacks and be designed for stationary users or passengers. GPS alone cannot visually recognize roads. Do not retain provider-restricted data without permission. AWS deployment is deferred.
+Baseline provider routing is implemented. Live geocoding, OSRM routes and map tiles have now been verified together; see `docs/m1-live-verification.md` for the sampled journeys and limits. A synthetic-only model is now trained for M3. No real traffic validation, validated real-device AR alignment, world-anchored AR runtime, administrator dashboard or personal-account authentication yet (deployment has a shared Nginx demo password). M4 now implements a sensor-assisted camera HUD and manual map fallback. Those belong to subsequent milestones. Synthetic training and predictions must be clearly experimental and separate from any future live traffic results. AR must provide reliability fallbacks and be designed for stationary users or passengers. GPS alone cannot visually recognize roads. Do not retain provider-restricted data without permission. AWS deployment is deferred.
 
 See `docs/validation.md` for checks and their outcomes.
 
@@ -80,4 +80,8 @@ See [M4 capabilities, HTTPS setup and validation](docs/m4-ar-navigation.md). AR 
 
 ## EC2 deployment readiness
 
-See [Ubuntu EC2 deployment guide](docs/ec2-deployment.md) and [readiness test results](docs/ec2-validation.md). One 2-vCPU/4-GiB host with 30-GiB encrypted gp3 is recommended, with Nginx HTTPS, internal Java 17/FastAPI services and optional MySQL 8. Installation, release build/model training, health checks, updates and rollback scripts are under `infra/ec2`. This prepares deployment only; no AWS resources or certificates have been created. Verify actual credits and regional prices before launching.
+See [Amazon Linux EC2 deployment guide](docs/ec2-deployment.md) and [readiness test results](docs/ec2-validation.md). One Amazon Linux 2023 x86-64 2-vCPU/4-GiB host with 30-GiB encrypted gp3 is recommended, with Nginx HTTPS, internal Java 17/FastAPI services and optional MySQL 8. Installation, release build/model training, health checks, updates and rollback scripts are under `infra/ec2`. This prepares deployment only; no AWS resources or certificates have been created. Verify actual credits and regional prices before launching.
+
+## Scheduled journeys and integration status
+
+Leave Now, Later Today and Future Date share an Asia/Colombo departure context through seven days. Scheduled routes remain genuine **OSRM baseline** calculations, with traffic-aware/future ETAs explicitly unsupported. AI may reuse time but requires a separate fictional scenario; AR uses map planning for scheduled journeys. Optional shared synthetic history has explicit opt-in, Flyway migrations, provenance and retention limits. See the [implementation matrix](docs/implementation-status.md), [M2 provider review](docs/m2-provider-review.md), [persistence](docs/persistence.md) and [current validation](docs/ec2-validation.md). The [Ubuntu alternative](docs/ec2-ubuntu-deployment.md) is preserved separately.

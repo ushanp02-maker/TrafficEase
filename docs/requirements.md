@@ -17,6 +17,10 @@ The user's updated nationwide specification is authoritative. Scope: Sri Lanka n
 | AR safety | Stationary users/passengers; GPS alone is not road recognition | Explicit entry guidance and no misleading sensor claims |
 | Responsive frontend | React/Vite/Tailwind, preserve navy/yellow design | Desktop/mobile browser and accessibility checks |
 | Backend/data | Java 17/Spring Boot, MySQL 8 | JDK 17 build/tests, migrations and provenance constraints |
-| Cloud | AWS architecture suitable for later deployment | Cost/security/operations review before resource creation |
+| Cloud | AWS architecture suitable for later deployment | Amazon Linux 2023 primary, Ubuntu retained; cost/security/operations and real-host gates before resource creation |
 
-Not all requirements are implemented. Existing Colombo samples are illustrations only. Delivery status and gates are in [milestones.md](milestones.md).
+Delivery now includes M1 baseline routing, M2 departure context, M3 synthetic forecasting, the M4 camera/map prototype, optional synthetic-only persistence and Amazon Linux 2023 deployment preparation. No licensed current/future traffic feed or real-world AR validation is claimed. Delivery status and gates are in [milestones.md](milestones.md).
+
+## Current delivery constraints
+
+Scheduled departures preserve OSRM baseline estimates and never imply traffic support. The synthetic catalog is separate from real road geometry; reusing a journey time does not map fictional scenarios to actual segments. Optional history is explicitly opted-in, shared, synthetic-only, bounded to 1,000 records and logically retained seven days; no precise GPS history is stored. Physical expiry deletion occurs on the next history read/save, including after downtime. See [implementation status](implementation-status.md), [provider gates](m2-provider-review.md), [persistence](persistence.md) and the [Amazon Linux guide](ec2-deployment.md).

@@ -30,6 +30,9 @@ def check():
     forecast = request(8080, '/api/forecasts', {'targetId': 'region-uva', 'forecastAt': None, 'weather': 'CLEAR', 'isHoliday': False})
     require(forecast['congestion'] in ['LOW', 'MODERATE', 'HIGH'] and forecast['experimental'] is True)
     require(not forecast['supportsJourneyDuration'] and forecast['dataSource'] == 'SYNTHETIC')
+    history = request(8080, '/api/forecasts/history/status')
+    if history.get('enabled'):
+        require(request(8080, '/api/forecasts/history').get('status') == 'AVAILABLE', 'Optional MySQL history unavailable')
     sockets = subprocess.check_output(['ss', '-H', '-ltn'], text=True)
     for line in sockets.splitlines():
         address = line.split()[3]

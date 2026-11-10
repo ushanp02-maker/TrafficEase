@@ -6,7 +6,7 @@ Complete one functional slice at a time. Commit tested work on `vidura`; never m
 
 Deliver authoritative nationwide requirements, component/data-flow design, provenance and departure-time contracts, provider evaluation gates and milestones. Inspect actual repository capabilities and distinguish design from implementation.
 
-Status: documentation completed. Runtime remains the existing demo foundation.
+Status: architecture documented; M1/M3 and the M4 prototype are implemented. See the current [implementation matrix](implementation-status.md) for evidence and outstanding gates.
 
 ## M1 — Nationwide search and genuine route calculations (first functional milestone)
 
@@ -27,6 +27,8 @@ Status: M1 integration implemented; automated checks pass and the complete live 
 Add Asia/Colombo Leave Now/Later Today/Future Date controls and server validation through seven days. Integrate verified current/future provider estimates and a live-information view when supported. Include explicit regional/time limitations; never infer traffic support from baseline routes. Keep source labels on every duration.
 
 Acceptance: deterministic time tests, 10 AM → 7 PM, local midnight, past/expired selections, horizon endpoints, unsupported forecast periods, stale feed data and real provider smoke evidence. No claim of seven-day provider forecasts without provider support.
+
+Status: M2 departure context is implemented across Route Planner, AI and AR, with authoritative Asia/Colombo validation and an exact seven-day horizon. Scheduled routes retain genuine OSRM baseline values; current/future traffic-aware estimates remain unsupported. See [provider review and API contract](m2-provider-review.md). Deterministic date tests and shared-context browser checks pass; no licensed traffic provider has met the coverage/price/display gates.
 
 ## M3 — Experimental congestion forecasts
 
@@ -49,3 +51,5 @@ Status: M4 prototype implemented with simulated permission/sensor tests, genuine
 Introduce versioned MySQL migrations, permitted observations, authenticated road/forecast administration and audited data quality. Harden services and operational readiness. Evaluate AWS cost, IAM, networking, monitoring, backup and recovery before a separately authorized deployment.
 
 Acceptance: migration/integration tests, admin access controls, retention/license policy, readiness probes, rollback and reproducible release checks. No AWS resources are created as part of architecture planning.
+
+Status: optional MySQL/Flyway synthetic history and deployment preparation now exist. [Persistence](persistence.md) records opt-in, retention and privacy rules. Amazon Linux 2023 is primary; [Ubuntu](ec2-ubuntu-deployment.md) is retained separately. Container application checks are distinct from EC2 installation/boot/TLS/device validation; see [validation](ec2-validation.md). No administration system, real observations or AWS deployment is claimed.

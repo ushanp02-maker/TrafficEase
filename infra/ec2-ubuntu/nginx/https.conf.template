@@ -1,0 +1,55 @@
+limit_req_zone $binary_remote_addr zone=trafficease_api:10m rate=5r/s;
+server {
+    listen 80 default_server;
+    server_name _;
+    return 444;
+}
+server {
+    listen 80;
+    server_name __DOMAIN__;
+    location ^~ /.well-known/acme-challenge/ { root /var/lib/letsencrypt; }
+    location / { return 301 https://__DOMAIN__$request_uri; }
+}
+server {
+    listen 443 ssl default_server;
+    server_name _;
+    ssl_reject_handshake on;
+}
+server {
+    listen 443 ssl;
+    server_name __DOMAIN__;
+    ssl_certificate /etc/letsencrypt/live/__DOMAIN__/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/__DOMAIN__/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_session_cache shared:trafficease_tls:1m;
+    ssl_session_timeout 10m;
+    server_tokens off;
+    root /opt/trafficease/current/frontend/dist;
+    index index.html;
+    client_max_body_size 1m;
+    auth_basic "TrafficEase coursework demo";
+    auth_basic_user_file /etc/trafficease/demo.htpasswd;
+    add_header Strict-Transport-Security "max-age=86400" always;
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy strict-origin-when-cross-origin always;
+    add_header Permissions-Policy "camera=(self), geolocation=(self), accelerometer=(self), gyroscope=(self), magnetometer=(self), microphone=()" always;
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://tile.openstreetmap.org; connect-src 'self'; media-src 'self' blob:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'" always;
+    location ~ /\. { deny all; }
+    location = /api { return 404; }
+    location /api/ {
+        limit_req zone=trafficease_api burst=10 nodelay;
+        limit_req_status 429;
+        access_log off; # Avoid recording location-search query strings.
+        proxy_pass http://127.0.0.1:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header Authorization ""; # Basic auth is enforced here, not forwarded internally.
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 45s;
+    }
+    location /assets/ { try_files $uri =404; expires 1y; }
+    location / { try_files $uri $uri/ /index.html; expires -1; }
+}

@@ -1,0 +1,18 @@
+[Unit]
+Description=Optional TrafficEase MySQL 8 (loopback only)
+Requires=docker.service
+After=docker.service
+StartLimitIntervalSec=120
+StartLimitBurst=3
+[Service]
+Type=simple
+ExecStartPre=-/usr/bin/docker rm -f trafficease-mysql
+ExecStart=/usr/bin/docker run --name trafficease-mysql --platform linux/amd64 --log-opt max-size=5m --log-opt max-file=2 --publish 127.0.0.1:3306:3306 --mount type=volume,src=trafficease-mysql-data,dst=/var/lib/mysql --volume /etc/trafficease/mysql-root-password:/run/secrets/mysql-root-password:ro,Z --volume /etc/trafficease/mysql-app-password:/run/secrets/mysql-app-password:ro,Z --env MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql-root-password --env MYSQL_PASSWORD_FILE=/run/secrets/mysql-app-password --env MYSQL_DATABASE=trafficease --env MYSQL_USER=trafficease mysql:8.4@sha256:a81d043930e51745522bd5c430961cf8286f0a23f0a9a2a6e0108f7ea71b0902 --mysqlx=OFF --innodb-buffer-pool-size=128M --max-connections=20
+ExecStartPost=/usr/local/libexec/trafficease-wait-mysql
+TimeoutStartSec=180
+ExecStop=/usr/bin/docker stop --time 30 trafficease-mysql
+Restart=on-failure
+RestartSec=10
+TimeoutStopSec=40
+[Install]
+WantedBy=multi-user.target
