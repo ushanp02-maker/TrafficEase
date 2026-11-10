@@ -49,3 +49,6 @@ test-results/
 # Reproducible AI outputs; text evaluation reports are tracked.
 ai-service/artifacts/
 ai-service/data/generated/
+
+# Local HTTPS credentials for smartphone testing
+.local-tls/

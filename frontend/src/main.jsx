@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './style.css';
 import RoutePlanner from './RoutePlanner.jsx';
 import ForecastPanel from './ForecastPanel.jsx';
+import ArNavigation from './ArNavigation.jsx';
 
 const sections = ['Dashboard', 'Route Planner', 'AI Predictions', 'AR Navigation'];
 function App() {
@@ -49,7 +50,8 @@ function App() {
       {page!=='AI Predictions'&&<div className="notice"><b>Baseline road routing</b><span>OSRM durations are not live traffic or future forecasts. Geographic coverage and road access vary.</span></div>}
       {(page==='Dashboard'||page==='Route Planner')&&<RoutePlanner/>}
       {page==='AI Predictions'&&<ForecastPanel/>}
-      {(page==='Dashboard'||page==='AR Navigation')&&<section className="feature-grid">{page!=='AR Navigation'&&<article className="feature"><span className="feature-icon">◷</span><span className="pill">EXPERIMENTAL · SYNTHETIC</span><h2>Ahead of the rush.</h2><p>Explore congestion categories from a synthetic-data model using fictional road, time, weather and holiday scenarios. Not validated against actual Sri Lankan traffic.</p><button className="text-button" onClick={()=>setPage('AI Predictions')}>Explore AI predictions →</button></article>}{page!=='AI Predictions'&&<article className="feature dark"><span className="feature-icon">⌖</span><span className="pill">AR LAB · PLANNED</span><h2>See another way.</h2><p>Future camera guidance will combine GPS, compass and road geometry, with a map fallback. Intended for stationary users or passengers.</p><button className="text-button" onClick={()=>setPage('AR Navigation')}>Explore AR navigation →</button></article>}</section>}
+      {page==='AR Navigation'&&<ArNavigation/>}
+      {(page==='Dashboard')&&<section className="feature-grid">{page!=='AR Navigation'&&<article className="feature"><span className="feature-icon">◷</span><span className="pill">EXPERIMENTAL · SYNTHETIC</span><h2>Ahead of the rush.</h2><p>Explore congestion categories from a synthetic-data model using fictional road, time, weather and holiday scenarios. Not validated against actual Sri Lankan traffic.</p><button className="text-button" onClick={()=>setPage('AI Predictions')}>Explore AI predictions →</button></article>}{page!=='AI Predictions'&&<article className="feature dark"><span className="feature-icon">⌖</span><span className="pill">AR · FIELD VALIDATION PENDING</span><h2>See another way.</h2><p>Explore the camera-and-compass prototype with genuine routed road geometry and a map fallback. Stationary users or passengers only; field validation pending.</p><button className="text-button" onClick={()=>setPage('AR Navigation')}>Explore AR navigation →</button></article>}</section>}
       <footer><div><a className="brand" href="#">TrafficEase<span className="brand-dot">→</span></a><p>Small detours. Better journeys.</p></div><div><span className="eyebrow">BUILT FOR SRI LANKA</span><p>AI + Cloud + AR · HNDSE coursework</p><small>Baseline routing & experimental scenarios. No live traffic data.</small></div></footer>
     </main>
   </div>;

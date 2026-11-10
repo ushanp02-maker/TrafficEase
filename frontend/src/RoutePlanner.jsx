@@ -3,7 +3,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 const apiBase = (import.meta.env.VITE_API_BASE || '').replace(/\/$/, '');
-async function request(path, options) {
+export async function request(path, options) {
   let response;
   try { response = await fetch(`${apiBase}/api${path}`, options); }
   catch (error) {
@@ -16,7 +16,7 @@ async function request(path, options) {
   if (!response.ok) throw new Error(body.message || 'The request failed. Please try again.');
   return body;
 }
-function LocationSearch({ title, location, onSelect, onEdit }) {
+export function LocationSearch({ title, location, onSelect, onEdit }) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [busy, setBusy] = useState(false);
@@ -53,7 +53,7 @@ function LocationSearch({ title, location, onSelect, onEdit }) {
     {location && <p className="selected-place">Selected: {location.name}</p>}
   </div>;
 }
-function GeographicMap({ data, selected }) {
+export function GeographicMap({ data, selected }) {
   const container = useRef(); const map = useRef(); const layer = useRef(); const tiles = useRef();
   const [tileError, setTileError] = useState(false);
   useEffect(() => {
