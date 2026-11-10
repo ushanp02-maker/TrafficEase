@@ -15,7 +15,7 @@ commit=$(git -C "$repo" rev-parse HEAD)
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 export PATH="$JAVA_HOME/bin:/usr/local/bin:$PATH"
 [[ -x "$JAVA_HOME/bin/javac" ]] || te_die 'Java 17 JDK missing.'
-python3 -c 'import sys; assert sys.version_info[:2] == (3,12), "Python 3.12 required"'
+python3 -c 'import sys; sys.exit(0 if sys.version_info[:2] == (3,12) else "Python 3.12 required")'
 node -e 'const [a,b]=process.versions.node.split(".").map(Number); if(a<22||(a===22&&b<12))process.exit(1)'
 git -C "$repo" archive "$commit" | tar -xf - -C "$release"
 cd "$release"
@@ -34,7 +34,7 @@ ai-service/.venv/bin/python -m pip install -r ai-service/requirements.lock.txt
 # Smoke-load the newly generated trusted model; no public provider requests.
 (cd ai-service && .venv/bin/python - <<'PY'
 from main import app
-assert app.state.model_status == 'ready', 'Trained model is unavailable'
+if app.state.model_status != 'ready': raise SystemExit('Trained model is unavailable')
 PY
 )
 rm -rf frontend/node_modules backend/target ai-service/artifacts/data ai-service/.pytest_cache

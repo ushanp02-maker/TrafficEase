@@ -8,29 +8,33 @@ import time
 import urllib.request
 
 
+def require(value, message='Readiness condition failed'):
+    if not value: raise RuntimeError(message)
+
+
 def request(port, path, body=None):
     data = None if body is None else json.dumps(body).encode()
     req = urllib.request.Request(f'http://127.0.0.1:{port}{path}', data=data, headers={'Content-Type': 'application/json'})
-    with urllib.request.urlopen(req, timeout=10) as response:
+    with urllib.request.build_opener(urllib.request.ProxyHandler({})).open(req, timeout=10) as response:
         return json.load(response)
 
 
 def check():
     backend = request(8080, '/api/health')
-    assert backend.get('status') == 'ok' and backend.get('service') == 'trafficease-backend', 'Backend unhealthy'
+    require(backend.get('status') == 'ok' and backend.get('service') == 'trafficease-backend', 'Backend unhealthy')
     ai = request(8000, '/health')
-    assert ai.get('model_status') == 'ready', 'AI model unavailable; train before activation'
+    require(ai.get('model_status') == 'ready', 'AI model unavailable; train before activation')
     catalog = request(8080, '/api/forecasts/catalog')
-    assert catalog['modelStatus'] == 'ready' and catalog['dataSource'] == 'SYNTHETIC' and catalog['experimental'] is True
+    require(catalog['modelStatus'] == 'ready' and catalog['dataSource'] == 'SYNTHETIC' and catalog['experimental'] is True)
     forecast = request(8080, '/api/forecasts', {'targetId': 'region-uva', 'forecastAt': None, 'weather': 'CLEAR', 'isHoliday': False})
-    assert forecast['congestion'] in ['LOW', 'MODERATE', 'HIGH'] and forecast['experimental'] is True
-    assert not forecast['supportsJourneyDuration'] and forecast['dataSource'] == 'SYNTHETIC'
+    require(forecast['congestion'] in ['LOW', 'MODERATE', 'HIGH'] and forecast['experimental'] is True)
+    require(not forecast['supportsJourneyDuration'] and forecast['dataSource'] == 'SYNTHETIC')
     sockets = subprocess.check_output(['ss', '-H', '-ltn'], text=True)
     for line in sockets.splitlines():
         address = line.split()[3]
         host, port = address.rsplit(':', 1)
         if port in ['8000', '8080', '3306', '33060']:
-            assert host in ['127.0.0.1', '[::1]'], f'Internal port {port} is not loopback-only'
+            require(host in ['127.0.0.1', '[::1]'], f'Internal port {port} is not loopback-only')
 
 
 if __name__ == '__main__':

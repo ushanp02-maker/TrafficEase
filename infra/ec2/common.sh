@@ -13,6 +13,7 @@ te_domain() {
   python3 - "$1" <<'PY'
 import re,sys
 s=sys.argv[1]
-assert len(s)<=253 and '.' in s and all(re.fullmatch(r'[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?',p) for p in s.split('.')), 'Use a lowercase DNS hostname, not an IP, wildcard or URL'
+valid=len(s)<=253 and '.' in s and all(re.fullmatch(r'[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?',p) for p in s.split('.'))
+if not valid: raise SystemExit('Use a lowercase DNS hostname, not an IP, wildcard or URL')
 PY
 }
