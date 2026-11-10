@@ -4,6 +4,7 @@ import './style.css';
 import RoutePlanner from './RoutePlanner.jsx';
 import ForecastPanel from './ForecastPanel.jsx';
 import ArNavigation from './ArNavigation.jsx';
+import { JourneyProvider } from './JourneyContext.jsx';
 
 const sections = ['Dashboard', 'Route Planner', 'AI Predictions', 'AR Navigation'];
 function App() {
@@ -42,13 +43,13 @@ function App() {
       <section className="capabilities" aria-label="Explore TrafficEase">{[
         ['01','→','Smarter routes','Compare genuine road routes and see the journey at a glance.','Route Planner'],
         ['02','◷','Ahead of the rush','Explore the idea of experimental AI traffic predictions.','AI Predictions'],
-        ['03','⌖','A new perspective','Discover our planned camera-based navigation experience.','AR Navigation'],
+        ['03','⌖','A new perspective','Explore camera-and-compass guidance with a map fallback.','AR Navigation'],
         ['04','◇','Made for home','Search Sri Lankan locations, wherever mapped road data is available.','Dashboard']
       ].map(([n,icon,title,body,target])=><button className="capability" key={n} onClick={()=>setPage(target)}><div className="capability-top"><span className="capability-icon">{icon}</span><span>{n}</span></div><h2>{title}</h2><p>{body}</p><span className="card-link">Explore <span aria-hidden="true">→</span></span></button>)}</section>
     </div>
     <main id="journey"><div className="content-heading"><div><p className="eyebrow">LESS GUESSWORK. MORE GOING.</p><h2>{page==='AI Predictions'?'Explore a hypothetical traffic scenario.':'Your next journey starts here.'}</h2></div><span className="pill">{page==='AI Predictions'?'EXPERIMENTAL AI':'NATIONWIDE · BASELINE ROUTING'}</span></div>
       {page!=='AI Predictions'&&<div className="notice"><b>Baseline road routing</b><span>OSRM durations are not live traffic or future forecasts. Geographic coverage and road access vary.</span></div>}
-      {(page==='Dashboard'||page==='Route Planner')&&<RoutePlanner/>}
+      {(page==='Dashboard'||page==='Route Planner')&&<RoutePlanner onExploreForecast={() => setPage('AI Predictions')}/>}
       {page==='AI Predictions'&&<ForecastPanel/>}
       {page==='AR Navigation'&&<ArNavigation/>}
       {(page==='Dashboard')&&<section className="feature-grid">{page!=='AR Navigation'&&<article className="feature"><span className="feature-icon">◷</span><span className="pill">EXPERIMENTAL · SYNTHETIC</span><h2>Ahead of the rush.</h2><p>Explore congestion categories from a synthetic-data model using fictional road, time, weather and holiday scenarios. Not validated against actual Sri Lankan traffic.</p><button className="text-button" onClick={()=>setPage('AI Predictions')}>Explore AI predictions →</button></article>}{page!=='AI Predictions'&&<article className="feature dark"><span className="feature-icon">⌖</span><span className="pill">AR · FIELD VALIDATION PENDING</span><h2>See another way.</h2><p>Explore the camera-and-compass prototype with genuine routed road geometry and a map fallback. Stationary users or passengers only; field validation pending.</p><button className="text-button" onClick={()=>setPage('AR Navigation')}>Explore AR navigation →</button></article>}</section>}
@@ -56,4 +57,4 @@ function App() {
     </main>
   </div>;
 }
-createRoot(document.getElementById('root')).render(<App/>);
+createRoot(document.getElementById('root')).render(<JourneyProvider><App/></JourneyProvider>);

@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { GeographicMap, LocationSearch, request } from './RoutePlanner.jsx';
 import useArSensors from './ar/useArSensors.js';
+import { DepartureControls, useJourney, journeyPayload } from './JourneyContext.jsx';
 import { alignment, angleDelta, bearing, recommendation } from './ar/geometry.js';
 
 export default function ArNavigation() {
+  const { journey } = useJourney();
   const video = useRef(); const sensors = useArSensors(video);
   const [safe, setSafe] = useState(false), [mode, setMode] = useState('gps');
   const [destination, setDestination] = useState(null), [origin, setOrigin] = useState(null);
@@ -21,10 +23,10 @@ export default function ArNavigation() {
       if (mode === 'gps') {
         snapshot = sensors.gps;
         result = await request('/ar/routes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: controller.signal,
-          body: JSON.stringify({ origin: { latitude: snapshot.latitude, longitude: snapshot.longitude, accuracyMeters: snapshot.accuracy, timestamp: snapshot.timestamp }, destinationId: destination.id }) });
+          body: JSON.stringify({ origin: { latitude: snapshot.latitude, longitude: snapshot.longitude, accuracyMeters: snapshot.accuracy, timestamp: snapshot.timestamp }, destinationId: destination.id, ...journeyPayload(journey) }) });
       } else {
         const routing = await request('/routes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: controller.signal,
-          body: JSON.stringify({ originId: origin.id, destinationId: destination.id }) });
+          body: JSON.stringify({ originId: origin.id, destinationId: destination.id, ...journeyPayload(journey) }) });
         result = { routing, destination, candidates: [], originSource: 'MANUAL' };
       }
       if (controller.signal.aborted) return;
@@ -33,8 +35,8 @@ export default function ArNavigation() {
     finally { if (!controller.signal.aborted) setBusy(false); }
   }
   const gpsFresh = sensors.gps && now - sensors.gps.timestamp <= 10000 && sensors.gps.accuracy > 0 && sensors.gps.accuracy <= 30;
-  const match = alignment({ gps: sensors.gps, heading: (window.screen.orientation?.angle ?? window.orientation ?? Number.NaN) === 0 ? sensors.heading : null,
-    rearCamera: safe && sensors.camera === 'on' && sensors.rear, routeAnchor: anchor, generatedAt: data?.routing.generatedAt, candidates: data?.candidates, now });
+  const match = journey.mode !== 'LEAVE_NOW' ? { reliable: false, reason: 'Scheduled journeys use map planning only. Current sensors cannot establish future conditions or departure-specific camera recommendations.' } : alignment({ gps: sensors.gps, heading: (window.screen.orientation?.angle ?? window.orientation ?? Number.NaN) === 0 ? sensors.heading : null,
+    rearCamera: journey.mode === 'LEAVE_NOW' && safe && sensors.camera === 'on' && sensors.rear, routeAnchor: anchor, generatedAt: data?.routing.generatedAt, candidates: data?.candidates, now });
   const better = recommendation(match, data?.routing);
   const direction = match.reliable && sensors.gps && destination ? angleDelta(bearing(sensors.gps, destination), sensors.heading.degrees) : null;
   return <section className="ar-page" aria-label="Smartphone AR navigation">
@@ -58,7 +60,9 @@ export default function ArNavigation() {
       </div>
     </div>
     <form className="planner ar-plan" onSubmit={calculate}>
-      <h2>Choose a destination and route</h2><p className="form-note">Current baseline driving routes only. Future departures and traffic/AI estimates are not supported in AR. Precise GPS coordinates are sent to Nominatim (country check) and OSRM only when you calculate a route; camera frames stay on your device.</p>
+      <h2>Choose a destination and route</h2><p className="form-note">Departure context is shared with Route Planner. Scheduled journeys use baseline map routes only; camera alignment is paused because present sensors cannot establish future road conditions. Precise GPS coordinates are sent to Nominatim (country check) and OSRM only when you calculate a route; camera frames stay on your device.</p>
+      <DepartureControls onChange={clear}/>
+      {journey.mode !== 'LEAVE_NOW' && <p role="status">Scheduled departure · map planning only. Future traffic, camera route alignment and departure-specific ETAs are unsupported.</p>}
       <label><span>STARTING POINT SOURCE</span><select value={mode} onChange={event => { clear(); setMode(event.target.value); }}><option value="gps">GPS fix</option><option value="manual">Manual location (map fallback)</option></select></label>
       {mode === 'manual' && <LocationSearch title="MANUAL STARTING POINT" location={origin} onEdit={() => { clear(); setOrigin(null); }} onSelect={value => { clear(); setOrigin(value); }}/>}
       <LocationSearch title="DESTINATION" location={destination} onEdit={() => { clear(); setDestination(null); }} onSelect={value => { clear(); setDestination(value); }}/>

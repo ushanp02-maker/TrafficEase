@@ -21,13 +21,14 @@ public class RouteService {
     }
     public RouteResponse calculate(RouteRequest request) {
         if (request == null) throw new ApiFailure(400, "INVALID_REQUEST", "Select an origin and destination.");
+        var departure = JourneyTime.resolve(request.mode(), request.departureAt(), java.time.Clock.systemUTC());
         Location origin = locations.selected(request.originId());
         Location destination = locations.selected(request.destinationId());
         if (origin.id().equals(destination.id())) throw new ApiFailure(400, "IDENTICAL_LOCATIONS", "Choose a different destination.");
         String coordinates = origin.longitude() + "," + origin.latitude() + ";" + destination.longitude() + "," + destination.latitude();
         JsonNode body = client.get("routing", baseUrl + "/route/v1/driving/" + coordinates
             + "?geometries=geojson&overview=full&alternatives=true&steps=false&generate_hints=false");
-        return parse(body, origin, destination, maxSnap);
+        return parse(body, origin, destination, maxSnap).withDeparture(departure);
     }
     static RouteResponse parse(JsonNode body, Location origin, Location destination, double maxSnap) {
         String code = body.path("code").asText();
@@ -74,7 +75,7 @@ public class RouteService {
         return new RouteResponse("OSRM / OpenStreetMap", "BASELINE_ROUTING_ESTIMATE", Instant.now().toString(), "RETURNED_ROUTES_ONLY", false,
             List.of("Baseline driving durations are not live traffic or future forecasts.",
                 "Fastest and shortest labels compare returned routes only. OSRM does not optimize a true shortest-distance route.",
-                "Coverage, alternatives, road access and data freshness are not guaranteed; verify local restrictions."), snapping, ranked);
+                "Coverage, alternatives, road access and data freshness are not guaranteed; verify local restrictions."), snapping, ranked, JourneyTime.resolve(null, null, java.time.Clock.systemUTC()));
     }
     private static ApiFailure invalid() { return new ApiFailure(502, "INVALID_PROVIDER_RESPONSE", "Routing provider returned incomplete or invalid data."); }
     private static double haversine(double a, double b, double c, double d) {

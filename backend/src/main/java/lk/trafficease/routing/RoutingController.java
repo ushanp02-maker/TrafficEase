@@ -15,6 +15,8 @@ public class RoutingController {
     public Map<String, Object> search(@RequestParam String query) {
         return Map.of("locations", locations.search(query), "source", "Nominatim / OpenStreetMap", "attribution", "© OpenStreetMap contributors (ODbL)");
     }
+    @GetMapping("/journeys/capabilities")
+    public Map<String, Object> capabilities() { return JourneyTime.capabilities(java.time.Clock.systemUTC()); }
     @PostMapping("/routes")
     public RouteResponse routes(@RequestBody RouteRequest request) { return routes.calculate(request); }
     @ExceptionHandler(ApiFailure.class)

@@ -14,7 +14,9 @@ import java.util.Set;
 
 @Service
 public class ForecastService {
-    public record ForecastRequest(String targetId, String forecastAt, String weather, Boolean isHoliday) {}
+    public record ForecastRequest(String targetId, String forecastAt, String weather, Boolean isHoliday, Boolean saveHistory) {
+        public ForecastRequest(String targetId, String forecastAt, String weather, Boolean isHoliday) { this(targetId, forecastAt, weather, isHoliday, null); }
+    }
     public static class Failure extends RuntimeException {
         final int status; final String code;
         Failure(int status, String code, String message) { super(message); this.status = status; this.code = code; }
@@ -35,10 +37,16 @@ public class ForecastService {
             throw new Failure(400, "INVALID_REQUEST", "Choose a hypothetical road/region and supported weather scenario.");
         return call("/predict", new ForecastRequest(request.targetId(), request.forecastAt(), request.weather(), Boolean.TRUE.equals(request.isHoliday())));
     }
+    private static JsonNode upstreamRequest(ForecastRequest request) {
+        var node = new ObjectMapper().createObjectNode();
+        node.put("targetId", request.targetId()); node.put("forecastAt", request.forecastAt());
+        node.put("weather", request.weather()); node.put("isHoliday", request.isHoliday());
+        return node;
+    }
     private JsonNode call(String path, ForecastRequest request) {
         try {
             JsonNode body = request == null ? client.get().uri(path).retrieve().body(JsonNode.class)
-                : client.post().uri(path).contentType(MediaType.APPLICATION_JSON).body(request).retrieve().body(JsonNode.class);
+                : client.post().uri(path).contentType(MediaType.APPLICATION_JSON).body(upstreamRequest(request)).retrieve().body(JsonNode.class);
             if (body == null || !body.path("experimental").asBoolean() || !"SYNTHETIC".equals(body.path("dataSource").asText()))
                 throw new Failure(502, "INVALID_AI_RESPONSE", "AI service returned invalid experimental-data provenance.");
             if ("/catalog".equals(path) && (!body.path("targets").isArray() || !body.path("weatherOptions").isArray()

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { DepartureControls, useJourney, journeyPayload } from './JourneyContext.jsx';
 
 const apiBase = (import.meta.env.VITE_API_BASE || '').replace(/\/$/, '');
 export async function request(path, options) {
@@ -83,7 +84,8 @@ export function GeographicMap({ data, selected }) {
     <p className="map-credit">© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap contributors</a> · <a href="https://www.openstreetmap.org/fixthemap" target="_blank" rel="noreferrer">Report a map issue</a></p>
   </>;
 }
-export default function RoutePlanner() {
+export default function RoutePlanner({ onExploreForecast }) {
+  const { journey } = useJourney();
   const [origin, setOrigin] = useState(null), [destination, setDestination] = useState(null);
   const [data, setData] = useState(null), [selected, setSelected] = useState('');
   const [busy, setBusy] = useState(false), [error, setError] = useState('');
@@ -96,7 +98,7 @@ export default function RoutePlanner() {
     clear(); const controller = new AbortController(); active.current = controller; setBusy(true);
     try {
       const result = await request('/routes', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ originId: origin.id, destinationId: destination.id }), signal: controller.signal });
+        body: JSON.stringify({ originId: origin.id, destinationId: destination.id, ...journeyPayload(journey) }), signal: controller.signal });
       if (controller.signal.aborted) return;
       setData(result); setSelected(result.routes.find(r => r.fastestAvailable)?.id || result.routes[0].id);
     } catch (err) { if (!controller.signal.aborted) setError(err.message); }
@@ -108,6 +110,7 @@ export default function RoutePlanner() {
       <form onSubmit={plan} className="genuine-planner">
         <LocationSearch title="STARTING POINT" location={origin} onEdit={() => choose(setOrigin, null)} onSelect={value => choose(setOrigin, value)}/>
         <LocationSearch title="DESTINATION" location={destination} onEdit={() => choose(setDestination, null)} onSelect={value => choose(setDestination, value)}/>
+        <DepartureControls onChange={clear}/>
         <button className="primary calculate-button" type="submit" disabled={!origin || !destination || busy}>{busy ? 'Calculating…' : 'Calculate road routes →'}</button>
       </form>
       <p className="form-note">Search explicitly, then select each location. No autocomplete. Place names in Sinhala, Tamil or English depend on available OpenStreetMap data. Searches go to Nominatim; routes go to OSRM. Do not submit confidential locations.</p>
@@ -118,7 +121,7 @@ export default function RoutePlanner() {
         {busy && <p role="status" className="status">Calculating genuine driving routes with OSRM…</p>}
         {error && <p role="alert" className="error-message">{error}</p>}
         {!data && !busy && !error && <p className="empty-state">Search and select two Sri Lankan locations to calculate road routes. No sample routes are shown.</p>}
-        {data && <><p className="comparison-note">{sameWinner ? 'The same route is fastest and shortest among the returned routes.' : 'Fastest and shortest available routes differ.'} OSRM does not calculate a true shortest-distance route.</p>
+        {data && <>{data.departure && <div className="notice"><b>{data.departure.mode.replaceAll('_', ' ')} · {new Intl.DateTimeFormat('en-LK', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Colombo' }).format(new Date(data.departure.departureAt))} (Sri Lanka)</b><span>{data.departure.message}</span></div>}<p className="comparison-note">{sameWinner ? 'The same route is fastest and shortest among the returned routes.' : 'Fastest and shortest available routes differ.'} OSRM does not calculate a true shortest-distance route.</p>
           {data.routes.map((route, index) => <button key={route.id} className={`route-card ${route.id === selected ? 'selected' : ''}`} aria-pressed={route.id === selected} onClick={() => setSelected(route.id)}>
             <div className="route-top"><span className="route-tag">{[route.fastestAvailable && 'Fastest available', route.shortestAvailable && 'Shortest available'].filter(Boolean).join(' · ') || 'Available alternative'}</span></div>
             <h3>Road route {index + 1}</h3><div className="metrics"><strong>{Math.round(route.durationSeconds / 60)}<small> min</small></strong><span>{(route.distanceMeters / 1000).toFixed(1)} km</span></div><p>OSRM baseline estimate · not live traffic</p>
@@ -127,5 +130,6 @@ export default function RoutePlanner() {
         </>}
       </section>
     </div>
+    <section className="planner"><h2>Explore a separate experimental scenario</h2><p className="form-note">The synthetic AI catalog has fictional road/region scenarios, not mapped OSRM segments. You can reuse this departure time, then explicitly choose a hypothetical scenario. It cannot adjust these route times or identify real congestion.</p><button type="button" className="secondary-light" onClick={onExploreForecast}>Explore AI scenarios for this departure →</button></section>
   </>;
 }

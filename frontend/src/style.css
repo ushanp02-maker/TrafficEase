@@ -230,3 +230,7 @@ button:disabled { cursor: not-allowed; opacity: .55; transform: none; }
 .ar-plan h2, .ar-page .results>h2 { font-size: 19px; font-weight: 800; }
 .ar-plan select { display: block; width: 100%; border: none; background: transparent; color: #193243; padding: 10px 0 0; font-size: 13px; }
 @media(max-width:680px) { .ar-plan { grid-template-columns: 1fr; } .camera-stage video { height: 650px; } .ar-overlay { left: 12px; right: 12px; bottom: 12px; padding: 15px; } .ar-overlay .pill { font-size: 7px; white-space: normal; } }
+
+.departure-controls{grid-column:1/-1;border:1px solid #cbd5dc;border-radius:12px;padding:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:14px;margin:8px 0;min-width:0}.departure-controls legend{font-weight:700;padding:0 8px}.departure-controls p{grid-column:1/-1}.departure-controls input,.departure-controls select{width:100%;min-width:0}.departure-controls label{display:grid;gap:8px}.departure-controls legend{color:#183345}
+
+.model-metrics{white-space:pre-wrap;overflow-wrap:anywhere;max-height:340px;overflow:auto;font-size:.8rem}.history-panel ul{padding-left:20px;overflow-wrap:anywhere}.history-panel li{margin:12px 0}.forecast-panel .planner{margin-top:20px}

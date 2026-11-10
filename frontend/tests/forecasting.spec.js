@@ -5,6 +5,7 @@ const catalog = { experimental: true, dataSource: 'SYNTHETIC', now, maxForecastA
 const forecast = { experimental: true, dataSource: 'SYNTHETIC', estimateKind: 'EXPERIMENTAL_AI', congestion: 'HIGH', forecastAt: now, target, features: { weather: 'RAIN', is_holiday: 0 }, modelVersion: 'test-synthetic-v1', datasetVersion: 'test-data-v1', limitations: ['Synthetic data only, no real Sri Lankan validation.'] };
 async function open(page) { await page.goto('/'); await page.getByRole('navigation').getByRole('button', { name: 'AI Predictions', exact: true }).click(); }
 test.beforeEach(async ({ page }) => {
+  await page.route('**/api/forecasts/history/status', route => route.fulfill({ json: { enabled: false } }));
   await page.route('https://tile.openstreetmap.org/**', route => route.abort());
   await page.route('**/api/forecasts/catalog', route => route.fulfill({ json: catalog }));
   await page.route('**/api/forecasts', route => route.fulfill({ json: forecast }));
@@ -14,7 +15,7 @@ test('scenario inputs produce experimental labels and clear old results on edits
   await page.getByRole('combobox', { name: 'WEATHER SCENARIO', exact: false }).selectOption('RAIN');
   const sent = page.waitForRequest(r => r.url().endsWith('/api/forecasts') && r.method() === 'POST');
   await page.getByRole('button', { name: /Generate experimental forecast/ }).click();
-  expect((await sent).postDataJSON()).toEqual({ targetId: 'western-urban', forecastAt: null, weather: 'RAIN', isHoliday: false });
+  expect((await sent).postDataJSON()).toEqual({ targetId: 'western-urban', forecastAt: null, weather: 'RAIN', isHoliday: false, saveHistory: false });
   await expect(page.getByRole('heading', { name: 'HIGH congestion scenario' })).toBeVisible();
   await expect(page.getByText('No journey duration or road speed is estimated.', { exact: false })).toBeVisible();
   await expect(page.getByText('EXPERIMENTAL · SYNTHETIC', { exact: true })).toHaveCount(1);

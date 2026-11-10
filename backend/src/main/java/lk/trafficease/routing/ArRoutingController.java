@@ -12,7 +12,9 @@ import static lk.trafficease.routing.RoutingModels.*;
 @RequestMapping("/api/ar")
 public class ArRoutingController {
     public record GpsOrigin(double latitude, double longitude, double accuracyMeters, long timestamp) {}
-    public record Request(GpsOrigin origin, String destinationId) {}
+    public record Request(GpsOrigin origin, String destinationId, String mode, String departureAt) {
+        public Request(GpsOrigin origin, String destinationId) { this(origin, destinationId, null, null); }
+    }
     public record Candidate(String name, String routeId, Geometry geometry) {}
     public record Result(RouteResponse routing, List<Candidate> candidates, Location destination, String originSource, List<String> limitations) {}
     private final ProviderClient client;
@@ -33,6 +35,7 @@ public class ArRoutingController {
     @PostMapping("/routes")
     public Result routes(@RequestBody Request request) {
         if (request == null) throw new ApiFailure(400, "INVALID_REQUEST", "Provide a GPS origin and selected destination.");
+        var departure = JourneyTime.resolve(request.mode(), request.departureAt(), java.time.Clock.systemUTC());
         GpsOrigin origin = request.origin(); validate(origin, System.currentTimeMillis());
         Location destination = locations.selected(request.destinationId());
         verifyCountry(origin);
@@ -40,7 +43,7 @@ public class ArRoutingController {
         JsonNode data = client.get("routing", baseUrl + "/route/v1/driving/" + coordinates
             + "?geometries=geojson&overview=full&alternatives=true&steps=true&generate_hints=false");
         Location start = new Location("gps", "GPS origin", origin.latitude(), origin.longitude(), "LK");
-        RouteResponse routing = RouteService.parse(data, start, destination, 50);
+        RouteResponse routing = RouteService.parse(data, start, destination, 50).withDeparture(departure);
         List<Candidate> candidates = new ArrayList<>();
         for (int i = 0; i < data.path("routes").size(); i++) {
             JsonNode route = data.path("routes").get(i);
