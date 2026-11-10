@@ -48,6 +48,12 @@ public class LocationService {
         cache.put(key, new Cached(locations, Instant.now().plusSeconds(86400)));
         return locations;
     }
+    boolean gpsIsSriLankan(double latitude, double longitude) {
+        if (baseUrl.contains("nominatim.openstreetmap.org") && !publicEnabled)
+            throw new ApiFailure(503, "GEOCODING_NOT_CONFIGURED", "Public geocoding is not enabled; use a configured service.");
+        JsonNode result = client.get("geocoding", baseUrl + "/reverse?format=jsonv2&addressdetails=1&lat=" + latitude + "&lon=" + longitude);
+        return "lk".equalsIgnoreCase(result.path("address").path("country_code").asText());
+    }
     public synchronized Location selected(String id) {
         if (id != null) for (Cached c : cache.values()) {
             if (c.expires().isAfter(Instant.now())) for (Location l : c.locations()) if (l.id().equals(id)) return l;
