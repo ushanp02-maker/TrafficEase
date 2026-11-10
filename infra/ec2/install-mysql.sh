@@ -11,6 +11,8 @@ apt-get update
 apt-get install -y mysql-server
 [[ $(mysqld --version) == *'8.0.'* ]] || te_die 'Expected MySQL 8.0; review installed package before proceeding.'
 printf '[mysqld]\nbind-address=127.0.0.1\nmysqlx-bind-address=127.0.0.1\n' > /etc/mysql/mysql.conf.d/99-trafficease-local.cnf
+chown root:root /etc/mysql/mysql.conf.d/99-trafficease-local.cnf
+chmod 0644 /etc/mysql/mysql.conf.d/99-trafficease-local.cnf
 systemctl restart mysql
 systemctl enable mysql
 mysql < "$here/../../database/schema.sql"

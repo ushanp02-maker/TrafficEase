@@ -17,6 +17,8 @@ cp /etc/nginx/sites-available/trafficease "$backup"
 restore() { cp "$backup" /etc/nginx/sites-available/trafficease; rm -f "$backup"; }
 trap restore ERR
 sed "s/__DOMAIN__/$1/g" "$here/nginx/https.conf.template" > /etc/nginx/sites-available/trafficease
+chown root:root /etc/nginx/sites-available/trafficease
+chmod 0644 /etc/nginx/sites-available/trafficease
 nginx -t
 systemctl reload nginx
 trap - ERR

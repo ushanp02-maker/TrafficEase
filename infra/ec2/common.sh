@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
+# Do not inherit a permissive SSH/cloud shell umask for root-managed configuration.
+umask 022
 TE_ROOT=/opt/trafficease
 te_die() { echo "TrafficEase: $*" >&2; exit 1; }
 te_root() { [[ $(id -u) == 0 ]] || te_die 'Run this administrative script with sudo.'; }

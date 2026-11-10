@@ -28,9 +28,16 @@ The following passed using the actual built Java/FastAPI processes:
 - Loopback listeners, including Java's IPv4-mapped IPv6 representation; a deliberately introduced wildcard internal listener was rejected.
 - Deliberately altered JAR rejected by the integrity manifest; restoring the bytes passed verification.
 - Actual Nginx HTTPS with an ephemeral locally trusted CA and hostname verification: password required on UI **and API**, React/SPA rendering, same-origin Java/AI forwarding, security headers and missing/protected paths.
+- Initial plaintext Nginx exposes only the ACME challenge; app/API paths return 503.
 - `nginx -t`, Bash syntax and `systemd-analyze verify` for both installed unit files.
 
 Test helpers under `infra/ec2/tests/` require `/run/trafficease-disposable-test` and must **never** be installed/run as production service controls. The container does not run systemd as PID 1: `activation-check.sh` uses a service simulator that launches the real applications from the actual unit/environment files. It does not prove boot ordering, kernel sandbox enforcement, cgroup limits or systemd crash recovery. The production units use real systemd, not this simulator. Local TLS testing created no public CA order and never disabled certificate validation.
+
+## Optional MySQL check
+
+Ubuntu MySQL **8.0.46** installed, the three bootstrap tables were imported, local root `auth_socket` authentication was verified, and both 3306/33060 listened only on 127.0.0.1. The backup script produced a valid gzip dump with a root-only 0700 directory/0600 file. MySQL remains optional and disconnected from the application.
+
+The first container lacked a process-reaping PID 1, so Ubuntu's installer timed out waiting for an already-exited temporary MySQL process. Retrying in a disposable container with `--init` resolved that test-environment issue. Tests also caught the cloud shell's permissive inherited umask: deployment scripts now set 022 and explicitly root-own/mode 0644 the generated MySQL and Nginx configuration, preventing MySQL from ignoring a world-writable config. Runtime process control was still simulated; a real systemd boot and a backup restore are manual acceptance checks.
 
 ## Remaining manual validation
 
