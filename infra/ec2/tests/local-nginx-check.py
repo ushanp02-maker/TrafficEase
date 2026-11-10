@@ -20,6 +20,8 @@ def run(*args):
 
 
 def main():
+    if not Path('/run/trafficease-disposable-test').exists():
+        raise SystemExit('Disposable test marker required; never run on a deployed host')
     site = Path('/etc/nginx/sites-available/trafficease')
     certdir = Path('/etc/letsencrypt/live') / DOMAIN
     certdir.mkdir(parents=True, exist_ok=True)

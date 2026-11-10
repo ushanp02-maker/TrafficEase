@@ -7,9 +7,13 @@ te_release "${1:-}"
 release="$TE_ROOT/releases/$1"
 python3 "$here/release-manifest.py" verify "$release"
 nginx -t
-old=$(readlink -f "$TE_ROOT/current" || true)
-if [[ -n "$old" ]]; then
-    [[ "$old" == "$TE_ROOT/releases/"* && -f "$old/READY.json" ]] || te_die 'Current link does not name a ready local release.'
+old=""
+if [[ -L "$TE_ROOT/current" ]]; then
+    old=$(readlink -e "$TE_ROOT/current") || te_die 'Current release link is dangling.'
+    te_release "$(basename "$old")"
+    [[ "$old" == "$TE_ROOT/releases/$(basename "$old")" && -f "$old/READY.json" ]] || te_die 'Current link does not name a ready local release.'
+elif [[ -e "$TE_ROOT/current" ]]; then
+    te_die 'Current must be a release symlink, not an existing file/directory.'
 fi
 [[ "$old" != "$release" ]] || te_die 'Release is already current.'
 # Runtime cannot rewrite its own code or artifacts. The SSH admin remains trusted.

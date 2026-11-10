@@ -5,8 +5,8 @@ here=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 source "$here/common.sh"
 te_root
 [[ ${1:-} == '' || ${1:-} == --apply ]] || te_die 'Use no argument for dry run or --apply after reviewing it.'
-current=$(readlink -f "$TE_ROOT/current" || true)
-previous=$(readlink -f "$TE_ROOT/previous" || true)
+current=$(readlink -e "$TE_ROOT/current" || true)
+previous=$(readlink -e "$TE_ROOT/previous" || true)
 mapfile -t releases < <(find "$TE_ROOT/releases" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort -r)
 for ((i=3; i<${#releases[@]}; i++)); do
     name=${releases[i]}; te_release "$name"
