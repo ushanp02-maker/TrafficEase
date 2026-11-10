@@ -62,7 +62,7 @@ The schema creates and selects `trafficease`; the account must have database/tab
 
 ## Scope and limitations
 
-Baseline provider routing is implemented. Live geocoding, OSRM routes and map tiles have now been verified together; see `docs/m1-live-verification.md` for the sampled journeys and limits. A synthetic-only model is now trained for M3. No real traffic validation, camera/compass/GPS integration, AR.js/A-Frame runtime, administrator dashboard or authentication yet. Those belong to subsequent milestones. Synthetic training and predictions must be clearly experimental and separate from any future live traffic results. AR must provide reliability fallbacks and be designed for stationary users or passengers. GPS alone cannot visually recognize roads. Do not retain provider-restricted data without permission. AWS deployment is deferred.
+Baseline provider routing is implemented. Live geocoding, OSRM routes and map tiles have now been verified together; see `docs/m1-live-verification.md` for the sampled journeys and limits. A synthetic-only model is now trained for M3. No real traffic validation, validated real-device AR alignment, world-anchored AR runtime, administrator dashboard or authentication yet. M4 now implements a sensor-assisted camera HUD and manual map fallback. Those belong to subsequent milestones. Synthetic training and predictions must be clearly experimental and separate from any future live traffic results. AR must provide reliability fallbacks and be designed for stationary users or passengers. GPS alone cannot visually recognize roads. Do not retain provider-restricted data without permission. AWS deployment is deferred.
 
 See `docs/validation.md` for checks and their outcomes.
 
@@ -73,3 +73,7 @@ The updated specification replaces the earlier Colombo-first product scope. See 
 ## Experimental AI forecasts (M3)
 
 See [M3 model card, setup and evaluation](docs/m3-forecasting.md). Train offline before starting FastAPI, then use AI Predictions to select a fictional road/region, weather/holiday scenario and current or future Colombo time within seven days. All forecasts are **EXPERIMENTAL / SYNTHETIC**. No model binaries are committed; a fresh checkout must run `train.py`. These classifications cannot produce accurate journey times, speeds or actual regional traffic conditions.
+
+## Camera and map navigation prototype (M4)
+
+See [M4 capabilities, HTTPS setup and validation](docs/m4-ar-navigation.md). AR Navigation now offers rear camera, explicit GPS/compass permissions, genuine GPS-origin route geometry and an approximate road/destination-direction HUD with manual map fallback. Remain stationary or use it as a passenger, never as the driver. **Physical smartphone alignment remains unvalidated**; desktop tests use simulated camera/sensor data. No visual road recognition, live traffic, future route forecasts or fabricated alternatives are provided.

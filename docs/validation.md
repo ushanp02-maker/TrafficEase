@@ -92,3 +92,7 @@ With the published three-domain network policy, real provider browser flows were
 ## M3 synthetic AI forecasting
 
 See [M3 model card and verification](m3-forecasting.md): 15 Python tests, 34 Java 17 tests, 14 browser tests, frontend build and real React → Java → FastAPI/model smoke checks passed. Independent full training reproduced dataset/model hashes and metrics. Model results are exclusively synthetic and never validate real traffic or override OSRM estimates. Prior untrained-model notes are historical.
+
+## M4 camera/sensor prototype
+
+See [M4 capability and field-validation report](m4-ar-navigation.md). Java 17: 41 tests; Python: 15; geometry: 21; browser: 25; production build passed. Live Nominatim/OSRM steps were checked using a simulated GPS point. Browser camera/GPS/compass are simulations, not physical-device alignment evidence. Real Android/iOS HTTPS, calibration and road matching must still be field-tested. Routing and synthetic AI regression suites remain included.

@@ -42,6 +42,8 @@ Prototype camera/GPS/heading lifecycle and mapped candidate-road selection; reus
 
 Acceptance: Android/iOS HTTPS testing with permissions granted/denied, compass absent, poor/stale positioning, ambiguous roads, current/future labels, stream cleanup and no invented time savings. Camera permission or a visual overlay alone does not complete AR navigation.
 
+Status: M4 prototype implemented with simulated permission/sensor tests, genuine route-step API checks and map fallback. [Capability report](m4-ar-navigation.md) separates tested software behavior from unperformed Android/iOS field checks. Real-device alignment and safety validation remain outstanding; this is not a validated turn-by-turn product.
+
 ## M5 — Persistence, administration and deployment readiness
 
 Introduce versioned MySQL migrations, permitted observations, authenticated road/forecast administration and audited data quality. Harden services and operational readiness. Evaluate AWS cost, IAM, networking, monitoring, backup and recovery before a separately authorized deployment.
