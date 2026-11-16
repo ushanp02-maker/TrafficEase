@@ -3,7 +3,7 @@ const now = '2026-11-09T12:00:00+05:30';
 const target = { id: 'western-urban', name: 'Western · hypothetical urban corridor', kind: 'ROAD_SCENARIO' };
 const catalog = { experimental: true, dataSource: 'SYNTHETIC', now, maxForecastAt: '2026-11-16T12:00:00+05:30', modelStatus: 'ready', timezone: 'Asia/Colombo', targets: [target], weatherOptions: ['CLEAR', 'RAIN', 'HEAVY_RAIN'], coverageNote: 'Fictional scenarios only, not actual regional coverage.' };
 const forecast = { experimental: true, dataSource: 'SYNTHETIC', estimateKind: 'EXPERIMENTAL_AI', congestion: 'HIGH', forecastAt: now, target, features: { weather: 'RAIN', is_holiday: 0 }, modelVersion: 'test-synthetic-v1', datasetVersion: 'test-data-v1', limitations: ['Synthetic data only, no real Sri Lankan validation.'] };
-async function open(page) { await page.goto('/'); await page.getByRole('navigation').getByRole('button', { name: 'AI Predictions', exact: true }).click(); }
+async function open(page) { await page.goto('/'); await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'AI Predictions', exact: true }).click(); }
 test.beforeEach(async ({ page }) => {
   await page.route('**/api/forecasts/history/status', route => route.fulfill({ json: { enabled: false } }));
   await page.route('https://tile.openstreetmap.org/**', route => route.abort());

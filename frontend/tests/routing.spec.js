@@ -28,7 +28,7 @@ test.beforeEach(async ({ page }) => {
     return route.fulfill({ json: { locations: locations[query] ? [locations[query]] : [], attribution: '© OpenStreetMap contributors' } });
   });
   await page.route('**/api/routes', route => route.fulfill({ json: fixture }));
-  await page.goto('/');
+  await page.goto('/navigation');
 });
 test('no automatic geocoding, explicit selection, genuine response geometry and comparison labels', async ({ page }) => {
   let searches = 0; page.on('request', request => { if (request.url().includes('/api/locations')) searches++; });
@@ -81,8 +81,8 @@ test('navigation and map stay within mobile and tablet viewports', async ({ page
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   }
   for (const name of ['AI Predictions', 'AR Navigation', 'Route Planner']) {
-    await page.getByRole('navigation').getByRole('button', { name, exact: true }).click();
-    await expect(page.getByRole('navigation').getByRole('button', { name, exact: true })).toHaveAttribute('aria-current', 'page');
+    await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name, exact: true }).click();
+    await expect(page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name, exact: true })).toHaveAttribute('aria-current', 'page');
   }
   await expect(page.getByRole('textbox', { name: 'STARTING POINT' })).toBeVisible();
 });

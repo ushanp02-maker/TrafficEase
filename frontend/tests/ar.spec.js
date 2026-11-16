@@ -46,7 +46,7 @@ async function open(page) {
   await page.route('**/api/locations?*', r => r.fulfill({ json: { locations: [new URL(r.request().url()).searchParams.get('query') === 'Origin' ? { ...destination, id: 'origin', name: 'Mapped origin, Sri Lanka' } : destination], source: 'Nominatim / OpenStreetMap' } }));
   await page.route('**/api/ar/routes', r => r.fulfill({ json: { routing: routing(), destination, originSource: 'GPS', candidates: [{ name: 'Mapped Road', routeId: 'route-1', geometry }] } }));
   await page.route('**/api/routes', r => r.fulfill({ json: routing() }));
-  await page.goto('/'); await page.getByRole('navigation').getByRole('button',{ name: 'AR Navigation', exact: true }).click();
+  await page.goto('/'); await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link',{ name: 'AR Navigation', exact: true }).click();
 }
 async function consent(page) { await page.getByRole('checkbox',{name:/I am stationary/}).check(); }
 async function destinationSelection(page) {
@@ -85,7 +85,9 @@ test('simulated camera/GPS/compass match with cleanup on page navigation',async(
     await page.setViewportSize({ width: 390, height: 844 }); await compassSamples(page);
     await page.screenshot({ path: `${process.env.M4_SCREENSHOT_DIR}/m4-simulated-mobile.png`, fullPage: true });
   }
-  await page.getByRole('navigation').getByRole('button',{name:'Dashboard',exact:true}).click();
+  await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link',{name:'Home',exact:true}).click();
+  await expect(page.getByTestId('home-hero')).toBeVisible();
+  await expect.poll(()=>page.evaluate(()=>window.arTest.stopped)).toBeGreaterThan(0);
   const cleanup = await page.evaluate(()=>window.arTest);
   expect(cleanup.stopped).toBeGreaterThan(0); expect(cleanup.cleared).toBeGreaterThan(0); expect(cleanup.compassRemoved).toBeGreaterThanOrEqual(2);
 });

@@ -75,16 +75,16 @@ export default function ForecastPanel() {
     </>}
     {busy && <p role="status">Running the synthetic-data congestion model…</p>}
     {!result && !busy && <p className="empty-state">No congestion scenario generated. Choose a supported fictional location and time. Unsupported locations are never extrapolated.</p>}
-    <HistoryControls save={saveHistory} onSave={setSaveHistory}/>
-    <ModelDetails/>
     {result && <article className="forecast-result" aria-label="Experimental forecast result">
       <span className="pill">EXPERIMENTAL · SYNTHETIC</span>
-      <h2>{result.congestion} congestion scenario</h2>
+      <h2>{result.congestion} congestion scenario</h2><div className="category-result" aria-label="Congestion category indicator">{['LOW','MODERATE','HIGH'].map(c=><span key={c} className={c===result.congestion?'active':''}>{c}</span>)}</div>
       <p><strong>{result.target.name}</strong></p><p>Forecast time: {format(result.forecastAt)} (Asia/Colombo)</p>
       <dl><dt>Weather input</dt><dd>{result.features.weather.replaceAll('_', ' ')} · user scenario</dd><dt>Holiday input</dt><dd>{result.features.is_holiday ? 'Yes' : 'No'} · user scenario</dd><dt>Model version</dt><dd>{result.modelVersion}</dd><dt>Training source</dt><dd>{result.dataSource} · {result.datasetVersion}</dd></dl>
       {result.historyStatus && <p role="status">History: {({ SAVED: 'Synthetic scenario saved to shared history.', NOT_REQUESTED: 'Saving was not requested.', DISABLED: 'Database disabled; no scenario saved.', UNAVAILABLE: 'Storage unavailable; saving could not be confirmed.', REJECTED: 'Record rejected by provenance checks.', CAPACITY_REACHED: 'History full; no additional record saved.' })[result.historyStatus] || 'Unknown storage state.'}</p>}
       <p>No journey duration or road speed is estimated. This category cannot establish an accurate route ETA.</p>
       <ul>{result.limitations.map(text => <li key={text}>{text}</li>)}</ul>
     </article>}
+    <HistoryControls save={saveHistory} onSave={setSaveHistory}/>
+    <ModelDetails/>
   </section>;
 }
