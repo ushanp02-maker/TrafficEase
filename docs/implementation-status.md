@@ -22,3 +22,7 @@ The demonstrable software flows are implemented. The remaining gap is mainly **e
 Before the deadline, prioritize validating one small host and a real phone, preparing a clear demonstration of genuine baseline routes plus separately labeled synthetic forecasts, and recording any unavailable providers. Do not spend remaining credits on extra infrastructure or conceal unsupported capabilities.
 
 See [current validation](ec2-validation.md), [manual launch steps](ec2-deployment.md), [provider review](m2-provider-review.md), [persistence](persistence.md) and [M4 real-device checklist](m4-ar-navigation.md).
+
+## UI/government delivery update — 16 November 2026
+
+The separate-page redesign and functional government demonstration are now implemented; see [current module status and security](ui-redesign.md), [new validation evidence](ui-redesign-validation.md) and [screenshots](screenshots/redesign/README.md). The earlier weighted completion estimate above is historical and is not a production-readiness score. Real traffic observations/provider future estimates, official government authorization, physical AR alignment and actual AWS deployment validation remain unproven.

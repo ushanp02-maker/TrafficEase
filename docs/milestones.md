@@ -53,3 +53,7 @@ Introduce versioned MySQL migrations, permitted observations, authenticated road
 Acceptance: migration/integration tests, admin access controls, retention/license policy, readiness probes, rollback and reproducible release checks. No AWS resources are created as part of architecture planning.
 
 Status: optional MySQL/Flyway synthetic history and deployment preparation now exist. [Persistence](persistence.md) records opt-in, retention and privacy rules. Amazon Linux 2023 is primary; [Ubuntu](ec2-ubuntu-deployment.md) is retained separately. Container application checks are distinct from EC2 installation/boot/TLS/device validation; see [validation](ec2-validation.md). No administration system, real observations or AWS deployment is claimed.
+
+## Multi-page UI and government prototype extension — 16 November 2026
+
+Implemented separate citizen/government URL routes, Home-only hero, responsive layouts and retained real routing/experimental AI/AR functionality. Government-demo sessions/role checks, CSRF, private bcrypt provisioning, announcement draft/edit/publish/withdraw, additive V2 persistence and audit records are implemented. Actual demand collection and official government identity verification remain outside this prototype; illustrated charts are labeled synthetic. See [redesign implementation](ui-redesign.md), [executed validation](ui-redesign-validation.md) and [screenshots](screenshots/redesign/README.md). No AWS resources were created.

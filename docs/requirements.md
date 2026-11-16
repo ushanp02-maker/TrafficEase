@@ -24,3 +24,7 @@ Delivery now includes M1 baseline routing, M2 departure context, M3 synthetic fo
 ## Current delivery constraints
 
 Scheduled departures preserve OSRM baseline estimates and never imply traffic support. The synthetic catalog is separate from real road geometry; reusing a journey time does not map fictional scenarios to actual segments. Optional history is explicitly opted-in, shared, synthetic-only, bounded to 1,000 records and logically retained seven days; no precise GPS history is stored. Physical expiry deletion occurs on the next history read/save, including after downtime. See [implementation status](implementation-status.md), [provider gates](m2-provider-review.md), [persistence](persistence.md) and the [Amazon Linux guide](ec2-deployment.md).
+
+## Dedicated-page and government-demo extension
+
+Citizen tools now require distinct URL/page components; the Home hero appears only on `/`. Government-demo management requires server-side authentication/role enforcement independent of the deployment password, CSRF/session protection, explicit demo notices, audited publication/withdrawal, and clear separation of fictional chart examples from real mobility observations. No actual citizen-demand collection or official affiliation is implied. See [the implementation and operator setup](ui-redesign.md).

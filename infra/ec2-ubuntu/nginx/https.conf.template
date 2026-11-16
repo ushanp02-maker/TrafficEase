@@ -40,6 +40,8 @@ server {
         limit_req zone=trafficease_api burst=10 nodelay;
         limit_req_status 429;
         access_log off; # Avoid recording location-search query strings.
+        proxy_no_cache 1;
+        proxy_cache_bypass 1;
         proxy_pass http://127.0.0.1:8080;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
