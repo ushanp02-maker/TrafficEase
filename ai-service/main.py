@@ -82,7 +82,7 @@ def create_app(artifact_dir=None, clock=None):
             status_code=422,
             content={
                 "code": "INVALID_REQUEST",
-                "message": "Select a supported target, weather scenario, boolean holiday flag and valid offset-aware forecast time.",
+                "message": ("Select a verified journey, valid route geometry, supported weather and offset-aware forecast time." if request.url.path == "/route-predict" else "Select a supported target, weather scenario, boolean holiday flag and valid offset-aware forecast time."),
             },
         )
 
@@ -175,6 +175,8 @@ def create_app(artifact_dir=None, clock=None):
             limitations=meta["limitations"],
         )
 
+    from route_api import register_route_api
+    register_route_api(app, directory / "routes")
     return app
 
 

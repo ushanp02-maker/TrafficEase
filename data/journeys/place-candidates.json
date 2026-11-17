@@ -1,0 +1,2724 @@
+{
+  "Pettah": {
+    "query": "Pettah, Colombo, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Pettah%2C+Colombo%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:36:28.879372+00:00",
+    "candidates": [
+      {
+        "place_id": 254093275,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "way",
+        "osm_id": 303907118,
+        "lat": "6.9327568",
+        "lon": "79.8549120",
+        "category": "man_made",
+        "type": "pier",
+        "place_rank": 30,
+        "importance": 0.07194870560319186,
+        "addresstype": "man_made",
+        "name": "Pettah Floating Market",
+        "display_name": "Pettah Floating Market, Olcott Mawatha, Kehelwatte, Slave Island, Colombo, Colombo District, Western Province, 01100, Sri Lanka",
+        "address": {
+          "man_made": "Pettah Floating Market",
+          "road": "Olcott Mawatha",
+          "suburb": "Kehelwatte",
+          "village": "Slave Island",
+          "city": "Colombo",
+          "state_district": "Colombo District",
+          "ISO3166-2-lvl5": "LK-11",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "01100",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Pettah Floating Market"
+        },
+        "boundingbox": [
+          "6.9320889",
+          "6.9333618",
+          "79.8541193",
+          "79.8569342"
+        ]
+      },
+      {
+        "place_id": 254009879,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "way",
+        "osm_id": 200567908,
+        "lat": "6.9335171",
+        "lon": "79.8555357",
+        "category": "amenity",
+        "type": "bus_station",
+        "place_rank": 30,
+        "importance": 7.168307011516011e-05,
+        "addresstype": "amenity",
+        "name": "Pettah Private Bus Station",
+        "display_name": "Pettah Private Bus Station, Olcott Mawatha, Kehelwatte, Slave Island, Colombo, Colombo District, Western Province, 01100, Sri Lanka",
+        "address": {
+          "amenity": "Pettah Private Bus Station",
+          "road": "Olcott Mawatha",
+          "suburb": "Kehelwatte",
+          "village": "Slave Island",
+          "city": "Colombo",
+          "state_district": "Colombo District",
+          "ISO3166-2-lvl5": "LK-11",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "01100",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Pettah Private Bus Station",
+          "name:ru": "Остановка экспрессов"
+        },
+        "boundingbox": [
+          "6.9330502",
+          "6.9341711",
+          "79.8542228",
+          "79.8564116"
+        ]
+      },
+      {
+        "place_id": 254297033,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 6139834475,
+        "lat": "6.8770152",
+        "lon": "79.8694991",
+        "category": "amenity",
+        "type": "pharmacy",
+        "place_rank": 30,
+        "importance": 7.168307011516011e-05,
+        "addresstype": "amenity",
+        "name": "New pettah pharmacy",
+        "display_name": "New pettah pharmacy, Havelock Road, Pamankada, Colombo, Colombo District, Western Province, 00006, Sri Lanka",
+        "address": {
+          "amenity": "New pettah pharmacy",
+          "road": "Havelock Road",
+          "suburb": "Pamankada",
+          "city": "Colombo",
+          "state_district": "Colombo District",
+          "ISO3166-2-lvl5": "LK-11",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "00006",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "New pettah pharmacy"
+        },
+        "boundingbox": [
+          "6.8769652",
+          "6.8770652",
+          "79.8694491",
+          "79.8695491"
+        ]
+      },
+      {
+        "place_id": 254362345,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 3150352999,
+        "lat": "6.9350670",
+        "lon": "79.8538739",
+        "category": "natural",
+        "type": "tree",
+        "place_rank": 30,
+        "importance": 7.168307011516011e-05,
+        "addresstype": "natural",
+        "name": "Pettah Bo Tree",
+        "display_name": "Pettah Bo Tree, 5th Cross Street, L B Gate, Fort, St. Bastian, Colombo, Colombo District, Western Province, 01100, Sri Lanka",
+        "address": {
+          "natural": "Pettah Bo Tree",
+          "road": "5th Cross Street",
+          "hamlet": "L B Gate",
+          "suburb": "Fort",
+          "village": "St. Bastian",
+          "city": "Colombo",
+          "state_district": "Colombo District",
+          "ISO3166-2-lvl5": "LK-11",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "01100",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Pettah Bo Tree"
+        },
+        "boundingbox": [
+          "6.9350170",
+          "6.9351170",
+          "79.8538239",
+          "79.8539239"
+        ]
+      }
+    ]
+  },
+  "Piliyandala": {
+    "query": "Piliyandala, Western Province, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Piliyandala%2C+Western+Province%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:36:30.674730+00:00",
+    "candidates": [
+      {
+        "place_id": 255068148,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "way",
+        "osm_id": 99814312,
+        "lat": "6.7999510",
+        "lon": "79.9231171",
+        "category": "leisure",
+        "type": "playground",
+        "place_rank": 30,
+        "importance": 5.683146410310548e-05,
+        "addresstype": "leisure",
+        "name": "Piliyandala",
+        "display_name": "Piliyandala, Ground Road, Puwakgas Junction, Kesbewa, Colombo District, Western Province, 10300, Sri Lanka",
+        "address": {
+          "leisure": "Piliyandala",
+          "road": "Ground Road",
+          "hamlet": "Puwakgas Junction",
+          "city": "Kesbewa",
+          "state_district": "Colombo District",
+          "ISO3166-2-lvl5": "LK-11",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "10300",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Piliyandala"
+        },
+        "boundingbox": [
+          "6.7993970",
+          "6.8004348",
+          "79.9225839",
+          "79.9237151"
+        ]
+      },
+      {
+        "place_id": 255000489,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "way",
+        "osm_id": 385219640,
+        "lat": "6.8013784",
+        "lon": "79.9229672",
+        "category": "man_made",
+        "type": "tower",
+        "place_rank": 30,
+        "importance": 0.09078915819201436,
+        "addresstype": "man_made",
+        "name": "Piliyandala Clock Tower",
+        "display_name": "Piliyandala Clock Tower, Piliyandala 1st Lane, Puwakgas Junction, Kesbewa, Colombo District, Western Province, 10300, Sri Lanka",
+        "address": {
+          "man_made": "Piliyandala Clock Tower",
+          "road": "Piliyandala 1st Lane",
+          "hamlet": "Puwakgas Junction",
+          "city": "Kesbewa",
+          "state_district": "Colombo District",
+          "ISO3166-2-lvl5": "LK-11",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "10300",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Piliyandala Clock Tower"
+        },
+        "boundingbox": [
+          "6.8013199",
+          "6.8014368",
+          "79.9229084",
+          "79.9230260"
+        ]
+      },
+      {
+        "place_id": 255000666,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "way",
+        "osm_id": 1081664290,
+        "lat": "6.7937811",
+        "lon": "79.9257863",
+        "category": "landuse",
+        "type": "commercial",
+        "place_rank": 24,
+        "importance": 0.08005683146410313,
+        "addresstype": "commercial",
+        "name": "Antler Group of Companies - Piliyandala",
+        "display_name": "Antler Group of Companies - Piliyandala, 170, Kolamunna, Kesbewa, Colombo District, Western Province, 10300, Sri Lanka",
+        "address": {
+          "commercial": "Antler Group of Companies - Piliyandala",
+          "house_number": "170",
+          "hamlet": "Kolamunna",
+          "city": "Kesbewa",
+          "state_district": "Colombo District",
+          "ISO3166-2-lvl5": "LK-11",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "10300",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Antler Group of Companies - Piliyandala"
+        },
+        "boundingbox": [
+          "6.7934015",
+          "6.7940773",
+          "79.9254224",
+          "79.9261433"
+        ]
+      }
+    ]
+  },
+  "Avissawella": {
+    "query": "Avissawella, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Avissawella%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:36:37.338670+00:00",
+    "candidates": [
+      {
+        "place_id": 254559999,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 3095584802,
+        "lat": "6.9521206",
+        "lon": "80.2128586",
+        "category": "place",
+        "type": "town",
+        "place_rank": 18,
+        "importance": 0.16004186694132905,
+        "addresstype": "town",
+        "name": "Avissawella",
+        "display_name": "Avissawella, Colombo District, Western Province, 10700, Sri Lanka",
+        "address": {
+          "town": "Avissawella",
+          "state_district": "Colombo District",
+          "ISO3166-2-lvl5": "LK-11",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "10700",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Avissawella",
+          "name:en": "Avissawella",
+          "name:fr": "Avissawella",
+          "name:si": "අවිස්සාවේල්ල",
+          "name:ta": "அவிசாவளை"
+        },
+        "boundingbox": [
+          "6.9121206",
+          "6.9921206",
+          "80.1728586",
+          "80.2528586"
+        ]
+      }
+    ]
+  },
+  "Homagama": {
+    "query": "Homagama, Western Province, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Homagama%2C+Western+Province%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:36:39.421639+00:00",
+    "candidates": [
+      {
+        "place_id": 252765533,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 4647981713,
+        "lat": "6.8412384",
+        "lon": "80.0034457",
+        "category": "place",
+        "type": "town",
+        "place_rank": 18,
+        "importance": 0.16005683146410313,
+        "addresstype": "town",
+        "name": "Homagama",
+        "display_name": "Homagama, Colombo District, Western Province, 10200, Sri Lanka",
+        "address": {
+          "town": "Homagama",
+          "state_district": "Colombo District",
+          "ISO3166-2-lvl5": "LK-11",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "10200",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Homagama",
+          "name:ml": "ഹോമാഗമ",
+          "name:si": "හෝමාගම",
+          "name:ta": "ஓமகிராமம்"
+        },
+        "boundingbox": [
+          "6.8012384",
+          "6.8812384",
+          "79.9634457",
+          "80.0434457"
+        ]
+      }
+    ]
+  },
+  "Kaduwela": {
+    "query": "Kaduwela, Colombo District, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Kaduwela%2C+Colombo+District%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:36:41.513434+00:00",
+    "candidates": [
+      {
+        "place_id": 252635980,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 619905117,
+        "lat": "6.9357027",
+        "lon": "79.9843311",
+        "category": "place",
+        "type": "city",
+        "place_rank": 16,
+        "importance": 0.18672349813076977,
+        "addresstype": "city",
+        "name": "Kaduwela",
+        "display_name": "Kaduwela, Colombo District, Western Province, 10640, Sri Lanka",
+        "address": {
+          "city": "Kaduwela",
+          "state_district": "Colombo District",
+          "ISO3166-2-lvl5": "LK-11",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "10640",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Kaduwela",
+          "name:fr": "Kaduwela",
+          "name:ml": "കടുവെല",
+          "name:ru": "Кадувела",
+          "name:si": "කඩුවෙල",
+          "name:ta": "கடுவெலை",
+          "name:ur": "کڈو ویل"
+        },
+        "boundingbox": [
+          "6.7757027",
+          "7.0957027",
+          "79.8243311",
+          "80.1443311"
+        ]
+      },
+      {
+        "place_id": 252633439,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "way",
+        "osm_id": 582710388,
+        "lat": "6.8441028",
+        "lon": "79.9453322",
+        "category": "highway",
+        "type": "residential",
+        "place_rank": 26,
+        "importance": 0.05339016479743645,
+        "addresstype": "residential",
+        "name": "Kadawala Road",
+        "display_name": "Kadawala Road, Pannipitiya, Colombo District, Western Province, 10230, Sri Lanka",
+        "address": {
+          "road": "Kadawala Road",
+          "village": "Pannipitiya",
+          "state_district": "Colombo District",
+          "ISO3166-2-lvl5": "LK-11",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "10230",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Kadawala Road",
+          "alt_name": "Kaduwela"
+        },
+        "boundingbox": [
+          "6.8440537",
+          "6.8454969",
+          "79.9445603",
+          "79.9470413"
+        ]
+      }
+    ]
+  },
+  "Maharagama": {
+    "query": "Maharagama, Western Province, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Maharagama%2C+Western+Province%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:36:43.794237+00:00",
+    "candidates": [
+      {
+        "place_id": 254180617,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 4448823642,
+        "lat": "6.8472783",
+        "lon": "79.9266082",
+        "category": "place",
+        "type": "city",
+        "place_rank": 16,
+        "importance": 0.18672349813076977,
+        "addresstype": "city",
+        "name": "Maharagama",
+        "display_name": "Maharagama, Colombo District, Western Province, 10280, Sri Lanka",
+        "address": {
+          "city": "Maharagama",
+          "state_district": "Colombo District",
+          "ISO3166-2-lvl5": "LK-11",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "10280",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Maharagama",
+          "name:fr": "Maharagama",
+          "name:ml": "മകരഗമ",
+          "name:ru": "Махарагама",
+          "name:si": "මහරගම",
+          "name:ta": "மகரகம"
+        },
+        "boundingbox": [
+          "6.6872783",
+          "7.0072783",
+          "79.7666082",
+          "80.0866082"
+        ]
+      }
+    ]
+  },
+  "Moratuwa": {
+    "query": "Moratuwa, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Moratuwa%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:36:45.778985+00:00",
+    "candidates": [
+      {
+        "place_id": 432626252,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "way",
+        "osm_id": 1577414741,
+        "lat": "6.7672786",
+        "lon": "79.8860393",
+        "category": "boundary",
+        "type": "administrative",
+        "place_rank": 12,
+        "importance": 0.24005683146410312,
+        "addresstype": "city",
+        "name": "Moratuwa",
+        "display_name": "Moratuwa, Colombo District, Western Province, 10400, Sri Lanka",
+        "address": {
+          "city": "Moratuwa",
+          "state_district": "Colombo District",
+          "ISO3166-2-lvl5": "LK-11",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "10400",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Moratuwa",
+          "name:en": "Moratuwa",
+          "name:ja": "モラトゥワ",
+          "name:ml": "മൊറട്ടുവ",
+          "name:si": "මොරටුව",
+          "name:ta": "மொறட்டுவை"
+        },
+        "boundingbox": [
+          "6.7155605",
+          "6.8185982",
+          "79.8694099",
+          "79.9093119"
+        ]
+      }
+    ]
+  },
+  "Panadura": {
+    "query": "Panadura, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Panadura%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:36:48.137547+00:00",
+    "candidates": [
+      {
+        "place_id": 252652151,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "way",
+        "osm_id": 373859844,
+        "lat": "6.7124132",
+        "lon": "79.9045759",
+        "category": "railway",
+        "type": "platform",
+        "place_rank": 30,
+        "importance": 4.8437476157732774e-05,
+        "addresstype": "railway",
+        "name": "Panadura",
+        "display_name": "Panadura, Goods Shed Rd, Walana, Panadura DS Division, Kalutara District, Western Province, 12500, Sri Lanka",
+        "address": {
+          "railway": "Panadura",
+          "road": "Goods Shed Rd",
+          "village": "Walana",
+          "county": "Panadura DS Division",
+          "state_district": "Kalutara District",
+          "ISO3166-2-lvl5": "LK-13",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "12500",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Panadura"
+        },
+        "boundingbox": [
+          "6.7113956",
+          "6.7136466",
+          "79.9043852",
+          "79.9046776"
+        ]
+      },
+      {
+        "place_id": 254749706,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "way",
+        "osm_id": 262522133,
+        "lat": "6.7124813",
+        "lon": "79.9045725",
+        "category": "railway",
+        "type": "station",
+        "place_rank": 30,
+        "importance": 4.8437476157732774e-05,
+        "addresstype": "railway",
+        "name": "Panadura",
+        "display_name": "Panadura, Goods Shed Rd, Walana, Panadura DS Division, Kalutara District, Western Province, 12500, Sri Lanka",
+        "address": {
+          "railway": "Panadura",
+          "road": "Goods Shed Rd",
+          "village": "Walana",
+          "county": "Panadura DS Division",
+          "state_district": "Kalutara District",
+          "ISO3166-2-lvl5": "LK-13",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "12500",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Panadura"
+        },
+        "boundingbox": [
+          "6.7121340",
+          "6.7126819",
+          "79.9045010",
+          "79.9046525"
+        ]
+      },
+      {
+        "place_id": 252658663,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 12681267606,
+        "lat": "6.7124560",
+        "lon": "79.9044731",
+        "category": "railway",
+        "type": "stop",
+        "place_rank": 30,
+        "importance": 4.8437476157732774e-05,
+        "addresstype": "railway",
+        "name": "Panadura",
+        "display_name": "Panadura, Goods Shed Rd, Walana, Panadura DS Division, Kalutara District, Western Province, 12500, Sri Lanka",
+        "address": {
+          "railway": "Panadura",
+          "road": "Goods Shed Rd",
+          "village": "Walana",
+          "county": "Panadura DS Division",
+          "state_district": "Kalutara District",
+          "ISO3166-2-lvl5": "LK-13",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "12500",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Panadura"
+        },
+        "boundingbox": [
+          "6.7124060",
+          "6.7125060",
+          "79.9044231",
+          "79.9045231"
+        ]
+      },
+      {
+        "place_id": 252657600,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "relation",
+        "osm_id": 5743371,
+        "lat": "6.7119064",
+        "lon": "79.9118709",
+        "category": "boundary",
+        "type": "administrative",
+        "place_rank": 12,
+        "importance": 0.24004843747615776,
+        "addresstype": "county",
+        "name": "Panadura DS Division",
+        "display_name": "Panadura DS Division, Kalutara District, Western Province, Sri Lanka",
+        "address": {
+          "county": "Panadura DS Division",
+          "state_district": "Kalutara District",
+          "ISO3166-2-lvl5": "LK-13",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name:en": "Panadura DS Division"
+        },
+        "boundingbox": [
+          "6.6468520",
+          "6.7769770",
+          "79.8865812",
+          "79.9527560"
+        ]
+      }
+    ]
+  },
+  "Negombo": {
+    "query": "Negombo, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Negombo%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:36:49.873108+00:00",
+    "candidates": [
+      {
+        "place_id": 254993684,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 2064194449,
+        "lat": "7.2094282",
+        "lon": "79.8331170",
+        "category": "place",
+        "type": "city",
+        "place_rank": 16,
+        "importance": 0.4383493422407134,
+        "addresstype": "city",
+        "name": "Negombo",
+        "display_name": "Negombo, Gampaha District, Western Province, 11500, Sri Lanka",
+        "address": {
+          "city": "Negombo",
+          "state_district": "Gampaha District",
+          "ISO3166-2-lvl5": "LK-12",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "11500",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Negombo",
+          "name:bn": "নেগোম্বো",
+          "name:de": "Negombo",
+          "name:en": "Negombo",
+          "name:fa": "نگومبو",
+          "name:fr": "Negombo",
+          "name:ja": "ニゴンボ",
+          "name:kn": "ನೆಗೊಂಬೊ",
+          "name:ml": "നെഗൊമ്പോ",
+          "name:ru": "Негомбо",
+          "name:si": "මීගමුව",
+          "name:ta": "நீர்கொழும்பு",
+          "name:zh-Hans": "尼甘布",
+          "name:zh-Hant": "內貢博"
+        },
+        "boundingbox": [
+          "7.0494282",
+          "7.3694282",
+          "79.6731170",
+          "79.9931170"
+        ]
+      }
+    ]
+  },
+  "Colombo Fort": {
+    "query": "Colombo Fort railway station, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Colombo+Fort+railway+station%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:36:52.129439+00:00",
+    "candidates": [
+      {
+        "place_id": 256004315,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "way",
+        "osm_id": 232514810,
+        "lat": "6.9337271",
+        "lon": "79.8500803",
+        "category": "railway",
+        "type": "station",
+        "place_rank": 30,
+        "importance": 0.28779482241276744,
+        "addresstype": "railway",
+        "name": "Colombo Fort",
+        "display_name": "Colombo Fort, Olcott Mawatha, L B Gate, Fort, Slave Island, Colombo, Colombo District, Western Province, 01100, Sri Lanka",
+        "address": {
+          "railway": "Colombo Fort",
+          "road": "Olcott Mawatha",
+          "hamlet": "L B Gate",
+          "suburb": "Fort",
+          "village": "Slave Island",
+          "city": "Colombo",
+          "state_district": "Colombo District",
+          "ISO3166-2-lvl5": "LK-11",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "01100",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Colombo Fort",
+          "name:ml": "കൊളംബോ കോട്ട",
+          "name:ta": "கொழும்பு கோட்டை"
+        },
+        "boundingbox": [
+          "6.9336361",
+          "6.9338171",
+          "79.8496907",
+          "79.8504697"
+        ]
+      },
+      {
+        "place_id": 264080393,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 13447631673,
+        "lat": "6.9333986",
+        "lon": "79.8503417",
+        "category": "railway",
+        "type": "station",
+        "place_rank": 30,
+        "importance": 7.168307011516011e-05,
+        "addresstype": "railway",
+        "name": "Colombo Fort",
+        "display_name": "Colombo Fort, Olcott Mawatha, L B Gate, Fort, Slave Island, Colombo, Colombo District, Western Province, 01100, Sri Lanka",
+        "address": {
+          "railway": "Colombo Fort",
+          "road": "Olcott Mawatha",
+          "hamlet": "L B Gate",
+          "suburb": "Fort",
+          "village": "Slave Island",
+          "city": "Colombo",
+          "state_district": "Colombo District",
+          "ISO3166-2-lvl5": "LK-11",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "01100",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Colombo Fort"
+        },
+        "boundingbox": [
+          "6.9283986",
+          "6.9383986",
+          "79.8453417",
+          "79.8553417"
+        ]
+      }
+    ]
+  },
+  "Kandy": {
+    "query": "Kandy, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Kandy%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:36:54.285990+00:00",
+    "candidates": [
+      {
+        "place_id": 254899922,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 2908772560,
+        "lat": "7.2931208",
+        "lon": "80.6350358",
+        "category": "place",
+        "type": "city",
+        "place_rank": 16,
+        "importance": 0.5428699199556277,
+        "addresstype": "city",
+        "name": "Kandy",
+        "display_name": "Kandy, Kandy District, Central Province, 20000, Sri Lanka",
+        "address": {
+          "city": "Kandy",
+          "state_district": "Kandy District",
+          "ISO3166-2-lvl5": "LK-21",
+          "state": "Central Province",
+          "ISO3166-2-lvl4": "LK-2",
+          "postcode": "20000",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Kandy",
+          "name:ar": "كاندي",
+          "name:az": "Kandi",
+          "name:be": "Канды",
+          "name:bg": "Канди",
+          "name:bn": "ক্যান্ডি",
+          "name:el": "Κάντι",
+          "name:en": "Kandy",
+          "name:eo": "Kandi",
+          "name:fa": "کندی",
+          "name:fr": "Kandy",
+          "name:gu": "કેન્ડી",
+          "name:he": "קאנדי",
+          "name:hi": "कैंडी",
+          "name:hu": "Kandi",
+          "name:hy": "Կանդի",
+          "name:ja": "キャンディ",
+          "name:ka": "კანდი",
+          "name:kn": "ಕ್ಯಾಂಡಿ",
+          "name:ko": "캔디",
+          "name:ky": "Канди",
+          "name:lt": "Kandis",
+          "name:ml": "കണ്ടി",
+          "name:mr": "कँडी",
+          "name:ms": "Kandi",
+          "name:my": "ကန္ဒီမြို့",
+          "name:ne": "क्यान्डी",
+          "name:nl": "Kandy",
+          "name:pa": "ਕੈਂਡੀ",
+          "name:pt": "Cândia",
+          "name:ru": "Канди",
+          "name:si": "මහනුවර",
+          "name:sk": "Mahanuvara",
+          "name:sl": "Kandi",
+          "name:ta": "கண்டி",
+          "name:te": "కాండీ నగరం",
+          "name:th": "กัณฏิ",
+          "name:uk": "Канді",
+          "name:ur": "کینڈی",
+          "name:uz": "Kandi",
+          "name:zh": "康提",
+          "name:zh-Hans": "康提",
+          "name:zh-Hant": "康提"
+        },
+        "boundingbox": [
+          "7.1331208",
+          "7.4531208",
+          "80.4750358",
+          "80.7950358"
+        ]
+      },
+      {
+        "place_id": 256182765,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "relation",
+        "osm_id": 5351794,
+        "lat": "7.2143808",
+        "lon": "80.6401278",
+        "category": "boundary",
+        "type": "administrative",
+        "place_rank": 10,
+        "importance": 0.48558433845706256,
+        "addresstype": "state_district",
+        "name": "Kandy District",
+        "display_name": "Kandy District, Central Province, Sri Lanka",
+        "address": {
+          "state_district": "Kandy District",
+          "ISO3166-2-lvl5": "LK-21",
+          "state": "Central Province",
+          "ISO3166-2-lvl4": "LK-2",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Kandy District",
+          "name:en": "Kandy District",
+          "name:fr": "Kandy",
+          "name:ja": "キャンディ県",
+          "name:ru": "округ Канди",
+          "name:si": "මහනුවර දිස්ත්‍රික්කය",
+          "ISO3166-2": "LK-21"
+        },
+        "boundingbox": [
+          "6.9387730",
+          "7.4898505",
+          "80.4218960",
+          "81.0165260"
+        ]
+      }
+    ]
+  },
+  "Gampaha": {
+    "query": "Gampaha, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Gampaha%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:01.267929+00:00",
+    "candidates": [
+      {
+        "place_id": 254180229,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "relation",
+        "osm_id": 5351775,
+        "lat": "7.1190248",
+        "lon": "79.9159876",
+        "category": "boundary",
+        "type": "administrative",
+        "place_rank": 10,
+        "importance": 0.4449811044764001,
+        "addresstype": "state_district",
+        "name": "Gampaha District",
+        "display_name": "Gampaha District, Western Province, Sri Lanka",
+        "address": {
+          "state_district": "Gampaha District",
+          "ISO3166-2-lvl5": "LK-12",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Gampaha District",
+          "name:de": "Distrik Gampaha",
+          "name:en": "Gampaha District",
+          "name:fr": "Gampaha",
+          "name:ja": "ガンパハ県",
+          "name:si": "ගම්පහ දිස්ත්‍රික්කය",
+          "name:uk": "Ґампага",
+          "ISO3166-2": "LK-12",
+          "name:zh-Hans": "加姆珀哈区",
+          "name:zh-Hant": "加姆珀哈區"
+        },
+        "boundingbox": [
+          "6.9070609",
+          "7.3305292",
+          "79.6161567",
+          "80.2126845"
+        ]
+      },
+      {
+        "place_id": 254177620,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 3289447451,
+        "lat": "7.0928595",
+        "lon": "79.9952095",
+        "category": "place",
+        "type": "city",
+        "place_rank": 16,
+        "importance": 0.39817807251303894,
+        "addresstype": "city",
+        "name": "Gampaha",
+        "display_name": "Gampaha, Gampaha District, Western Province, 11000, Sri Lanka",
+        "address": {
+          "city": "Gampaha",
+          "state_district": "Gampaha District",
+          "ISO3166-2-lvl5": "LK-12",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "11000",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Gampaha",
+          "name:en": "Gampaha",
+          "name:fa": "گامپاها",
+          "name:fr": "Gampaha",
+          "name:ja": "ガンパハ",
+          "name:kn": "ಗಂಪಹ",
+          "name:ml": "ഗമ്പഹ",
+          "name:ru": "Гампаха",
+          "name:si": "ගම්පහ",
+          "name:ta": "கம்பஹா",
+          "name:uk": "Ґампага",
+          "name:zh": "加姆珀哈",
+          "name:zh-Hans": "加姆珀哈",
+          "name:zh-Hant": "加姆珀哈"
+        },
+        "boundingbox": [
+          "6.9328595",
+          "7.2528595",
+          "79.8352095",
+          "80.1552095"
+        ]
+      }
+    ]
+  },
+  "Nugegoda": {
+    "query": "Nugegoda, Western Province, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Nugegoda%2C+Western+Province%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:03.540336+00:00",
+    "candidates": [
+      {
+        "place_id": 254041296,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 198828328,
+        "lat": "6.8699688",
+        "lon": "79.8882835",
+        "category": "place",
+        "type": "town",
+        "place_rank": 18,
+        "importance": 0.16005683146410313,
+        "addresstype": "town",
+        "name": "Nugegoda",
+        "display_name": "Nugegoda, Colombo District, Western Province, 10250, Sri Lanka",
+        "address": {
+          "town": "Nugegoda",
+          "state_district": "Colombo District",
+          "ISO3166-2-lvl5": "LK-11",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "10250",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Nugegoda",
+          "name:ml": "നുകേകൊട",
+          "name:si": "නුගේගොඩ",
+          "name:ta": "நுகேகொடை"
+        },
+        "boundingbox": [
+          "6.8299688",
+          "6.9099688",
+          "79.8482835",
+          "79.9282835"
+        ]
+      }
+    ]
+  },
+  "Kottawa": {
+    "query": "Kottawa, Colombo District, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Kottawa%2C+Colombo+District%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:05.520336+00:00",
+    "candidates": [
+      {
+        "place_id": 255470880,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 3689548032,
+        "lat": "6.8430139",
+        "lon": "79.9655312",
+        "category": "place",
+        "type": "town",
+        "place_rank": 18,
+        "importance": 0.16005683146410313,
+        "addresstype": "town",
+        "name": "Kottawa",
+        "display_name": "Kottawa, Colombo District, Western Province, 10230, Sri Lanka",
+        "address": {
+          "town": "Kottawa",
+          "state_district": "Colombo District",
+          "ISO3166-2-lvl5": "LK-11",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "10230",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Kottawa"
+        },
+        "boundingbox": [
+          "6.8030139",
+          "6.8830139",
+          "79.9255312",
+          "80.0055312"
+        ]
+      }
+    ]
+  },
+  "Kadawatha": {
+    "query": "Kadawatha, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Kadawatha%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:07.483634+00:00",
+    "candidates": [
+      {
+        "place_id": 254689876,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 51237603,
+        "lat": "7.0021370",
+        "lon": "79.9512274",
+        "category": "place",
+        "type": "town",
+        "place_rank": 18,
+        "importance": 0.16005683146410313,
+        "addresstype": "town",
+        "name": "Kadawatha",
+        "display_name": "Kadawatha, Gampaha District, Western Province, 11850, Sri Lanka",
+        "address": {
+          "town": "Kadawatha",
+          "state_district": "Gampaha District",
+          "ISO3166-2-lvl5": "LK-12",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "11850",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Kadawatha",
+          "name:ml": "കടവത്ത",
+          "name:si": "කඩවත",
+          "name:ta": "கடவத்தை"
+        },
+        "boundingbox": [
+          "6.9621370",
+          "7.0421370",
+          "79.9112274",
+          "79.9912274"
+        ]
+      }
+    ]
+  },
+  "Malabe": {
+    "query": "Malabe, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Malabe%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:09.440949+00:00",
+    "candidates": [
+      {
+        "place_id": 254571829,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 3274475234,
+        "lat": "6.9040723",
+        "lon": "79.9546189",
+        "category": "place",
+        "type": "town",
+        "place_rank": 18,
+        "importance": 0.16005683146410313,
+        "addresstype": "town",
+        "name": "Malabe",
+        "display_name": "Malabe, Colombo District, Western Province, 10115, Sri Lanka",
+        "address": {
+          "town": "Malabe",
+          "state_district": "Colombo District",
+          "ISO3166-2-lvl5": "LK-11",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "10115",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Malabe",
+          "name:ml": "മാലബേ",
+          "name:si": "මාළබේ",
+          "name:ta": "மாலபே"
+        },
+        "boundingbox": [
+          "6.8640723",
+          "6.9440723",
+          "79.9146189",
+          "79.9946189"
+        ]
+      }
+    ]
+  },
+  "Battaramulla": {
+    "query": "Battaramulla, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Battaramulla%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:11.078106+00:00",
+    "candidates": [
+      {
+        "place_id": 254624445,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 256824244,
+        "lat": "6.9021809",
+        "lon": "79.9195776",
+        "category": "place",
+        "type": "town",
+        "place_rank": 18,
+        "importance": 0.16005683146410313,
+        "addresstype": "town",
+        "name": "Battaramulla",
+        "display_name": "Battaramulla, Colombo District, Western Province, 10120, Sri Lanka",
+        "address": {
+          "town": "Battaramulla",
+          "state_district": "Colombo District",
+          "ISO3166-2-lvl5": "LK-11",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "10120",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Battaramulla",
+          "name:ml": "ബത്തരമുല്ല",
+          "name:si": "බත්තරමුල්ල",
+          "name:ta": "பத்தரமுல்லை"
+        },
+        "boundingbox": [
+          "6.8621809",
+          "6.9421809",
+          "79.8795776",
+          "79.9595776"
+        ]
+      }
+    ]
+  },
+  "Dehiwala": {
+    "query": "Dehiwala, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Dehiwala%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:13.049450+00:00",
+    "candidates": [
+      {
+        "place_id": 255379623,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 134253719,
+        "lat": "6.8512785",
+        "lon": "79.8659769",
+        "category": "place",
+        "type": "town",
+        "place_rank": 18,
+        "importance": 0.31827171020639217,
+        "addresstype": "town",
+        "name": "Dehiwala",
+        "display_name": "Dehiwala, Colombo District, Western Province, 10350, Sri Lanka",
+        "address": {
+          "town": "Dehiwala",
+          "state_district": "Colombo District",
+          "ISO3166-2-lvl5": "LK-11",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "10350",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Dehiwala",
+          "name:ja": "デヒワラ",
+          "name:ml": "ദെഹിവള",
+          "name:ru": "Дехивала",
+          "name:si": "දෙහිවල",
+          "name:ta": "தெஹிவளை"
+        },
+        "boundingbox": [
+          "6.8112785",
+          "6.8912785",
+          "79.8259769",
+          "79.9059769"
+        ]
+      }
+    ]
+  },
+  "Kesbewa": {
+    "query": "Kesbewa, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Kesbewa%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:15.009141+00:00",
+    "candidates": [
+      {
+        "place_id": 255291968,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 5968326762,
+        "lat": "6.7950142",
+        "lon": "79.9410967",
+        "category": "place",
+        "type": "city",
+        "place_rank": 16,
+        "importance": 0.2909516038077344,
+        "addresstype": "city",
+        "name": "Kesbewa",
+        "display_name": "Kesbewa, Colombo District, Western Province, 10300, Sri Lanka",
+        "address": {
+          "city": "Kesbewa",
+          "state_district": "Colombo District",
+          "ISO3166-2-lvl5": "LK-11",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "10300",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Kesbewa",
+          "name:fr": "Kesbewa",
+          "name:ml": "കെസ്ബേവ",
+          "name:si": "කැස්බැව",
+          "name:ta": "கெஸ்பேவா"
+        },
+        "boundingbox": [
+          "6.6350142",
+          "6.9550142",
+          "79.7810967",
+          "80.1010967"
+        ]
+      }
+    ]
+  },
+  "Kalutara": {
+    "query": "Kalutara, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Kalutara%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:16.646401+00:00",
+    "candidates": [
+      {
+        "place_id": 251415020,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "relation",
+        "osm_id": 5351776,
+        "lat": "6.5745305",
+        "lon": "80.0286312",
+        "category": "boundary",
+        "type": "administrative",
+        "place_rank": 10,
+        "importance": 0.4408960751435709,
+        "addresstype": "state_district",
+        "name": "Kalutara District",
+        "display_name": "Kalutara District, Western Province, Sri Lanka",
+        "address": {
+          "state_district": "Kalutara District",
+          "ISO3166-2-lvl5": "LK-13",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Kalutara District",
+          "name:en": "Kalutara District",
+          "name:fr": "Kalutara",
+          "name:ja": "カルタラ県",
+          "name:si": "කළුතර දිස්ත්‍රික්කය",
+          "ISO3166-2": "LK-13",
+          "name:zh-Hans": "卡卢特勒区",
+          "name:zh-Hant": "卡盧特勒區"
+        },
+        "boundingbox": [
+          "6.3248628",
+          "6.8240661",
+          "79.7038097",
+          "80.3812714"
+        ]
+      },
+      {
+        "place_id": 254608744,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 1822512017,
+        "lat": "6.5852614",
+        "lon": "79.9633010",
+        "category": "place",
+        "type": "city",
+        "place_rank": 16,
+        "importance": 0.4175037806385018,
+        "addresstype": "city",
+        "name": "Kalutara",
+        "display_name": "Kalutara, Kalutara DS Division, Kalutara District, Western Province, 12000, Sri Lanka",
+        "address": {
+          "city": "Kalutara",
+          "county": "Kalutara DS Division",
+          "state_district": "Kalutara District",
+          "ISO3166-2-lvl5": "LK-13",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "12000",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Kalutara",
+          "name:en": "Kalutara",
+          "name:fa": "کالوتارا",
+          "name:fr": "Kalutara",
+          "name:ml": "കളുത്തുറ",
+          "name:ru": "Калутара",
+          "name:si": "කළුතර",
+          "name:ta": "களுத்துறை",
+          "name:zh-Hans": "卡卢特勒",
+          "name:zh-Hant": "卡盧特勒"
+        },
+        "boundingbox": [
+          "6.4252614",
+          "6.7452614",
+          "79.8033010",
+          "80.1233010"
+        ]
+      }
+    ]
+  },
+  "Katunayake": {
+    "query": "Katunayake, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Katunayake%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:18.833408+00:00",
+    "candidates": [
+      {
+        "place_id": 252584282,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 639153516,
+        "lat": "7.1567730",
+        "lon": "79.8716676",
+        "category": "place",
+        "type": "town",
+        "place_rank": 18,
+        "importance": 0.1600506942854963,
+        "addresstype": "town",
+        "name": "Katunayake",
+        "display_name": "Katunayake, Gampaha District, Western Province, 11450, Sri Lanka",
+        "address": {
+          "town": "Katunayake",
+          "state_district": "Gampaha District",
+          "ISO3166-2-lvl5": "LK-12",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "11450",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Katunayake",
+          "name:ja": "カトゥナーヤカ",
+          "name:kn": "ಕಟ್ಟನೇಕೆ",
+          "name:ml": "കട്ടുനായക",
+          "name:ta": "கட்டுநாயகம்"
+        },
+        "boundingbox": [
+          "7.1167730",
+          "7.1967730",
+          "79.8316676",
+          "79.9116676"
+        ]
+      }
+    ]
+  },
+  "Peradeniya": {
+    "query": "Peradeniya, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Peradeniya%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:20.482781+00:00",
+    "candidates": [
+      {
+        "place_id": 254595232,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 264605806,
+        "lat": "7.2642107",
+        "lon": "80.5930652",
+        "category": "place",
+        "type": "suburb",
+        "place_rank": 19,
+        "importance": 0.34499484463742425,
+        "addresstype": "suburb",
+        "name": "Peradeniya",
+        "display_name": "Peradeniya, Eriyagama, Kandy District, Central Province, 20400, Sri Lanka",
+        "address": {
+          "suburb": "Peradeniya",
+          "village": "Eriyagama",
+          "state_district": "Kandy District",
+          "ISO3166-2-lvl5": "LK-21",
+          "state": "Central Province",
+          "ISO3166-2-lvl4": "LK-2",
+          "postcode": "20400",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Peradeniya",
+          "name:ml": "പേരാതന",
+          "name:ru": "Перадения",
+          "name:si": "පේරාදෙණිය",
+          "name:ta": "பேராதனை"
+        },
+        "boundingbox": [
+          "7.2442107",
+          "7.2842107",
+          "80.5730652",
+          "80.6130652"
+        ]
+      }
+    ]
+  },
+  "Kurunegala": {
+    "query": "Kurunegala, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Kurunegala%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:22.185474+00:00",
+    "candidates": [
+      {
+        "place_id": 255392709,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 2907017040,
+        "lat": "7.4870464",
+        "lon": "80.3649080",
+        "category": "place",
+        "type": "city",
+        "place_rank": 16,
+        "importance": 0.45012717076902703,
+        "addresstype": "city",
+        "name": "Kurunegala",
+        "display_name": "Kurunegala, Kurunǣgala, North Western Province, 60000, Sri Lanka",
+        "address": {
+          "city": "Kurunegala",
+          "state_district": "Kurunǣgala",
+          "ISO3166-2-lvl5": "LK-61",
+          "state": "North Western Province",
+          "ISO3166-2-lvl4": "LK-6",
+          "postcode": "60000",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Kurunegala",
+          "name:ar": "كورونيغالا",
+          "name:en": "Kurunegala",
+          "name:fa": "کورونیگالا",
+          "name:fr": "Kurunegala",
+          "name:he": "קורונגלה",
+          "name:hi": "कुरुनेगल",
+          "name:ja": "クルネーガラ",
+          "name:kn": "ಕುರುನೆಗಲ",
+          "name:ko": "쿠루네갈라",
+          "name:ml": "കുരുണാഗല",
+          "name:nl": "Kurunegala",
+          "name:ru": "Курунегала",
+          "name:si": "කුරුණෑගල",
+          "name:ta": "குருணாகல்",
+          "name:th": "กุรุเนคละ",
+          "name:uk": "Курунеґала",
+          "name:ur": "کرنیگالا",
+          "name:zh": "庫魯內格勒",
+          "name:zh-Hans": "库鲁内格勒",
+          "name:zh-Hant": "庫路內加拉"
+        },
+        "boundingbox": [
+          "7.3270464",
+          "7.6470464",
+          "80.2049080",
+          "80.5249080"
+        ]
+      },
+      {
+        "place_id": 423536696,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "relation",
+        "osm_id": 5351778,
+        "lat": "7.7279837",
+        "lon": "80.2571840",
+        "category": "boundary",
+        "type": "administrative",
+        "place_rank": 10,
+        "importance": 0.4335521303750159,
+        "addresstype": "state_district",
+        "name": "Kurunǣgala",
+        "display_name": "Kurunǣgala, North Western Province, Sri Lanka",
+        "address": {
+          "state_district": "Kurunǣgala",
+          "ISO3166-2-lvl5": "LK-61",
+          "state": "North Western Province",
+          "ISO3166-2-lvl4": "LK-6",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Kurunǣgala",
+          "name:en": "Kurunegala District",
+          "name:fr": "Kurunegala",
+          "name:ja": "クルネーガラ県",
+          "name:si": "කුරුණෑගල දිස්ත්‍රික්කය",
+          "name:uk": "Курунеґала",
+          "alt_name": "Kuruṇǣgala",
+          "ISO3166-2": "LK-61",
+          "alt_name:si": "කුරුනෑගල",
+          "name:zh-Hans": "库鲁内格勒区",
+          "name:zh-Hant": "庫路內加拉區"
+        },
+        "boundingbox": [
+          "7.2578882",
+          "8.1978019",
+          "79.9005013",
+          "80.5779194"
+        ]
+      }
+    ]
+  },
+  "Nittambuwa": {
+    "query": "Nittambuwa, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Nittambuwa%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:24.238538+00:00",
+    "candidates": [
+      {
+        "place_id": 252798526,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 4558483172,
+        "lat": "7.1440793",
+        "lon": "80.0964975",
+        "category": "place",
+        "type": "town",
+        "place_rank": 18,
+        "importance": 0.16004691157396808,
+        "addresstype": "town",
+        "name": "Nittambuwa",
+        "display_name": "Nittambuwa, Gampaha District, Western Province, 11875, Sri Lanka",
+        "address": {
+          "town": "Nittambuwa",
+          "state_district": "Gampaha District",
+          "ISO3166-2-lvl5": "LK-12",
+          "state": "Western Province",
+          "ISO3166-2-lvl4": "LK-1",
+          "postcode": "11875",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Nittambuwa"
+        },
+        "boundingbox": [
+          "7.1040793",
+          "7.1840793",
+          "80.0564975",
+          "80.1364975"
+        ]
+      }
+    ]
+  },
+  "Galle": {
+    "query": "Galle, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Galle%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:26.393581+00:00",
+    "candidates": [
+      {
+        "place_id": 256036939,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "relation",
+        "osm_id": 5345077,
+        "lat": "6.0328139",
+        "lon": "80.2149550",
+        "category": "boundary",
+        "type": "administrative",
+        "place_rank": 16,
+        "importance": 0.50388006512615,
+        "addresstype": "city",
+        "name": "Galle",
+        "display_name": "Galle, Galle District, Southern Province, Sri Lanka",
+        "address": {
+          "city": "Galle",
+          "state_district": "Galle District",
+          "ISO3166-2-lvl5": "LK-31",
+          "state": "Southern Province",
+          "ISO3166-2-lvl4": "LK-3",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Galle",
+          "name:uk": "Ґалле",
+          "name:ur": "گال",
+          "name:ar": "غالي",
+          "name:bn": "গল",
+          "name:de": "Galle",
+          "name:en": "Galle",
+          "name:fa": "گالی",
+          "name:fr": "Galle",
+          "name:he": "גאלה",
+          "name:hi": "गाल्ल",
+          "name:ja": "ゴール",
+          "name:kn": "ಗಾಲೆ",
+          "name:ml": "ഗാലെ",
+          "name:ne": "गाल",
+          "name:ru": "Галле",
+          "name:si": "ගාල්ල",
+          "name:ta": "காலி",
+          "name:zh-Hans": "加勒",
+          "name:zh-Hant": "加爾"
+        },
+        "boundingbox": [
+          "6.0236163",
+          "6.0939686",
+          "80.1719297",
+          "80.2475684"
+        ]
+      },
+      {
+        "place_id": 257014465,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "relation",
+        "osm_id": 5337914,
+        "lat": "6.1053673",
+        "lon": "80.1520091",
+        "category": "boundary",
+        "type": "administrative",
+        "place_rank": 10,
+        "importance": 0.4401108075321503,
+        "addresstype": "state_district",
+        "name": "Galle District",
+        "display_name": "Galle District, Southern Province, Sri Lanka",
+        "address": {
+          "state_district": "Galle District",
+          "ISO3166-2-lvl5": "LK-31",
+          "state": "Southern Province",
+          "ISO3166-2-lvl4": "LK-3",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Galle District",
+          "name:en": "Galle District",
+          "name:fr": "Galle",
+          "name:ja": "ゴール県",
+          "name:si": "ගාල්ල දිස්ත්‍රික්කය",
+          "name:uk": "Ґалле",
+          "name:ur": "ضلع گال",
+          "ISO3166-2": "LK-31",
+          "name:zh-Hans": "加勒区",
+          "name:zh-Hant": "加爾區"
+        },
+        "boundingbox": [
+          "5.7690000",
+          "6.4422693",
+          "79.7930985",
+          "80.4957564"
+        ]
+      }
+    ]
+  },
+  "Matara": {
+    "query": "Matara, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Matara%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:28.106565+00:00",
+    "candidates": [
+      {
+        "place_id": 254595925,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "relation",
+        "osm_id": 5345072,
+        "lat": "5.9478220",
+        "lon": "80.5482919",
+        "category": "boundary",
+        "type": "administrative",
+        "place_rank": 16,
+        "importance": 0.4352756649539807,
+        "addresstype": "city",
+        "name": "Matara",
+        "display_name": "Matara, Matara District, Southern Province, 81000, Sri Lanka",
+        "address": {
+          "city": "Matara",
+          "state_district": "Matara District",
+          "ISO3166-2-lvl5": "LK-32",
+          "state": "Southern Province",
+          "ISO3166-2-lvl4": "LK-3",
+          "postcode": "81000",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Matara",
+          "name:ar": "ماتارا",
+          "name:de": "Matara",
+          "name:es": "Matara",
+          "name:fa": "ماتارا",
+          "name:ur": "ماترا",
+          "name:arz": "ماتارا",
+          "name:bn": "মাতারা",
+          "name:en": "Matara",
+          "name:eo": "Matara",
+          "name:fr": "Matara",
+          "name:id": "Matara",
+          "name:it": "Matara",
+          "name:ja": "マータラ",
+          "name:ka": "მატარა",
+          "name:kn": "ಮತರ",
+          "name:ko": "마타라",
+          "name:ml": "മാത്തറ",
+          "name:nl": "Matara",
+          "name:ru": "Матара",
+          "name:si": "මාතර",
+          "name:ta": "மாத்தறை",
+          "name:uk": "Матара",
+          "name:zh": "馬塔拉",
+          "name:zh-Hans": "马特勒",
+          "name:zh-Hant": "馬塔拉"
+        },
+        "boundingbox": [
+          "5.9373907",
+          "5.9581307",
+          "80.5207784",
+          "80.5599800"
+        ]
+      },
+      {
+        "place_id": 251874350,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "relation",
+        "osm_id": 5337946,
+        "lat": "6.0582732",
+        "lon": "80.5422764",
+        "category": "boundary",
+        "type": "administrative",
+        "place_rank": 10,
+        "importance": 0.4367889923841922,
+        "addresstype": "state_district",
+        "name": "Matara District",
+        "display_name": "Matara District, Southern Province, Sri Lanka",
+        "address": {
+          "state_district": "Matara District",
+          "ISO3166-2-lvl5": "LK-32",
+          "state": "Southern Province",
+          "ISO3166-2-lvl4": "LK-3",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Matara District",
+          "name:de": "Distrikt Matara",
+          "name:en": "Matara District",
+          "name:es": "Distrito de Matara",
+          "name:fa": "ناحیه ماتارا",
+          "name:ja": "マータラ県",
+          "name:si": "මාතර දිස්ත්‍රික්කය",
+          "name:ur": "ماتارا ضلع",
+          "name:pnb": "ضلع مٹارا",
+          "ISO3166-2": "LK-32",
+          "name:zh-Hans": "马特勒区",
+          "name:zh-Hant": "馬塔拉區"
+        },
+        "boundingbox": [
+          "5.7190000",
+          "6.3975410",
+          "80.3305934",
+          "80.7968892"
+        ]
+      }
+    ]
+  },
+  "Tangalle": {
+    "query": "Tangalle, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Tangalle%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:30.089162+00:00",
+    "candidates": [
+      {
+        "place_id": 254374509,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 51216347,
+        "lat": "6.0250847",
+        "lon": "80.7949279",
+        "category": "place",
+        "type": "town",
+        "place_rank": 18,
+        "importance": 0.3498723237425788,
+        "addresstype": "town",
+        "name": "Tangalle",
+        "display_name": "Tangalle, Hambantota District, Southern Province, 82200, Sri Lanka",
+        "address": {
+          "town": "Tangalle",
+          "state_district": "Hambantota District",
+          "ISO3166-2-lvl5": "LK-33",
+          "state": "Southern Province",
+          "ISO3166-2-lvl4": "LK-3",
+          "postcode": "82200",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Tangalle",
+          "name:ar": "تانجالي",
+          "name:de": "Tangalle",
+          "name:en": "Tangalle",
+          "name:fa": "تانگاله",
+          "name:fr": "Tangalle",
+          "name:ja": "タンガラ",
+          "name:kn": "ತಂಗಲ್ಲೆ",
+          "name:ru": "Тангалле",
+          "name:si": "තංගල්ල",
+          "name:ta": "தங்காலை",
+          "name:ur": "تانگال"
+        },
+        "boundingbox": [
+          "5.9850847",
+          "6.0650847",
+          "80.7549279",
+          "80.8349279"
+        ]
+      },
+      {
+        "place_id": 252728865,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "relation",
+        "osm_id": 5892250,
+        "lat": "6.0301746",
+        "lon": "80.7928467",
+        "category": "landuse",
+        "type": "residential",
+        "place_rank": 24,
+        "importance": 0.08004000076295106,
+        "addresstype": "residential",
+        "name": "Tangalle",
+        "display_name": "Tangalle, Kotuwegoda, Tangalle, Hambantota District, Southern Province, Sri Lanka",
+        "address": {
+          "residential": "Tangalle",
+          "suburb": "Kotuwegoda",
+          "town": "Tangalle",
+          "state_district": "Hambantota District",
+          "ISO3166-2-lvl5": "LK-33",
+          "state": "Southern Province",
+          "ISO3166-2-lvl4": "LK-3",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Tangalle",
+          "name:ar": "تانجالي",
+          "name:fa": "تانگاله",
+          "name:ur": "تانگال"
+        },
+        "boundingbox": [
+          "6.0188588",
+          "6.0413300",
+          "80.7839487",
+          "80.8055243"
+        ]
+      },
+      {
+        "place_id": 253948086,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "way",
+        "osm_id": 358576273,
+        "lat": "6.0242552",
+        "lon": "80.7992124",
+        "category": "landuse",
+        "type": "harbour",
+        "place_rank": 24,
+        "importance": 0.08004000076295106,
+        "addresstype": "harbour",
+        "name": "Tangalle",
+        "display_name": "Tangalle, Kotuwegoda, Tangalle, Hambantota District, Southern Province, Sri Lanka",
+        "address": {
+          "harbour": "Tangalle",
+          "suburb": "Kotuwegoda",
+          "town": "Tangalle",
+          "state_district": "Hambantota District",
+          "ISO3166-2-lvl5": "LK-33",
+          "state": "Southern Province",
+          "ISO3166-2-lvl4": "LK-3",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Tangalle",
+          "name:ar": "تانجالي",
+          "name:fa": "تانگاله",
+          "name:ur": "تانگال"
+        },
+        "boundingbox": [
+          "6.0234975",
+          "6.0254358",
+          "80.7984274",
+          "80.7999986"
+        ]
+      }
+    ]
+  },
+  "Ratnapura": {
+    "query": "Ratnapura, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Ratnapura%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:32.085654+00:00",
+    "candidates": [
+      {
+        "place_id": 255589209,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "relation",
+        "osm_id": 5351780,
+        "lat": "6.5795685",
+        "lon": "80.5882230",
+        "category": "boundary",
+        "type": "administrative",
+        "place_rank": 10,
+        "importance": 0.4351905570353818,
+        "addresstype": "state_district",
+        "name": "Ratnapura District",
+        "display_name": "Ratnapura District, Sabaragamuwa Province, Sri Lanka",
+        "address": {
+          "state_district": "Ratnapura District",
+          "ISO3166-2-lvl5": "LK-91",
+          "state": "Sabaragamuwa Province",
+          "ISO3166-2-lvl4": "LK-9",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Ratnapura District",
+          "name:en": "Ratnapura District",
+          "name:fr": "Ratnapura",
+          "name:ja": "ラトゥナプラ県",
+          "name:si": "රත්නපුර දිස්ත්‍රික්කය",
+          "ISO3166-2": "LK-91",
+          "name:zh-Hans": "拉特纳普勒区",
+          "name:zh-Hant": "拉特納普勒區"
+        },
+        "boundingbox": [
+          "6.2279500",
+          "6.9310640",
+          "80.1750087",
+          "80.9532207"
+        ]
+      },
+      {
+        "place_id": 252702687,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 637897018,
+        "lat": "6.6803691",
+        "lon": "80.4022975",
+        "category": "place",
+        "type": "city",
+        "place_rank": 16,
+        "importance": 0.1867163447013046,
+        "addresstype": "city",
+        "name": "Ratnapura",
+        "display_name": "Ratnapura, Ratnapura District, Sabaragamuwa Province, 70000, Sri Lanka",
+        "address": {
+          "city": "Ratnapura",
+          "state_district": "Ratnapura District",
+          "ISO3166-2-lvl5": "LK-91",
+          "state": "Sabaragamuwa Province",
+          "ISO3166-2-lvl4": "LK-9",
+          "postcode": "70000",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Ratnapura",
+          "name:bn": "রত্নপুরা",
+          "name:en": "Ratnapura",
+          "name:fa": "راتناپورا",
+          "name:fr": "Ratnapura",
+          "name:hi": "रत्नापुर",
+          "name:ja": "ラトゥナプラ",
+          "name:kn": "ರತ್ನಪುರ",
+          "name:ml": "രത്നപുര",
+          "name:ru": "Ратнапура",
+          "name:si": "රත්නපුර",
+          "name:ta": "இரத்தினபுரி",
+          "name:zh-Hans": "拉特纳普勒",
+          "name:zh-Hant": "拉特納普勒",
+          "alt_name:zh-Hans": "宝石城"
+        },
+        "boundingbox": [
+          "6.5203691",
+          "6.8403691",
+          "80.2422975",
+          "80.5622975"
+        ]
+      }
+    ]
+  },
+  "Anuradhapura": {
+    "query": "Anuradhapura, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Anuradhapura%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:33.742027+00:00",
+    "candidates": [
+      {
+        "place_id": 251712821,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 566574942,
+        "lat": "8.3349850",
+        "lon": "80.4106096",
+        "category": "place",
+        "type": "city",
+        "place_rank": 16,
+        "importance": 0.5520923468455524,
+        "addresstype": "city",
+        "name": "Anuradhapura",
+        "display_name": "Anuradhapura, Anuradhapura District, North Central Province, 50000, Sri Lanka",
+        "address": {
+          "city": "Anuradhapura",
+          "state_district": "Anuradhapura District",
+          "ISO3166-2-lvl5": "LK-71",
+          "state": "North Central Province",
+          "ISO3166-2-lvl4": "LK-7",
+          "postcode": "50000",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Anuradhapura",
+          "name:ar": "أنورادابورا",
+          "name:bn": "অনুরাধাপুরা",
+          "name:fa": "انورادهاپورا",
+          "name:fr": "Anuradhapura",
+          "name:hi": "अनुराधापुर",
+          "name:ja": "アヌラーダプラ",
+          "name:kn": "ಅನು಼ರಾದಪುರಂ",
+          "name:ml": "അനുരാധപുരം",
+          "name:ru": "Анурадхапура",
+          "name:si": "අනුරාධපුරය",
+          "name:ta": "அனுராதபுரம்",
+          "name:uk": "Анурадхапура",
+          "name:zh-Hans": "阿努拉德普勒",
+          "name:zh-Hant": "阿奴拉達普勒"
+        },
+        "boundingbox": [
+          "8.1749850",
+          "8.4949850",
+          "80.2506096",
+          "80.5706096"
+        ]
+      },
+      {
+        "place_id": 248480977,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "relation",
+        "osm_id": 5351719,
+        "lat": "8.3681682",
+        "lon": "80.4399821",
+        "category": "boundary",
+        "type": "administrative",
+        "place_rank": 10,
+        "importance": 0.43078765384924406,
+        "addresstype": "state_district",
+        "name": "Anuradhapura District",
+        "display_name": "Anuradhapura District, North Central Province, Sri Lanka",
+        "address": {
+          "state_district": "Anuradhapura District",
+          "ISO3166-2-lvl5": "LK-71",
+          "state": "North Central Province",
+          "ISO3166-2-lvl4": "LK-7",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Anuradhapura District",
+          "name:en": "Anuradhapura District",
+          "name:fr": "Anuradhapura",
+          "name:ja": "アヌラーダプラ県",
+          "name:si": "අනුරාධපුර දිස්ත්‍රික්කය",
+          "ISO3166-2": "LK-71",
+          "name:zh-Hans": "阿努拉德普勒区",
+          "name:zh-Hant": "阿奴拉達普勒區"
+        },
+        "boundingbox": [
+          "7.8163635",
+          "8.9202176",
+          "79.9523049",
+          "80.9909160"
+        ]
+      }
+    ]
+  },
+  "Badulla": {
+    "query": "Badulla, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Badulla%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:35.403442+00:00",
+    "candidates": [
+      {
+        "place_id": 254598311,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 1945604886,
+        "lat": "6.9900353",
+        "lon": "81.0570315",
+        "category": "place",
+        "type": "city",
+        "place_rank": 16,
+        "importance": 0.4194818330375235,
+        "addresstype": "city",
+        "name": "Badulla",
+        "display_name": "Badulla, Badulla District, Uva Province, 90000, Sri Lanka",
+        "address": {
+          "city": "Badulla",
+          "state_district": "Badulla District",
+          "ISO3166-2-lvl5": "LK-81",
+          "state": "Uva Province",
+          "ISO3166-2-lvl4": "LK-8",
+          "postcode": "90000",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Badulla",
+          "name:ar": "بادولا",
+          "name:en": "Badulla",
+          "name:fa": "بادولا",
+          "name:fr": "Badulla",
+          "name:hi": "बैड्युला",
+          "name:ja": "バドゥッラ",
+          "name:kn": "ಬದುಲ್ಲ",
+          "name:ml": "ബദുള്ള",
+          "name:ru": "Бадулла",
+          "name:si": "බදුල්ල",
+          "name:ta": "பதுளை",
+          "name:uk": "Бадулла",
+          "name:ur": "بادولا",
+          "name:arz": "بادولا",
+          "name:azb": "بادولا",
+          "name:az-Arab": "بادولا",
+          "name:zh-Hans": "巴杜勒",
+          "name:zh-Hant": "巴度拉"
+        },
+        "boundingbox": [
+          "6.8300353",
+          "7.1500353",
+          "80.8970315",
+          "81.2170315"
+        ]
+      },
+      {
+        "place_id": 254814224,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "relation",
+        "osm_id": 5351720,
+        "lat": "7.0836550",
+        "lon": "81.0890566",
+        "category": "boundary",
+        "type": "administrative",
+        "place_rank": 10,
+        "importance": 0.43794231461514876,
+        "addresstype": "state_district",
+        "name": "Badulla District",
+        "display_name": "Badulla District, Uva Province, Sri Lanka",
+        "address": {
+          "state_district": "Badulla District",
+          "ISO3166-2-lvl5": "LK-81",
+          "state": "Uva Province",
+          "ISO3166-2-lvl4": "LK-8",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Badulla District",
+          "name:en": "Badulla District",
+          "name:fa": "ناحیه بادولا",
+          "name:ja": "バドゥッラ県",
+          "name:si": "බදුල්ල දිස්ත්‍රික්කය",
+          "name:ur": "بادولا ضلع",
+          "name:pnb": "ضلع بادولا",
+          "ISO3166-2": "LK-81",
+          "name:zh-Hans": "巴杜勒区",
+          "name:zh-Hant": "巴度拉區"
+        },
+        "boundingbox": [
+          "6.5421710",
+          "7.6249620",
+          "80.7759424",
+          "81.2715980"
+        ]
+      }
+    ]
+  },
+  "Ella": {
+    "query": "Ella, Badulla District, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Ella%2C+Badulla+District%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:37.458962+00:00",
+    "candidates": [
+      {
+        "place_id": 255391857,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 41626831,
+        "lat": "6.8736058",
+        "lon": "81.0489927",
+        "category": "place",
+        "type": "town",
+        "place_rank": 18,
+        "importance": 0.16004935454337377,
+        "addresstype": "town",
+        "name": "Ella",
+        "display_name": "Ella, Badulla District, Uva Province, 90090, Sri Lanka",
+        "address": {
+          "town": "Ella",
+          "state_district": "Badulla District",
+          "ISO3166-2-lvl5": "LK-81",
+          "state": "Uva Province",
+          "ISO3166-2-lvl4": "LK-8",
+          "postcode": "90090",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Ella"
+        },
+        "boundingbox": [
+          "6.8336058",
+          "6.9136058",
+          "81.0089927",
+          "81.0889927"
+        ]
+      }
+    ]
+  },
+  "Jaffna": {
+    "query": "Jaffna, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Jaffna%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:54.641888+00:00",
+    "candidates": [
+      {
+        "place_id": 251242573,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 2050947471,
+        "lat": "9.6650930",
+        "lon": "80.0093029",
+        "category": "place",
+        "type": "city",
+        "place_rank": 16,
+        "importance": 0.5181168357964844,
+        "addresstype": "city",
+        "name": "Jaffna",
+        "display_name": "Jaffna, Jaffna District, Northern Province, 40000, Sri Lanka",
+        "address": {
+          "city": "Jaffna",
+          "state_district": "Jaffna District",
+          "ISO3166-2-lvl5": "LK-41",
+          "state": "Northern Province",
+          "ISO3166-2-lvl4": "LK-4",
+          "postcode": "40000",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Jaffna",
+          "name:ar": "جفنا",
+          "name:be": "Джафна",
+          "name:bn": "জাফনা",
+          "name:cs": "Jápané",
+          "name:el": "Τζάφνα",
+          "name:en": "Jaffna",
+          "name:eo": "Ĝafna",
+          "name:et": "Jaffna",
+          "name:fa": "جافنا",
+          "name:fr": "Jaffna",
+          "name:gu": "જાફના",
+          "name:he": "ג'אפנה",
+          "name:hi": "जाफना",
+          "name:ja": "ジャフナ",
+          "name:ka": "ჯაფნა",
+          "name:kn": "ಯಾೞ್ಪ್ಪಾಣಂ",
+          "name:ko": "자프나",
+          "name:lt": "Džafna",
+          "name:ml": "യാഴ്പ്പാണം",
+          "name:mr": "जाफना",
+          "name:ne": "जाफना",
+          "name:nl": "Jaffna",
+          "name:pa": "ਜਾਫਨਾ",
+          "name:pl": "Dżafna",
+          "name:pt": "Jafanapatão",
+          "name:ru": "Джафна",
+          "name:sa": "याऴ्प्पाणम्",
+          "name:sh": "Jaffna",
+          "name:si": "යාපනය",
+          "name:ta": "யாழ்ப்பாணம்",
+          "name:te": "జాఫ్నా",
+          "name:th": "แจฟฟ์นา",
+          "name:uk": "Джафна",
+          "name:ur": "جافنا",
+          "name:uz": "Jafna",
+          "name:zh": "賈夫納",
+          "alt_name": "Yalppanam",
+          "name:azb": "جفنا",
+          "name:pnb": "جفنا",
+          "alt_name:ar": "جفنا",
+          "name:az-Arab": "جفنا",
+          "name:zh-Hans": "贾夫纳",
+          "name:zh-Hant": "加夫納"
+        },
+        "boundingbox": [
+          "9.5050930",
+          "9.8250930",
+          "79.8493029",
+          "80.1693029"
+        ]
+      }
+    ]
+  },
+  "Kilinochchi": {
+    "query": "Kilinochchi, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Kilinochchi%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:56.647028+00:00",
+    "candidates": [
+      {
+        "place_id": 251458356,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 634253347,
+        "lat": "9.3840068",
+        "lon": "80.4087224",
+        "category": "place",
+        "type": "city",
+        "place_rank": 16,
+        "importance": 0.38154785896147225,
+        "addresstype": "city",
+        "name": "Kilinochchi",
+        "display_name": "Kilinochchi, Kilinochchi District, Northern Province, Sri Lanka",
+        "address": {
+          "city": "Kilinochchi",
+          "state_district": "Kilinochchi District",
+          "ISO3166-2-lvl5": "LK-42",
+          "state": "Northern Province",
+          "ISO3166-2-lvl4": "LK-4",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Kilinochchi",
+          "name:bn": "কিলিনোচ্চি",
+          "name:en": "Kilinochchi",
+          "name:eo": "Kilinocci",
+          "name:fa": "کیلینوچی",
+          "name:fr": "Kilinochchi",
+          "name:hi": "किलिनोच्ची",
+          "name:hu": "Kilinoccsi",
+          "name:ja": "キリノッチ",
+          "name:kn": "ಕಿಲಿನೊಚ್ಚಿ",
+          "name:ko": "킬리노치치",
+          "name:ml": "കിളിനൊച്ചി",
+          "name:mr": "किलिनोच्ची",
+          "name:nl": "Kilinochchi",
+          "name:ru": "Килиноччи",
+          "name:si": "කිළිනොච්චි",
+          "name:ta": "கிளிநொச்சி",
+          "name:uk": "Кіліноччі",
+          "name:ur": "کیلینوچچی",
+          "name:zh": "基利诺奇",
+          "name:zh-Hans": "基利诺奇",
+          "name:zh-Hant": "基里諾奇"
+        },
+        "boundingbox": [
+          "9.2240068",
+          "9.5440068",
+          "80.2487224",
+          "80.5687224"
+        ]
+      },
+      {
+        "place_id": 253219830,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "relation",
+        "osm_id": 3237346,
+        "lat": "9.4501120",
+        "lon": "80.2442108",
+        "category": "boundary",
+        "type": "administrative",
+        "place_rank": 10,
+        "importance": 0.43450568246293747,
+        "addresstype": "state_district",
+        "name": "Kilinochchi District",
+        "display_name": "Kilinochchi District, Northern Province, 41000, Sri Lanka",
+        "address": {
+          "state_district": "Kilinochchi District",
+          "ISO3166-2-lvl5": "LK-42",
+          "state": "Northern Province",
+          "ISO3166-2-lvl4": "LK-4",
+          "postcode": "41000",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Kilinochchi District",
+          "name:en": "Kilinochchi District",
+          "name:fr": "District de Kilinochchi",
+          "name:ja": "キリノッチ県",
+          "name:ko": "킬리노치치구",
+          "name:si": "කිලිනොච්චි දිස්ත්‍රික්කය",
+          "name:ta": "கிளிநொச்சி மாவட்டம்",
+          "ISO3166-2": "LK-42",
+          "name:zh-Hans": "基利诺奇区",
+          "name:zh-Hant": "基里諾奇區"
+        },
+        "boundingbox": [
+          "9.2082367",
+          "9.6913193",
+          "79.5116667",
+          "80.6161950"
+        ]
+      }
+    ]
+  },
+  "Trincomalee": {
+    "query": "Trincomalee, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Trincomalee%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:37:58.348819+00:00",
+    "candidates": [
+      {
+        "place_id": 251621909,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 335253618,
+        "lat": "8.5764250",
+        "lon": "81.2344952",
+        "category": "place",
+        "type": "city",
+        "place_rank": 16,
+        "importance": 0.5280336667190371,
+        "addresstype": "city",
+        "name": "Trincomalee",
+        "display_name": "Trincomalee, Trincomalee District, Eastern Province, 32100, Sri Lanka",
+        "address": {
+          "city": "Trincomalee",
+          "state_district": "Trincomalee District",
+          "ISO3166-2-lvl5": "LK-53",
+          "state": "Eastern Province",
+          "ISO3166-2-lvl4": "LK-5",
+          "postcode": "32100",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Trincomalee",
+          "name:bn": "ত্রিঙ্কোমালি",
+          "name:en": "Trincomalee",
+          "name:fa": "ترینکومالی",
+          "name:fr": "Trinquemalay",
+          "name:he": "טרינקומלי",
+          "name:hi": "तिरुकोणमलै",
+          "name:ja": "トリンコマリー",
+          "name:kn": "ತಿರುಕೋಣಮಲೈ",
+          "name:ml": "തിരുക്കോണമല",
+          "name:ne": "तिरुकोणमलै",
+          "name:ru": "Тринкомали",
+          "name:si": "තිරිකුණාමළය",
+          "name:ta": "திருகோணமலை",
+          "name:uk": "Тринкомалі",
+          "name:alt": "Tirukonamalai",
+          "alt_name:uk": "Трінкомалі",
+          "name:zh-Hans": "亭可马里",
+          "name:zh-Hant": "亭可馬里"
+        },
+        "boundingbox": [
+          "8.4164250",
+          "8.7364250",
+          "81.0744952",
+          "81.3944952"
+        ]
+      }
+    ]
+  },
+  "Batticaloa": {
+    "query": "Batticaloa, Sri Lanka",
+    "source": "Nominatim / OpenStreetMap (ODbL)",
+    "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Batticaloa%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+    "retrievedAt": "2026-11-17T18:38:00.390358+00:00",
+    "candidates": [
+      {
+        "place_id": 255434290,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "relation",
+        "osm_id": 5351721,
+        "lat": "7.8381389",
+        "lon": "81.5569215",
+        "category": "boundary",
+        "type": "administrative",
+        "place_rank": 10,
+        "importance": 0.45310904548046377,
+        "addresstype": "state_district",
+        "name": "Batticaloa District",
+        "display_name": "Batticaloa District, Eastern Province, Sri Lanka",
+        "address": {
+          "state_district": "Batticaloa District",
+          "ISO3166-2-lvl5": "LK-51",
+          "state": "Eastern Province",
+          "ISO3166-2-lvl4": "LK-5",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Batticaloa District",
+          "name:en": "Batticaloa District",
+          "name:fr": "Batticaloa",
+          "name:ja": "バッティカロア県",
+          "name:ta": "மட்டக்களப்பு மாவட்டம்",
+          "ISO3166-2": "LK-51",
+          "name:zh-Hans": "拜蒂克洛区",
+          "name:zh-Hant": "巴替卡羅亞區"
+        },
+        "boundingbox": [
+          "7.3987014",
+          "8.2760000",
+          "81.2249571",
+          "82.0152941"
+        ]
+      },
+      {
+        "place_id": 255382936,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "node",
+        "osm_id": 3668151968,
+        "lat": "7.7356027",
+        "lon": "81.6941956",
+        "category": "place",
+        "type": "city",
+        "place_rank": 16,
+        "importance": 0.18671907911802849,
+        "addresstype": "city",
+        "name": "Batticaloa",
+        "display_name": "Batticaloa, Manmunai North DS Division, Batticaloa District, Eastern Province, 30100, Sri Lanka",
+        "address": {
+          "city": "Batticaloa",
+          "county": "Manmunai North DS Division",
+          "state_district": "Batticaloa District",
+          "ISO3166-2-lvl5": "LK-51",
+          "state": "Eastern Province",
+          "ISO3166-2-lvl4": "LK-5",
+          "postcode": "30100",
+          "country": "Sri Lanka",
+          "country_code": "lk"
+        },
+        "namedetails": {
+          "name": "Batticaloa",
+          "name:fa": "باتیکالوا",
+          "name:fr": "Batticaloa",
+          "name:hi": "बट्टिकलोआ",
+          "name:ja": "バッティカロア",
+          "name:kn": "ಬಟ್ಟಿಕಲೊ",
+          "name:ml": "മട്ടക്കളപ്പ്",
+          "name:ru": "Баттикалоа",
+          "name:si": "මඩකලපුව",
+          "name:ta": "மட்டக்களப்பு",
+          "name:zh-Hans": "拜蒂克洛",
+          "name:zh-Hant": "巴替卡羅亞"
+        },
+        "boundingbox": [
+          "7.5756027",
+          "7.8956027",
+          "81.5341956",
+          "81.8541956"
+        ]
+      }
+    ]
+  }
+}

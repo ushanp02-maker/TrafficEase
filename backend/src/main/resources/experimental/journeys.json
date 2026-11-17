@@ -1,0 +1,1089 @@
+{
+  "version": "lk-journeys-v1",
+  "attribution": "© OpenStreetMap contributors (ODbL); geocoding by Nominatim; baseline routing by OSRM",
+  "coordinateNote": "Named-place/transport-landmark points reviewed against returned mapping metadata; not field-surveyed. Runtime road snapping is independently limited to 300 m.",
+  "places": {
+    "anuradhapura": {
+      "id": "anuradhapura",
+      "name": "Anuradhapura",
+      "selectedLandmark": "Anuradhapura",
+      "latitude": 8.334985,
+      "longitude": 80.4106096,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "566574942",
+      "placeId": "251712821",
+      "displayName": "Anuradhapura, Anuradhapura District, North Central Province, 50000, Sri Lanka",
+      "mapType": "city",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Anuradhapura%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:33.742027+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "avissawella": {
+      "id": "avissawella",
+      "name": "Avissawella",
+      "selectedLandmark": "Avissawella",
+      "latitude": 6.9521206,
+      "longitude": 80.2128586,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "3095584802",
+      "placeId": "254559999",
+      "displayName": "Avissawella, Colombo District, Western Province, 10700, Sri Lanka",
+      "mapType": "town",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Avissawella%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:36:37.338670+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "badulla": {
+      "id": "badulla",
+      "name": "Badulla",
+      "selectedLandmark": "Badulla",
+      "latitude": 6.9900353,
+      "longitude": 81.0570315,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "1945604886",
+      "placeId": "254598311",
+      "displayName": "Badulla, Badulla District, Uva Province, 90000, Sri Lanka",
+      "mapType": "city",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Badulla%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:35.403442+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "battaramulla": {
+      "id": "battaramulla",
+      "name": "Battaramulla",
+      "selectedLandmark": "Battaramulla",
+      "latitude": 6.9021809,
+      "longitude": 79.9195776,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "256824244",
+      "placeId": "254624445",
+      "displayName": "Battaramulla, Colombo District, Western Province, 10120, Sri Lanka",
+      "mapType": "town",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Battaramulla%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:11.078106+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "batticaloa": {
+      "id": "batticaloa",
+      "name": "Batticaloa",
+      "selectedLandmark": "Batticaloa",
+      "latitude": 7.7356027,
+      "longitude": 81.6941956,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "3668151968",
+      "placeId": "255382936",
+      "displayName": "Batticaloa, Manmunai North DS Division, Batticaloa District, Eastern Province, 30100, Sri Lanka",
+      "mapType": "city",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Batticaloa%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:38:00.390358+00:00",
+      "selectionReason": "Batticaloa city, not district centroid.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "colombo-fort": {
+      "id": "colombo-fort",
+      "name": "Colombo Fort",
+      "selectedLandmark": "Colombo Fort",
+      "latitude": 6.9337271,
+      "longitude": 79.8500803,
+      "countryCode": "LK",
+      "osmType": "way",
+      "osmId": "232514810",
+      "placeId": "256004315",
+      "displayName": "Colombo Fort, Olcott Mawatha, L B Gate, Fort, Slave Island, Colombo, Colombo District, Western Province, 01100, Sri Lanka",
+      "mapType": "station",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Colombo+Fort+railway+station%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:36:52.129439+00:00",
+      "selectionReason": "Mapped Fort railway station point, not a broad city label.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "dehiwala": {
+      "id": "dehiwala",
+      "name": "Dehiwala",
+      "selectedLandmark": "Dehiwala",
+      "latitude": 6.8512785,
+      "longitude": 79.8659769,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "134253719",
+      "placeId": "255379623",
+      "displayName": "Dehiwala, Colombo District, Western Province, 10350, Sri Lanka",
+      "mapType": "town",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Dehiwala%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:13.049450+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "ella": {
+      "id": "ella",
+      "name": "Ella",
+      "selectedLandmark": "Ella",
+      "latitude": 6.8736058,
+      "longitude": 81.0489927,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "41626831",
+      "placeId": "255391857",
+      "displayName": "Ella, Badulla District, Uva Province, 90090, Sri Lanka",
+      "mapType": "town",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Ella%2C+Badulla+District%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:37.458962+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "galle": {
+      "id": "galle",
+      "name": "Galle",
+      "selectedLandmark": "Galle",
+      "latitude": 6.0328139,
+      "longitude": 80.214955,
+      "countryCode": "LK",
+      "osmType": "relation",
+      "osmId": "5345077",
+      "placeId": "256036939",
+      "displayName": "Galle, Galle District, Southern Province, Sri Lanka",
+      "mapType": "administrative",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Galle%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:26.393581+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "gampaha": {
+      "id": "gampaha",
+      "name": "Gampaha",
+      "selectedLandmark": "Gampaha",
+      "latitude": 7.0928595,
+      "longitude": 79.9952095,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "3289447451",
+      "placeId": "254177620",
+      "displayName": "Gampaha, Gampaha District, Western Province, 11000, Sri Lanka",
+      "mapType": "city",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Gampaha%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:01.267929+00:00",
+      "selectionReason": "Gampaha city, not the district centroid.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "homagama": {
+      "id": "homagama",
+      "name": "Homagama",
+      "selectedLandmark": "Homagama",
+      "latitude": 6.8412384,
+      "longitude": 80.0034457,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "4647981713",
+      "placeId": "252765533",
+      "displayName": "Homagama, Colombo District, Western Province, 10200, Sri Lanka",
+      "mapType": "town",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Homagama%2C+Western+Province%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:36:39.421639+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "jaffna": {
+      "id": "jaffna",
+      "name": "Jaffna",
+      "selectedLandmark": "Jaffna",
+      "latitude": 9.665093,
+      "longitude": 80.0093029,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "2050947471",
+      "placeId": "251242573",
+      "displayName": "Jaffna, Jaffna District, Northern Province, 40000, Sri Lanka",
+      "mapType": "city",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Jaffna%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:54.641888+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "kadawatha": {
+      "id": "kadawatha",
+      "name": "Kadawatha",
+      "selectedLandmark": "Kadawatha",
+      "latitude": 7.002137,
+      "longitude": 79.9512274,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "51237603",
+      "placeId": "254689876",
+      "displayName": "Kadawatha, Gampaha District, Western Province, 11850, Sri Lanka",
+      "mapType": "town",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Kadawatha%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:07.483634+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "kaduwela": {
+      "id": "kaduwela",
+      "name": "Kaduwela",
+      "selectedLandmark": "Kaduwela",
+      "latitude": 6.9357027,
+      "longitude": 79.9843311,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "619905117",
+      "placeId": "252635980",
+      "displayName": "Kaduwela, Colombo District, Western Province, 10640, Sri Lanka",
+      "mapType": "city",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Kaduwela%2C+Colombo+District%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:36:41.513434+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "kalutara": {
+      "id": "kalutara",
+      "name": "Kalutara",
+      "selectedLandmark": "Kalutara",
+      "latitude": 6.5852614,
+      "longitude": 79.963301,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "1822512017",
+      "placeId": "254608744",
+      "displayName": "Kalutara, Kalutara DS Division, Kalutara District, Western Province, 12000, Sri Lanka",
+      "mapType": "city",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Kalutara%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:16.646401+00:00",
+      "selectionReason": "Kalutara city, not the district centroid.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "kandy": {
+      "id": "kandy",
+      "name": "Kandy",
+      "selectedLandmark": "Kandy",
+      "latitude": 7.2931208,
+      "longitude": 80.6350358,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "2908772560",
+      "placeId": "254899922",
+      "displayName": "Kandy, Kandy District, Central Province, 20000, Sri Lanka",
+      "mapType": "city",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Kandy%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:36:54.285990+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "katunayake": {
+      "id": "katunayake",
+      "name": "Katunayake",
+      "selectedLandmark": "Katunayake",
+      "latitude": 7.156773,
+      "longitude": 79.8716676,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "639153516",
+      "placeId": "252584282",
+      "displayName": "Katunayake, Gampaha District, Western Province, 11450, Sri Lanka",
+      "mapType": "town",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Katunayake%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:18.833408+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "kesbewa": {
+      "id": "kesbewa",
+      "name": "Kesbewa",
+      "selectedLandmark": "Kesbewa",
+      "latitude": 6.7950142,
+      "longitude": 79.9410967,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "5968326762",
+      "placeId": "255291968",
+      "displayName": "Kesbewa, Colombo District, Western Province, 10300, Sri Lanka",
+      "mapType": "city",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Kesbewa%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:15.009141+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "kilinochchi": {
+      "id": "kilinochchi",
+      "name": "Kilinochchi",
+      "selectedLandmark": "Kilinochchi",
+      "latitude": 9.3840068,
+      "longitude": 80.4087224,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "634253347",
+      "placeId": "251458356",
+      "displayName": "Kilinochchi, Kilinochchi District, Northern Province, Sri Lanka",
+      "mapType": "city",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Kilinochchi%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:56.647028+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "kottawa": {
+      "id": "kottawa",
+      "name": "Kottawa",
+      "selectedLandmark": "Kottawa",
+      "latitude": 6.8430139,
+      "longitude": 79.9655312,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "3689548032",
+      "placeId": "255470880",
+      "displayName": "Kottawa, Colombo District, Western Province, 10230, Sri Lanka",
+      "mapType": "town",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Kottawa%2C+Colombo+District%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:05.520336+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "kurunegala": {
+      "id": "kurunegala",
+      "name": "Kurunegala",
+      "selectedLandmark": "Kurunegala",
+      "latitude": 7.4870464,
+      "longitude": 80.364908,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "2907017040",
+      "placeId": "255392709",
+      "displayName": "Kurunegala, Kurunǣgala, North Western Province, 60000, Sri Lanka",
+      "mapType": "city",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Kurunegala%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:22.185474+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "maharagama": {
+      "id": "maharagama",
+      "name": "Maharagama",
+      "selectedLandmark": "Maharagama",
+      "latitude": 6.8472783,
+      "longitude": 79.9266082,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "4448823642",
+      "placeId": "254180617",
+      "displayName": "Maharagama, Colombo District, Western Province, 10280, Sri Lanka",
+      "mapType": "city",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Maharagama%2C+Western+Province%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:36:43.794237+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "malabe": {
+      "id": "malabe",
+      "name": "Malabe",
+      "selectedLandmark": "Malabe",
+      "latitude": 6.9040723,
+      "longitude": 79.9546189,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "3274475234",
+      "placeId": "254571829",
+      "displayName": "Malabe, Colombo District, Western Province, 10115, Sri Lanka",
+      "mapType": "town",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Malabe%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:09.440949+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "matara": {
+      "id": "matara",
+      "name": "Matara",
+      "selectedLandmark": "Matara",
+      "latitude": 5.947822,
+      "longitude": 80.5482919,
+      "countryCode": "LK",
+      "osmType": "relation",
+      "osmId": "5345072",
+      "placeId": "254595925",
+      "displayName": "Matara, Matara District, Southern Province, 81000, Sri Lanka",
+      "mapType": "administrative",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Matara%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:28.106565+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "moratuwa": {
+      "id": "moratuwa",
+      "name": "Moratuwa",
+      "selectedLandmark": "Moratuwa",
+      "latitude": 6.7672786,
+      "longitude": 79.8860393,
+      "countryCode": "LK",
+      "osmType": "way",
+      "osmId": "1577414741",
+      "placeId": "432626252",
+      "displayName": "Moratuwa, Colombo District, Western Province, 10400, Sri Lanka",
+      "mapType": "administrative",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Moratuwa%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:36:45.778985+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "negombo": {
+      "id": "negombo",
+      "name": "Negombo",
+      "selectedLandmark": "Negombo",
+      "latitude": 7.2094282,
+      "longitude": 79.833117,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "2064194449",
+      "placeId": "254993684",
+      "displayName": "Negombo, Gampaha District, Western Province, 11500, Sri Lanka",
+      "mapType": "city",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Negombo%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:36:49.873108+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "nittambuwa": {
+      "id": "nittambuwa",
+      "name": "Nittambuwa",
+      "selectedLandmark": "Nittambuwa",
+      "latitude": 7.1440793,
+      "longitude": 80.0964975,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "4558483172",
+      "placeId": "252798526",
+      "displayName": "Nittambuwa, Gampaha District, Western Province, 11875, Sri Lanka",
+      "mapType": "town",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Nittambuwa%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:24.238538+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "nugegoda": {
+      "id": "nugegoda",
+      "name": "Nugegoda",
+      "selectedLandmark": "Nugegoda",
+      "latitude": 6.8699688,
+      "longitude": 79.8882835,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "198828328",
+      "placeId": "254041296",
+      "displayName": "Nugegoda, Colombo District, Western Province, 10250, Sri Lanka",
+      "mapType": "town",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Nugegoda%2C+Western+Province%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:03.540336+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "panadura": {
+      "id": "panadura",
+      "name": "Panadura",
+      "selectedLandmark": "Panadura",
+      "latitude": 6.7124813,
+      "longitude": 79.9045725,
+      "countryCode": "LK",
+      "osmType": "way",
+      "osmId": "262522133",
+      "placeId": "254749706",
+      "displayName": "Panadura, Goods Shed Rd, Walana, Panadura DS Division, Kalutara District, Western Province, 12500, Sri Lanka",
+      "mapType": "station",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Panadura%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:36:48.137547+00:00",
+      "selectionReason": "Mapped Panadura railway station, not its platform or DS division.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "peradeniya": {
+      "id": "peradeniya",
+      "name": "Peradeniya",
+      "selectedLandmark": "Peradeniya",
+      "latitude": 7.2642107,
+      "longitude": 80.5930652,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "264605806",
+      "placeId": "254595232",
+      "displayName": "Peradeniya, Eriyagama, Kandy District, Central Province, 20400, Sri Lanka",
+      "mapType": "suburb",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Peradeniya%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:20.482781+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "pettah": {
+      "id": "pettah",
+      "name": "Pettah",
+      "selectedLandmark": "Pettah Private Bus Station",
+      "latitude": 6.9335171,
+      "longitude": 79.8555357,
+      "countryCode": "LK",
+      "osmType": "way",
+      "osmId": "200567908",
+      "placeId": "254009879",
+      "displayName": "Pettah Private Bus Station, Olcott Mawatha, Kehelwatte, Slave Island, Colombo, Colombo District, Western Province, 01100, Sri Lanka",
+      "mapType": "bus_station",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Pettah%2C+Colombo%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:36:28.879372+00:00",
+      "selectionReason": "Bus station named Pettah in Colombo; rejected pier, pharmacy and tree.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "piliyandala": {
+      "id": "piliyandala",
+      "name": "Piliyandala",
+      "selectedLandmark": "Piliyandala Clock Tower",
+      "latitude": 6.8013784,
+      "longitude": 79.9229672,
+      "countryCode": "LK",
+      "osmType": "way",
+      "osmId": "385219640",
+      "placeId": "255000489",
+      "displayName": "Piliyandala Clock Tower, Piliyandala 1st Lane, Puwakgas Junction, Kesbewa, Colombo District, Western Province, 10300, Sri Lanka",
+      "mapType": "tower",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Piliyandala%2C+Western+Province%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:36:30.674730+00:00",
+      "selectionReason": "Town clock tower road-access landmark; rejected playground/commercial premises.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "ratnapura": {
+      "id": "ratnapura",
+      "name": "Ratnapura",
+      "selectedLandmark": "Ratnapura",
+      "latitude": 6.6803691,
+      "longitude": 80.4022975,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "637897018",
+      "placeId": "252702687",
+      "displayName": "Ratnapura, Ratnapura District, Sabaragamuwa Province, 70000, Sri Lanka",
+      "mapType": "city",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Ratnapura%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:32.085654+00:00",
+      "selectionReason": "Ratnapura city, not district centroid.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "tangalle": {
+      "id": "tangalle",
+      "name": "Tangalle",
+      "selectedLandmark": "Tangalle",
+      "latitude": 6.0250847,
+      "longitude": 80.7949279,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "51216347",
+      "placeId": "254374509",
+      "displayName": "Tangalle, Hambantota District, Southern Province, 82200, Sri Lanka",
+      "mapType": "town",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Tangalle%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:30.089162+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    },
+    "trincomalee": {
+      "id": "trincomalee",
+      "name": "Trincomalee",
+      "selectedLandmark": "Trincomalee",
+      "latitude": 8.576425,
+      "longitude": 81.2344952,
+      "countryCode": "LK",
+      "osmType": "node",
+      "osmId": "335253618",
+      "placeId": "251621909",
+      "displayName": "Trincomalee, Trincomalee District, Eastern Province, 32100, Sri Lanka",
+      "mapType": "city",
+      "source": "Nominatim / OpenStreetMap",
+      "sourceUrl": "https://nominatim.openstreetmap.org/search?q=Trincomalee%2C+Sri+Lanka&format=jsonv2&countrycodes=lk&addressdetails=1&namedetails=1&limit=4",
+      "verifiedAt": "2026-11-17T18:37:58.348819+00:00",
+      "selectionReason": "Reviewed named town/city/suburb candidate and country/province; rejected district/other-category distractors where present.",
+      "coordinateStatus": "GEOCODER_VERIFIED_NOT_FIELD_SURVEY"
+    }
+  },
+  "journeys": [
+    {
+      "id": "pettah--piliyandala",
+      "name": "Pettah → Piliyandala",
+      "origin": "pettah",
+      "destination": "piliyandala",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:39:57.777023+00:00",
+        "snappingMeters": [
+          2.9175395665988955,
+          6.658215553
+        ],
+        "routeCount": 2
+      }
+    },
+    {
+      "id": "pettah--avissawella",
+      "name": "Pettah → Avissawella",
+      "origin": "pettah",
+      "destination": "avissawella",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:00.522923+00:00",
+        "snappingMeters": [
+          2.9175395665988955,
+          17.237629651690334
+        ],
+        "routeCount": 1
+      }
+    },
+    {
+      "id": "pettah--homagama",
+      "name": "Pettah → Homagama",
+      "origin": "pettah",
+      "destination": "homagama",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:02.923366+00:00",
+        "snappingMeters": [
+          2.9175395665988955,
+          7.319831922
+        ],
+        "routeCount": 2
+      }
+    },
+    {
+      "id": "pettah--kaduwela",
+      "name": "Pettah → Kaduwela",
+      "origin": "pettah",
+      "destination": "kaduwela",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:04.957344+00:00",
+        "snappingMeters": [
+          2.9175395665988955,
+          5.5632815974673635
+        ],
+        "routeCount": 2
+      }
+    },
+    {
+      "id": "pettah--maharagama",
+      "name": "Pettah → Maharagama",
+      "origin": "pettah",
+      "destination": "maharagama",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:07.262076+00:00",
+        "snappingMeters": [
+          2.9175395665988955,
+          10.34544220032662
+        ],
+        "routeCount": 2
+      }
+    },
+    {
+      "id": "pettah--moratuwa",
+      "name": "Pettah → Moratuwa",
+      "origin": "pettah",
+      "destination": "moratuwa",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:09.217077+00:00",
+        "snappingMeters": [
+          2.9175395665988955,
+          60.00444459634863
+        ],
+        "routeCount": 2
+      }
+    },
+    {
+      "id": "pettah--panadura",
+      "name": "Pettah → Panadura",
+      "origin": "pettah",
+      "destination": "panadura",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:11.335601+00:00",
+        "snappingMeters": [
+          2.9175395665988955,
+          31.86853383
+        ],
+        "routeCount": 2
+      }
+    },
+    {
+      "id": "pettah--negombo",
+      "name": "Pettah → Negombo",
+      "origin": "pettah",
+      "destination": "negombo",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:13.191550+00:00",
+        "snappingMeters": [
+          2.9175395665988955,
+          5.260458474353842
+        ],
+        "routeCount": 1
+      }
+    },
+    {
+      "id": "colombo-fort--kandy",
+      "name": "Colombo Fort → Kandy",
+      "origin": "colombo-fort",
+      "destination": "kandy",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:15.533798+00:00",
+        "snappingMeters": [
+          8.582812033172184,
+          11.33190766946736
+        ],
+        "routeCount": 2
+      }
+    },
+    {
+      "id": "colombo-fort--gampaha",
+      "name": "Colombo Fort → Gampaha",
+      "origin": "colombo-fort",
+      "destination": "gampaha",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:17.458806+00:00",
+        "snappingMeters": [
+          8.582812033172184,
+          2.653765088
+        ],
+        "routeCount": 1
+      }
+    },
+    {
+      "id": "nugegoda--piliyandala",
+      "name": "Nugegoda → Piliyandala",
+      "origin": "nugegoda",
+      "destination": "piliyandala",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:19.405528+00:00",
+        "snappingMeters": [
+          3.326644045,
+          6.658215553
+        ],
+        "routeCount": 1
+      }
+    },
+    {
+      "id": "nugegoda--kottawa",
+      "name": "Nugegoda → Kottawa",
+      "origin": "nugegoda",
+      "destination": "kottawa",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:21.151884+00:00",
+        "snappingMeters": [
+          3.326644045,
+          40.377886779949606
+        ],
+        "routeCount": 2
+      }
+    },
+    {
+      "id": "maharagama--homagama",
+      "name": "Maharagama → Homagama",
+      "origin": "maharagama",
+      "destination": "homagama",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:22.783519+00:00",
+        "snappingMeters": [
+          10.34544220032662,
+          7.319831922
+        ],
+        "routeCount": 1
+      }
+    },
+    {
+      "id": "kottawa--kadawatha",
+      "name": "Kottawa → Kadawatha",
+      "origin": "kottawa",
+      "destination": "kadawatha",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:24.572167+00:00",
+        "snappingMeters": [
+          40.377886779949606,
+          5.938176226057638
+        ],
+        "routeCount": 1
+      }
+    },
+    {
+      "id": "kaduwela--malabe",
+      "name": "Kaduwela → Malabe",
+      "origin": "kaduwela",
+      "destination": "malabe",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:26.227898+00:00",
+        "snappingMeters": [
+          5.5632815974673635,
+          1.127774964
+        ],
+        "routeCount": 1
+      }
+    },
+    {
+      "id": "battaramulla--colombo-fort",
+      "name": "Battaramulla → Colombo Fort",
+      "origin": "battaramulla",
+      "destination": "colombo-fort",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:28.035394+00:00",
+        "snappingMeters": [
+          3.0108412540720906,
+          8.582812033172184
+        ],
+        "routeCount": 1
+      }
+    },
+    {
+      "id": "dehiwala--panadura",
+      "name": "Dehiwala → Panadura",
+      "origin": "dehiwala",
+      "destination": "panadura",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:29.755660+00:00",
+        "snappingMeters": [
+          2.431536089,
+          31.86853383
+        ],
+        "routeCount": 1
+      }
+    },
+    {
+      "id": "kesbewa--moratuwa",
+      "name": "Kesbewa → Moratuwa",
+      "origin": "kesbewa",
+      "destination": "moratuwa",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:31.836940+00:00",
+        "snappingMeters": [
+          22.277559261944937,
+          60.00444459634863
+        ],
+        "routeCount": 1
+      }
+    },
+    {
+      "id": "panadura--kalutara",
+      "name": "Panadura → Kalutara",
+      "origin": "panadura",
+      "destination": "kalutara",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:33.462507+00:00",
+        "snappingMeters": [
+          31.86853383,
+          47.88955163
+        ],
+        "routeCount": 1
+      }
+    },
+    {
+      "id": "negombo--katunayake",
+      "name": "Negombo → Katunayake",
+      "origin": "negombo",
+      "destination": "katunayake",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:35.106675+00:00",
+        "snappingMeters": [
+          5.260458474353842,
+          4.170352363952339
+        ],
+        "routeCount": 1
+      }
+    },
+    {
+      "id": "kandy--peradeniya",
+      "name": "Kandy → Peradeniya",
+      "origin": "kandy",
+      "destination": "peradeniya",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:36.744341+00:00",
+        "snappingMeters": [
+          11.33190766946736,
+          8.767042428238545
+        ],
+        "routeCount": 1
+      }
+    },
+    {
+      "id": "kandy--kurunegala",
+      "name": "Kandy → Kurunegala",
+      "origin": "kandy",
+      "destination": "kurunegala",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:38.560984+00:00",
+        "snappingMeters": [
+          11.33190766946736,
+          4.976528632798103
+        ],
+        "routeCount": 1
+      }
+    },
+    {
+      "id": "gampaha--nittambuwa",
+      "name": "Gampaha → Nittambuwa",
+      "origin": "gampaha",
+      "destination": "nittambuwa",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:40.300009+00:00",
+        "snappingMeters": [
+          2.653765088,
+          59.7832365041872
+        ],
+        "routeCount": 1
+      }
+    },
+    {
+      "id": "galle--matara",
+      "name": "Galle → Matara",
+      "origin": "galle",
+      "destination": "matara",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:42.160517+00:00",
+        "snappingMeters": [
+          0.8198755482980151,
+          3.471300867206188
+        ],
+        "routeCount": 2
+      }
+    },
+    {
+      "id": "matara--tangalle",
+      "name": "Matara → Tangalle",
+      "origin": "matara",
+      "destination": "tangalle",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:44.141643+00:00",
+        "snappingMeters": [
+          3.471300867206188,
+          65.01073867661148
+        ],
+        "routeCount": 2
+      }
+    },
+    {
+      "id": "ratnapura--avissawella",
+      "name": "Ratnapura → Avissawella",
+      "origin": "ratnapura",
+      "destination": "avissawella",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:45.916827+00:00",
+        "snappingMeters": [
+          1.6807372963676837,
+          17.237629651690334
+        ],
+        "routeCount": 1
+      }
+    },
+    {
+      "id": "kurunegala--anuradhapura",
+      "name": "Kurunegala → Anuradhapura",
+      "origin": "kurunegala",
+      "destination": "anuradhapura",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:47.846088+00:00",
+        "snappingMeters": [
+          4.976528632798103,
+          10.691879674457333
+        ],
+        "routeCount": 2
+      }
+    },
+    {
+      "id": "badulla--ella",
+      "name": "Badulla → Ella",
+      "origin": "badulla",
+      "destination": "ella",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:49.617976+00:00",
+        "snappingMeters": [
+          14.1653093,
+          6.013485501
+        ],
+        "routeCount": 1
+      }
+    },
+    {
+      "id": "jaffna--kilinochchi",
+      "name": "Jaffna → Kilinochchi",
+      "origin": "jaffna",
+      "destination": "kilinochchi",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:51.460820+00:00",
+        "snappingMeters": [
+          3.905919714,
+          31.27357017
+        ],
+        "routeCount": 2
+      }
+    },
+    {
+      "id": "trincomalee--batticaloa",
+      "name": "Trincomalee → Batticaloa",
+      "origin": "trincomalee",
+      "destination": "batticaloa",
+      "verification": {
+        "status": "ROUTABLE",
+        "verifiedAt": "2026-11-17T18:40:53.323061+00:00",
+        "snappingMeters": [
+          1.0201366100493174,
+          27.200384528004967
+        ],
+        "routeCount": 1
+      }
+    }
+  ]
+}

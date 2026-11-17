@@ -1,0 +1,74 @@
+"""Separate, reproducible SYNTHETIC route-shape model. Never retrains/replaces scenario V1."""
+import hashlib
+import json
+import platform
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+import joblib
+import numpy as np
+import pandas as pd
+import sklearn
+from sklearn.compose import ColumnTransformer
+from sklearn.dummy import DummyClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, f1_score, confusion_matrix
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder
+from route_features import FEATURES, CLASSES, WEATHER, FEATURE_VERSION, extract, feature_row
+SEED=20261118
+ROOT=Path(__file__).resolve().parents[1]
+CATALOG=ROOT/'data/journeys/routing-observations.json'
+PARAMETERS=dict(n_estimators=100,max_depth=12,min_samples_leaf=8,random_state=SEED,n_jobs=2,class_weight='balanced')
+
+
+def dataset(path=CATALOG):
+    observations=json.loads(Path(path).read_text())
+    ids=sorted(observations)
+    if len(ids)<30 or any(v['status']!='ROUTABLE' for v in observations.values()):
+        raise ValueError('All 30 verified journey snapshots are required; no fabricated route profiles')
+    rng=np.random.default_rng(SEED)
+    rows=[]
+    for jid in ids:
+        for index,route in enumerate(observations[jid]['routes']):
+            shape=extract(route)
+            for day in range(90):
+                at=datetime(2025,1,1)+timedelta(days=day)
+                for hour in range(24):
+                    for weather in WEATHER:
+                        features=feature_row(shape,at.replace(hour=hour),weather)
+                        # A transparent illustrative simulator, not a law of real Sri Lankan congestion.
+                        peak=1.15*np.exp(-((hour-8)**2)/5)+1.25*np.exp(-((hour-17.5)**2)/8)
+                        if at.weekday()>=5:peak*=.6
+                        score=peak+{'CLEAR':0,'RAIN':.38,'HEAVY_RAIN':.75}[weather]+.12*min(max(shape['directness']-1,0),2)+.25*min(shape['turns_per_km'],2)+rng.normal(0,.13)
+                        category='LOW' if score<.6 else 'MODERATE' if score<1.3 else 'HIGH'
+                        rows.append(features|dict(journey_id=jid,route_index=index,date=at.date().isoformat(),congestion=category))
+    frame=pd.DataFrame(rows)
+    heldout=set(ids[::5])
+    known=~frame.journey_id.isin(heldout)
+    return frame,{'train':frame[known&(frame.date<'2025-03-01')], 'validation':frame[known&(frame.date>='2025-03-01')&(frame.date<'2025-03-16')], 'test':frame[known&(frame.date>='2025-03-16')], 'unseen_journey_test':frame[~known&(frame.date>='2025-03-16')]},sorted(heldout)
+
+
+def metrics(model,frame):
+    pred=model.predict(frame[FEATURES])
+    return dict(rows=len(frame),accuracy=accuracy_score(frame.congestion,pred),macro_f1=f1_score(frame.congestion,pred,labels=CLASSES,average='macro',zero_division=0),confusion_matrix=confusion_matrix(frame.congestion,pred,labels=CLASSES).tolist(),classOrder=CLASSES)
+
+
+def train(output=Path('artifacts/routes'),report=Path('reports/route-evaluation.json')):
+    output,report=Path(output),Path(report);output.mkdir(parents=True,exist_ok=True);report.parent.mkdir(parents=True,exist_ok=True)
+    frame,parts,heldout=dataset()
+    models={'majority_baseline':DummyClassifier(strategy='most_frequent'),'random_forest':Pipeline([('features',ColumnTransformer([('weather',OneHotEncoder(handle_unknown='error'),['weather']),('numeric','passthrough',[f for f in FEATURES if f!='weather'])])),('model',RandomForestClassifier(**PARAMETERS))])}
+    evaluation={}
+    for name,model in models.items():
+        model.fit(parts['train'][FEATURES],parts['train'].congestion)
+        evaluation[name]={key:metrics(model,data) for key,data in parts.items() if key!='train'}
+    # Selection uses validation only. No refit on validation/test/heldout journeys.
+    winner=max(models,key=lambda n:evaluation[n]['validation']['macro_f1'])
+    data_hash=hashlib.sha256(frame.to_csv(index=False,lineterminator='\n').encode()).hexdigest()
+    joblib.dump(models[winner],output/'model.joblib')
+    metadata=dict(modelVersion='route-shape-synthetic-v1-'+data_hash[:12],modelType=winner,dataSource='SYNTHETIC',experimental=True,featureVersion=FEATURE_VERSION,features=FEATURES,classes=CLASSES,seed=SEED,parameters=PARAMETERS,trainingRows=len(parts['train']),totalRows=len(frame),snapshotSha256=hashlib.sha256(CATALOG.read_bytes()).hexdigest(),datasetSha256=data_hash,heldoutJourneyIds=heldout,selection='Validation macro-F1 only; no validation/test refit',splitDates={'train':'2025-01-01 through 2025-02-28','validation':'2025-03-01 through 2025-03-15','test':'2025-03-16 through 2025-03-31'},evaluation=evaluation,libraries={'python':platform.python_version(),'sklearn':sklearn.__version__},artifactSha256=hashlib.sha256((output/'model.joblib').read_bytes()).hexdigest(),trainedAt=datetime.now(timezone.utc).isoformat(),supportsJourneyDuration=False,
+      limitations=['Targets are generated by a documented toy simulator, not observed Sri Lankan traffic.','Real geometry and forecast weather do not convert synthetic target labels into validated predictions.','Model describes whole-route shapes; it has no lane/class/speed-limit tags, live traffic, events, official holidays or actual travel demand.','Alternative routes may overlap and be indistinguishable. Geographic route overlap remains across different journey IDs; held-out IDs are not proof of independent physical-road validation.','Class probabilities and burden are synthetic model outputs, not calibrated real-world congestion probabilities or time savings.'])
+    text=json.dumps(metadata,indent=2)+'\n';(output/'metadata.json').write_text(text);report.write_text(text)
+    print(json.dumps({'version':metadata['modelVersion'],'selected':winner,'evaluation':evaluation},indent=2))
+    return metadata
+
+if __name__=='__main__':train()
