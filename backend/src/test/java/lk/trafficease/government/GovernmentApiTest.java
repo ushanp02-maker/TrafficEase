@@ -35,6 +35,12 @@ class GovernmentApiTest {
         mvc.perform(get("/api/government/analytics")).andExpect(status().isUnauthorized());
         mvc.perform(post("/api/government/announcements").with(csrf()).contentType("application/json").content(body("Unauthorized attempt"))).andExpect(status().isUnauthorized());
     }
+    @Test void mappedForecastIsPublicButDoesNotExemptGovernmentCsrf() throws Exception {
+        mvc.perform(post("/api/route-forecasts").contentType("application/json").content("{\"journeyId\":\"unsupported\"}"))
+            .andExpect(status().isUnprocessableEntity()).andExpect(jsonPath("$.code").value("UNSUPPORTED_JOURNEY"));
+        mvc.perform(post("/api/government/announcements").contentType("application/json").content("{}"))
+            .andExpect(status().isForbidden());
+    }
     @Test @WithMockUser(roles="CITIZEN") void citizenRoleCannotManageNotices() throws Exception {
         mvc.perform(get("/api/government/announcements")).andExpect(status().isForbidden());
         mvc.perform(post("/api/government/announcements").with(csrf()).contentType("application/json").content(body("Forbidden attempt"))).andExpect(status().isForbidden());

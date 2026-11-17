@@ -62,8 +62,14 @@ export function GeographicMap({ data, selected }) {
     const url = import.meta.env.VITE_TILE_URL || 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
     tiles.current = L.tileLayer(url, { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(map.current);
     tiles.current.on('tileerror', () => setTileError(true));
-    layer.current = L.layerGroup().addTo(map.current);
-    const observer = new ResizeObserver(() => map.current?.invalidateSize()); observer.observe(container.current);
+    layer.current = L.featureGroup().addTo(map.current);
+    const observer = new ResizeObserver(() => {
+      if (!map.current) return;
+      map.current.invalidateSize();
+      // Preserve a useful overview when rotating a phone or resizing a split map.
+      const bounds = layer.current?.getBounds();
+      if (bounds?.isValid()) map.current.fitBounds(bounds, { padding: [25, 25], maxZoom: 15 });
+    }); observer.observe(container.current);
     return () => { observer.disconnect(); map.current.remove(); map.current = null; };
   }, []);
   useEffect(() => {

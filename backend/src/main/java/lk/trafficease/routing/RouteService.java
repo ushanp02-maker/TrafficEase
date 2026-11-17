@@ -25,6 +25,9 @@ public class RouteService {
         Location origin = locations.selected(request.originId());
         Location destination = locations.selected(request.destinationId());
         if (origin.id().equals(destination.id())) throw new ApiFailure(400, "IDENTICAL_LOCATIONS", "Choose a different destination.");
+        return calculateVerified(origin, destination, departure);
+    }
+    public RouteResponse calculateVerified(Location origin, Location destination, JourneyTime.Departure departure) {
         String coordinates = origin.longitude() + "," + origin.latitude() + ";" + destination.longitude() + "," + destination.latitude();
         JsonNode body = client.get("routing", baseUrl + "/route/v1/driving/" + coordinates
             + "?geometries=geojson&overview=full&alternatives=true&steps=false&generate_hints=false");

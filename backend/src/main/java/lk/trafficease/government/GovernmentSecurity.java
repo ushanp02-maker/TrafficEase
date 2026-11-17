@@ -69,7 +69,7 @@ public class GovernmentSecurity {
             .requestMatchers("/api/government/session", "/api/government/login").permitAll()
             .requestMatchers("/api/government/**").hasRole("GOVERNMENT_DEMO")
             .requestMatchers("/api/**", "/error").permitAll().anyRequest().denyAll())
-            .csrf(csrf -> csrf.ignoringRequestMatchers("/api/routes", "/api/ar/routes", "/api/forecasts"))
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/api/routes", "/api/ar/routes", "/api/forecasts", "/api/route-forecasts"))
             .requestCache(cache -> cache.disable())
             .formLogin(form -> form.loginProcessingUrl("/api/government/login")
                 .successHandler((r,s,a) -> { attempts.clear(r.getRemoteAddr()); government.loginAudit(a.getName(), true); json(s,200,"Government demo session established. No official government authorization."); })
