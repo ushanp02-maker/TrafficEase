@@ -6,6 +6,7 @@ import ipaddress
 import subprocess
 import sys
 import time
+from pathlib import Path
 import urllib.request
 
 
@@ -30,6 +31,15 @@ def check():
     forecast = request(8080, '/api/forecasts', {'targetId': 'region-uva', 'forecastAt': None, 'weather': 'CLEAR', 'isHoliday': False})
     require(forecast['congestion'] in ['LOW', 'MODERATE', 'HIGH'] and forecast['experimental'] is True)
     require(not forecast['supportsJourneyDuration'] and forecast['dataSource'] == 'SYNTHETIC')
+    # Retained pre-route-model releases remain valid rollback targets. New releases
+    # must include and health-check both models; absent local manifest is new mode.
+    manifest = Path('/opt/trafficease/current/READY.json')
+    legacy = manifest.exists() and 'ai-service/artifacts/routes/model.joblib' not in json.loads(manifest.read_text())['files']
+    if not legacy:
+        route = request(8000, '/route-model')
+        require(route.get('modelStatus') == 'ready' and route.get('experimental') is True and route.get('dataSource') == 'SYNTHETIC', 'Mapped-route model unavailable')
+        mapped = request(8080, '/api/route-forecasts/catalog')
+        require(len(mapped.get('journeys', [])) == 30 and mapped['model']['modelStatus'] == 'ready', 'Mapped journey bridge unavailable')
     history = request(8080, '/api/forecasts/history/status')
     if history.get('enabled'):
         require(request(8080, '/api/forecasts/history').get('status') == 'AVAILABLE', 'Optional MySQL history unavailable')

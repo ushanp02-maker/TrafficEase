@@ -194,3 +194,9 @@ Public Nominatim, OSRM demo and OSM tiles remain appropriate **only for this del
 Deployment readiness testing is recorded in [ec2-ubuntu-validation.md](ec2-ubuntu-validation.md). Local/container success is not an EC2 boot, CA issuance, security-group or real-phone validation.
 
 For the optional application profile, use the protected DB_URL/DB_USER/DB_PASSWORD settings from [the primary guide](ec2-deployment.md), but create the schema-scoped account on this native server instead of installing the AL Docker unit. Flyway preserves the legacy bootstrap tables via baseline version 0 and adds its own synthetic history table. Do not mix the two platform installers.
+
+## Mapped-journey forecasting update
+
+Current builds train and smoke-load **both** the existing scenario model and the separate `train_routes.py` model from version-controlled genuine geometry snapshots. No provider requests are made by builds/tests unless explicitly enabling live test flags. Readiness verifies the new 30-journey catalog and internal route-model service; external weather/routing availability is deliberately not a health prerequisite. Existing retained releases with the complete older manifest remain valid rollback targets; partial new route-model manifests fail integrity checks.
+
+Allow outbound HTTPS to `api.open-meteo.com` in addition to existing routing/geocoding/map domains. The backend template includes the public noncommercial `WEATHER_URL`; do not enable a paid API. No new AWS resources or inbound ports are required. Rebuild and activate a reviewed vidura release through the commands above. Open-Meteo needs a real AUTO smoke test after deployment: environment access was blocked during this implementation, so only explicit weather fixtures and manual simulation could be validated here. See [mapped-route guide](mapped-route-forecasting.md) and [validation](mapped-route-validation.md).

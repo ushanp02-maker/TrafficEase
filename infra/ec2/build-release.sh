@@ -30,10 +30,11 @@ mvn -f backend/pom.xml -B verify
 cp backend/target/trafficease-backend-0.1.0-SNAPSHOT.jar backend/app.jar
 python3.12 -m venv ai-service/.venv
 ai-service/.venv/bin/python -m pip install -r ai-service/requirements.lock.txt
-(cd ai-service && .venv/bin/python train.py && .venv/bin/python -m pytest -q)
+(cd ai-service && .venv/bin/python train.py && .venv/bin/python train_routes.py && .venv/bin/python -m pytest -q)
 # Smoke-load the newly generated trusted model; no public provider requests.
 (cd ai-service && .venv/bin/python - <<'PY'
 from main import app
+if app.state.route_engine.status != 'ready': raise SystemExit('Mapped-route model is unavailable')
 if app.state.model_status != 'ready': raise SystemExit('Trained model is unavailable')
 PY
 )

@@ -26,3 +26,7 @@ See [current validation](ec2-validation.md), [manual launch steps](ec2-deploymen
 ## UI/government delivery update — 16 November 2026
 
 The separate-page redesign and functional government demonstration are now implemented; see [current module status and security](ui-redesign.md), [new validation evidence](ui-redesign-validation.md) and [screenshots](screenshots/redesign/README.md). The earlier weighted completion estimate above is historical and is not a production-readiness score. Real traffic observations/provider future estimates, official government authorization, physical AR alignment and actual AWS deployment validation remain unproven.
+
+## Mapped-route forecasting extension
+
+Added a separate versioned route-shape model and `/route-forecasts` workflow for 30 reviewed journeys. Spring orchestrates current genuine OSRM geometry, sampled hourly Open-Meteo forecasts and private FastAPI route inference; it preserves baseline durations. Public/model outages abstain explicitly. Existing scenario, unrestricted routing, AR and government modules remain independent. See [architecture/API/model and limitations](mapped-route-forecasting.md) and [coverage evidence](mapped-journey-coverage.md).
