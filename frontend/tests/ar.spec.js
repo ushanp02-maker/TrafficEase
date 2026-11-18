@@ -46,7 +46,7 @@ async function open(page) {
   await page.route('**/api/locations?*', r => r.fulfill({ json: { locations: [new URL(r.request().url()).searchParams.get('query') === 'Origin' ? { ...destination, id: 'origin', name: 'Mapped origin, Sri Lanka' } : destination], source: 'Nominatim / OpenStreetMap' } }));
   await page.route('**/api/ar/routes', r => r.fulfill({ json: { routing: routing(), destination, originSource: 'GPS', candidates: [{ name: 'Mapped Road', routeId: 'route-1', geometry }] } }));
   await page.route('**/api/routes', r => r.fulfill({ json: routing() }));
-  await page.goto('/'); await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link',{ name: 'AR Navigation', exact: true }).click();
+  await page.goto('/'); await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link',{ name: 'AR Navigation', exact: true }).click();await page.getByText('Camera & navigation help',{exact:true}).click();
 }
 async function consent(page) { await page.getByRole('checkbox',{name:/I am stationary/}).check(); }
 async function destinationSelection(page) {
@@ -103,7 +103,7 @@ test('permission denial preserves a functioning manual map route',async({page})=
   await page.getByRole('button',{name:'Mapped origin, Sri Lanka',exact:true}).click();
   await destinationSelection(page); await page.getByRole('button',{name:'Calculate AR/map routes'}).click();
   await expect(page.getByRole('button',{name:/Road route 1/})).toBeVisible();
-  await expect(page.getByRole('heading',{name:'Map fallback · alignment uncertain'})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'Use the map for now'})).toBeVisible();
 });
 test('missing sensors and camera are explicit unsupported states',async({page})=>{
   await devices(page,'missing'); await open(page); await consent(page);
@@ -115,7 +115,7 @@ test('missing sensors and camera are explicit unsupported states',async({page})=
 test('poor GPS blocks camera-aligned routing and shows map fallback',async({page})=>{
   await devices(page,'poor'); await open(page); await consent(page); await page.getByRole('button',{name:'Enable GPS'}).click();
   await destinationSelection(page); await expect(page.getByRole('button',{name:'Calculate AR/map routes'})).toBeDisabled();
-  await expect(page.getByRole('heading',{name:'Map fallback · alignment uncertain'})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'Use the map for now'})).toBeVisible();
 });
 test('late camera resolution after stop still stops the returned tracks',async({page})=>{
   await devices(page,'late'); await open(page); await consent(page);
@@ -161,7 +161,7 @@ test('starting the camera does not invalidate GPS or compass already enabled', a
   await compassSamples(page);
   await expect(page.getByRole('heading', { name: 'Candidate road: Mapped Road' })).toBeVisible();
   await page.waitForTimeout(2200);
-  await expect(page.getByRole('heading', { name: 'Map fallback · alignment uncertain' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Use the map for now' })).toBeVisible();
 });
 
 test('Android-style absolute events without a permission method remain approximate', async ({ page }) => {

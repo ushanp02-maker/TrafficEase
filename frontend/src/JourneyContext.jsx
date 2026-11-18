@@ -19,7 +19,7 @@ export function DepartureControls({ onChange }) {
       if (data.timeZone !== 'Asia/Colombo' || !Number.isFinite(Date.parse(data.now))) throw new Error();
       if (signal?.aborted) return;
       loaded.current = Date.now(); setTick(loaded.current); setCapabilities(data); setError('');
-    } catch (e) { if (e.name !== 'AbortError') setError('Server clock unavailable. Leave Now remains available; refresh before scheduling.'); }
+    } catch (e) { if (e.name !== 'AbortError') setError('Scheduling is temporarily unavailable. Try again or choose Leave Now.'); }
   }
   useEffect(() => { const controller = new AbortController(); load(controller.signal); const timer = setInterval(() => setTick(Date.now()), 30_000); return () => { controller.abort(); clearInterval(timer); }; }, []);
   const now = capabilities ? Date.parse(capabilities.now) + tick - loaded.current : Date.now();
@@ -31,8 +31,8 @@ export function DepartureControls({ onChange }) {
     </select></label>
     {journey.mode !== 'LEAVE_NOW' && <label><span>DEPARTURE DATE AND TIME · SRI LANKA</span><input type="datetime-local" required value={journey.local} min={colomboLocal(now)} max={colomboLocal(now + 7 * 86400_000)} onChange={e => change({ local: e.target.value })}/></label>}
     {validation && <p role="status">{validation}</p>}
-    {error && <p role="status">{error} <button type="button" className="text-button" onClick={() => load()}>Refresh departure clock</button></p>}
-    <p className="form-note">Now through seven days ahead. Departure is planning context only: genuine OSRM baseline routes remain available, but traffic-aware and future journey estimates are unsupported. No departure-specific ETA is calculated.</p>
+    {error && <p role="status">{error} <button type="button" className="text-button" onClick={() => load()}>Retry scheduling</button></p>}
+    <span className="departure-hint">Plan up to 7 days ahead · Sri Lanka time</span>
   </fieldset>;
 }
 export { journeyPayload };

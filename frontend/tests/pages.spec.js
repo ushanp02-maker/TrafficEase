@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 import {mkdirSync,readFileSync} from 'node:fs';
-const titles={'/':'A better way','/navigation':'Find your way forward.','/ai-predictions':'Explore the road ahead.','/ar-navigation':'Look ahead. Stay aware.','/traffic-information':'A clearer view of what’s ahead.','/about':'Built for learning. Designed for journeys.'};
+const titles={'/':'Your journey,','/navigation':'Where will today take you?','/ai-predictions':'Know before you go.','/ar-navigation':'Look ahead. Stay aware.','/traffic-information':'A clearer road ahead.','/about':'A clearer way forward.'};
 test.beforeEach(async({page})=>{
  await page.route('https://tile.openstreetmap.org/**',r=>r.abort());
 });
@@ -14,21 +14,21 @@ test('each citizen URL refreshes into its own page and home hero is exclusive',a
  await page.goto('/does-not-exist');await expect(page.getByRole('heading',{level:1})).toHaveText('This road ends here.');
 });
 test('navigation supports links, active state, browser history and mobile menu',async({page})=>{
- await page.goto('/');await page.getByRole('link',{name:'Plan Your Journey',exact:false}).click();await expect(page).toHaveURL(/\/navigation$/);
+ await page.goto('/');await page.getByRole('navigation',{name:'Main navigation'}).getByRole('link',{name:'Plan Journey',exact:true}).click();await expect(page).toHaveURL(/\/navigation$/);
  await expect(page.getByTestId('home-hero')).toHaveCount(0);
- await page.getByRole('navigation',{name:'Main navigation'}).getByRole('link',{name:'AI Predictions',exact:true}).click();
- await expect(page).toHaveURL(/\/ai-predictions$/);await expect(page.getByRole('navigation',{name:'Main navigation'}).getByRole('link',{name:'AI Predictions',exact:true})).toHaveAttribute('aria-current','page');
+ await page.getByRole('navigation',{name:'Main navigation'}).getByRole('link',{name:'Traffic Predictions',exact:true}).click();
+ await expect(page).toHaveURL(/\/ai-predictions$/);await expect(page.getByRole('navigation',{name:'Main navigation'}).getByRole('link',{name:'Traffic Predictions',exact:true})).toHaveAttribute('aria-current','page');
  await page.goBack();await expect(page).toHaveURL(/\/navigation$/);await page.goForward();await expect(page).toHaveURL(/\/ai-predictions$/);
  await page.setViewportSize({width:390,height:844});const menu=page.getByRole('button',{name:'Open navigation'});await menu.click();await expect(page.getByRole('button',{name:'Close navigation'})).toHaveAttribute('aria-expanded','true');
- await page.getByRole('navigation',{name:'Main navigation'}).getByRole('link',{name:'Traffic Information',exact:true}).click();await expect(page).toHaveURL(/\/traffic-information$/);await expect(page.getByRole('button',{name:'Open navigation'})).toHaveAttribute('aria-expanded','false');
+ await page.getByRole('navigation',{name:'Main navigation'}).getByRole('link',{name:'Traffic Alerts',exact:true}).click();await expect(page).toHaveURL(/\/traffic-information$/);await expect(page.getByRole('button',{name:'Open navigation'})).toHaveAttribute('aria-expanded','false');
 });
 test('citizen announcements filter with explicit demo, dates and empty/error states',async({page})=>{
  const notice={id:'fixture',title:'Coursework closure illustration',body:'This is a test announcement, not an official road closure.',category:'ROAD_CLOSURE',region:'CENTRAL',affectedArea:'Fictional coursework road',validFrom:'2026-12-01T00:00:00Z',validUntil:'2026-12-02T00:00:00Z',publishedAt:'2026-11-16T00:00:00Z',demonstration:true};
  await page.route('**/api/announcements?*',r=>r.fulfill({json:{demonstration:true,storage:'VOLATILE_DEMO_MEMORY',announcements:new URL(r.request().url()).searchParams.get('category')==='WEATHER'?[]:[notice]}}));
  await page.goto('/traffic-information');await expect(page.getByRole('heading',{name:notice.title})).toBeVisible();await expect(page.getByText('DEMO · NOT OFFICIAL',{exact:true})).toBeVisible();
  await page.getByText('Notice details & relevant times').click();await expect(page.getByText('All times: Asia/Colombo.',{exact:false})).toBeVisible();
- await page.getByRole('combobox',{name:'CATEGORY',exact:true}).selectOption('WEATHER');await expect(page.getByRole('heading',{name:'No demonstration notices here yet.'})).toBeVisible();
- await page.route('**/api/announcements?*',r=>r.fulfill({status:503,json:{message:'Test storage unavailable'}}));await page.getByRole('button',{name:'Reset & refresh'}).click();await expect(page.getByRole('alert')).toContainText('Test storage unavailable');
+ await page.getByRole('combobox',{name:'CATEGORY',exact:true}).selectOption('WEATHER');await expect(page.getByRole('heading',{name:'You’re all caught up.'})).toBeVisible();
+ await page.route('**/api/announcements?*',r=>r.fulfill({status:503,json:{message:'Test storage unavailable'}}));await page.getByRole('button',{name:'Reset & refresh'}).click();await expect(page.getByRole('alert')).toContainText('temporarily unavailable');
 });
 test('all citizen pages and government login fit mobile, tablet and desktop',async({page})=>{
  for(const path of [...Object.keys(titles),'/government/login']){
@@ -36,8 +36,8 @@ test('all citizen pages and government login fit mobile, tablet and desktop',asy
   for(const width of [320,390,768,1440]){await page.setViewportSize({width,height:900});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${path} @ ${width}`).toBe(true);}
  }
  if(process.env.UI_SCREENSHOT_DIR){mkdirSync(process.env.UI_SCREENSHOT_DIR,{recursive:true});for(const [path,name]of[['/','home'],['/navigation','route-planner'],['/ai-predictions','ai-predictions'],['/ar-navigation','ar-navigation'],['/traffic-information','announcements'],['/government/login','government-login']]){
-  await page.setViewportSize({width:1440,height:1050});await page.goto(path);if(path==='/ai-predictions')await expect(page.locator('.forecast-form')).toBeVisible();
-  if(path==='/traffic-information')await expect(page.getByText('Loading demonstration announcements…',{exact:true})).toHaveCount(0);
+  await page.setViewportSize({width:1440,height:1050});await page.goto(path);if(path==='/ai-predictions')await expect(page.locator('.traffic-form')).toBeVisible();
+  if(path==='/traffic-information')await expect(page.getByText('Loading alerts…',{exact:true})).toHaveCount(0);
   await page.screenshot({path:`${process.env.UI_SCREENSHOT_DIR}/${name}-desktop.png`,fullPage:true});
   if(path==='/'){await page.setViewportSize({width:390,height:844});await page.screenshot({path:`${process.env.UI_SCREENSHOT_DIR}/${name}-mobile.png`,fullPage:true});}
  }}
@@ -70,10 +70,16 @@ test('real server session creates, edits, publishes and withdraws a notice seen 
 });
 test('real FastAPI model renders a clearly synthetic prediction card',async({page})=>{
  test.skip(!process.env.GOV_E2E_CREDENTIAL_FILE,'Requires the local Java/FastAPI integration services.');
- await page.goto('/ai-predictions');await expect(page.getByRole('button',{name:/Generate experimental forecast/})).toBeEnabled();
+ await page.goto('/research/scenarios');await expect(page.getByRole('button',{name:/Generate experimental forecast/})).toBeEnabled();
  await page.getByRole('button',{name:/Generate experimental forecast/}).click();
  await expect(page.getByRole('heading',{name:/^(LOW|MODERATE|HIGH) congestion scenario$/})).toBeVisible();
  await expect(page.getByRole('article',{name:'Experimental forecast result'})).toContainText('SYNTHETIC');
  await expect(page.getByRole('article',{name:'Experimental forecast result'})).toContainText('No journey duration or road speed is estimated.');
  if(process.env.UI_SCREENSHOT_DIR)await page.screenshot({path:`${process.env.UI_SCREENSHOT_DIR}/ai-actual-synthetic-result-desktop.png`,fullPage:true});
+});
+test('protected administration service failure is short, retryable and never exposes diagnostics',async({page})=>{
+ await page.route('**/api/government/session',r=>r.fulfill({status:503,json:{message:'java.lang.Traceback secret debug configuration'}}));await page.goto('/government/dashboard');await expect(page.getByRole('alert')).toContainText('temporarily unavailable');await expect(page.getByRole('button',{name:'Try again',exact:true})).toBeVisible();await expect(page.getByText('java.lang',{exact:false})).toHaveCount(0);
+});
+test('simulation home has a functioning journey form and recorded route results',async({page})=>{
+ test.skip(!process.env.CONSUMER_INTEGRATION,'Requires launcher Simulation mode.');await page.route('https://**',r=>r.abort());await page.goto('/');await page.getByRole('combobox',{name:'FROM',exact:true}).selectOption('pettah');await page.getByRole('combobox',{name:'TO',exact:true}).selectOption('pettah--piliyandala');await page.getByRole('button',{name:'Find My Route',exact:true}).click();await expect(page.locator('.journey-summary h2')).toContainText(/(Low|Moderate|High) traffic/);await expect(page.getByText('SIMULATION · SYNTHETIC',{exact:true})).toBeVisible();
 });

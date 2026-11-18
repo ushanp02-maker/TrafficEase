@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
+import {Link} from 'react-router-dom';
 import { GeographicMap, LocationSearch, request } from './RoutePlanner.jsx';
+import {InlineError} from './components/Feedback.jsx';
 import useArSensors from './ar/useArSensors.js';
 import { DepartureControls, useJourney, journeyPayload } from './JourneyContext.jsx';
 import { alignment, angleDelta, bearing, recommendation } from './ar/geometry.js';
@@ -40,7 +42,7 @@ export default function ArNavigation() {
   const better = recommendation(match, data?.routing);
   const direction = match.reliable && sensors.gps && destination ? angleDelta(bearing(sensors.gps, destination), sensors.heading.degrees) : null;
   return <section className="ar-page" aria-label="Smartphone AR navigation">
-    <div className="notice"><b>STATIONARY USERS OR PASSENGERS ONLY</b><span>Never operate this camera interface while driving. This is an approximate compass overlay, not visual road recognition or turn-by-turn guidance.</span></div>
+    <div className="safety-guidance"><b>Stationary or passengers only.</b> Never use the camera while driving.</div>
     <label className="checkbox-label safety-check"><input type="checkbox" checked={safe} onChange={event => { setSafe(event.target.checked); if (!event.target.checked) sensors.stop(); }}/><span>I am stationary or a passenger, not the driver.</span></label>
     <div className="ar-permissions">
       <button type="button" className="primary" disabled={!safe || sensors.camera === 'requesting'} onClick={sensors.startCamera}>Start rear camera</button>
@@ -48,7 +50,8 @@ export default function ArNavigation() {
       <button type="button" className="secondary-light" disabled={!safe} onClick={sensors.startCompass}>Enable compass</button>
       <button type="button" className="secondary-light" onClick={sensors.stop}>Stop camera and sensors</button>
     </div>
-    <div className="sensor-status" role="status"><p>Camera: {sensors.camera}</p><p>GPS: {sensors.gpsStatus}{sensors.gps ? ` · reported accuracy ${Math.round(sensors.gps.accuracy)} m` : ''}</p><p>Compass: {sensors.compassStatus}{sensors.heading ? ` · ${Math.round(sensors.heading.degrees)}° · ${sensors.heading.accuracy === null ? 'error not reported' : `reported error ±${sensors.heading.accuracy}°`}` : ''}</p></div>
+    {!["off","on","requesting"].includes(sensors.camera)&&<div className="inline-feedback" role="status">Camera unavailable. Use the map or try Start rear camera again.</div>}
+
     <div className="camera-stage">
       <video ref={video} autoPlay muted playsInline aria-label="Live rear-camera view"/>
       {sensors.camera !== 'on' && <p className="camera-placeholder">Rear camera is off or unavailable. The map and manual origin remain usable.</p>}
@@ -56,11 +59,11 @@ export default function ArNavigation() {
         {match.reliable ? <><span className="pill">APPROXIMATE · NOT VISUALLY RECOGNIZED</span><h3>Candidate road: {match.candidate.name}</h3><p>Estimated route bearing {Math.round(match.candidate.bearing)}° · heading difference {Math.round(match.candidate.headingError)}°</p>
           <div className="direction-display"><span aria-hidden="true" style={{ transform: `rotate(${direction}deg)` }}>↑</span><p>Destination {Math.round(Math.abs(direction))}° {direction < 0 ? 'left' : 'right'} of camera heading{Math.abs(direction) > 90 ? ' (behind you)' : ''}. Straight-line direction, not a turn instruction.</p></div>
           {better ? <p>Returned {better.routeId} has {better.seconds} seconds less baseline duration than the direction-associated route. Compare it on the map; not live traffic savings.</p> : <p>No better directional alternative is established by comparable returned routes.</p>}
-          <p>Compass error may remain even when stable. Check the map before relying on direction.</p></> : <><h3>Map fallback · alignment uncertain</h3><p>{match.reason}</p></>}
+          <p>Compass error may remain even when stable. Check the map before relying on direction.</p></> : <><h3>Use the map for now</h3><p>We need a reliable position and direction to align the camera view.</p></>}
       </div>
     </div>
     <form className="planner ar-plan" onSubmit={calculate}>
-      <h2>Choose a destination and route</h2><p className="form-note">Departure context is shared with Route Planner. Scheduled journeys use baseline map routes only; camera alignment is paused because present sensors cannot establish future road conditions. Precise GPS coordinates are sent to Nominatim (country check) and OSRM only when you calculate a route; camera frames stay on your device.</p>
+      <h2>Choose a destination and route</h2><details className="ar-help"><summary>Camera & navigation help</summary>    <div className="sensor-status" role="status"><p>Camera: {sensors.camera}</p><p>GPS: {sensors.gpsStatus}{sensors.gps ? ` · reported accuracy ${Math.round(sensors.gps.accuracy)} m` : ''}</p><p>Compass: {sensors.compassStatus}{sensors.heading ? ` · ${Math.round(sensors.heading.degrees)}° · ${sensors.heading.accuracy === null ? 'error not reported' : `reported error ±${sensors.heading.accuracy}°`}` : ''}</p></div><p>{match.reason}</p><p className="form-note">Departure context is shared with Route Planner. Scheduled journeys use baseline map routes only; camera alignment is paused because present sensors cannot establish future road conditions. Precise GPS coordinates are sent to Nominatim (country check) and OSRM only when you calculate a route; camera frames stay on your device.</p></details>
       <DepartureControls onChange={clear}/>
       {journey.mode !== 'LEAVE_NOW' && <p role="status">Scheduled departure · map planning only. Future traffic, camera route alignment and departure-specific ETAs are unsupported.</p>}
       <label><span>STARTING POINT SOURCE</span><select value={mode} onChange={event => { clear(); setMode(event.target.value); }}><option value="gps">GPS fix</option><option value="manual">Manual location (map fallback)</option></select></label>
@@ -70,13 +73,13 @@ export default function ArNavigation() {
       <p className="map-credit">Search and country check: Nominatim · © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>. Leave at least one second between searches/calculations; no automatic routing or reverse-geocoding loop.</p>
     </form>
     {busy && <p role="status">Loading genuine road geometry…</p>}
-    {error && <p className="error-message" role="alert">{error}</p>}
+    {error && <InlineError onRetry={()=>calculate({preventDefault(){}})}>{error}</InlineError>}
     <div className="route-layout"><section className="map-panel"><div className="section-title"><h2>Map fallback · always available</h2><span className="pill">GENUINE GEOMETRY</span></div><GeographicMap data={data?.routing} selected={selected}/></section>
       <section className="results"><h2>Baseline route comparison</h2>
-        {!data && <p className="empty-state">Select two locations manually if sensors are unreliable. No road, congestion or route recommendation is fabricated.</p>}
-        {data && <><p className="comparison-note">Source: {data.routing.source}. Calculated {new Intl.DateTimeFormat('en-LK', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Colombo' }).format(new Date(data.routing.generatedAt))} (Sri Lanka). Fastest/shortest among returned routes only; not true shortest-distance optimization. No live traffic.</p>
+        {!data && <div className="empty-state"><p>Choose locations manually when positioning is uncertain.</p><Link className="subtle-link" to="/ai-predictions?simulation=1">Explore a recorded journey simulation →</Link></div>}
+        {data && <><details className="source-popover"><summary>Route information</summary><p className="comparison-note">Source: {data.routing.source}. Calculated {new Intl.DateTimeFormat('en-LK', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Colombo' }).format(new Date(data.routing.generatedAt))} (Sri Lanka). Fastest/shortest among returned routes only; not true shortest-distance optimization. No live traffic.</p></details>
           {data.routing.routes.map((route, index) => <button key={route.id} className={`route-card ${selected === route.id ? 'selected' : ''}`} aria-pressed={selected === route.id} onClick={() => setSelected(route.id)}><h3>Road route {index + 1}</h3><span className="route-tag">{[route.fastestAvailable && 'Fastest available', route.shortestAvailable && 'Shortest available'].filter(Boolean).join(' · ') || 'Returned alternative'}</span><div className="metrics"><strong>{Math.round(route.durationSeconds / 60)}<small> min</small></strong><span>{(route.distanceMeters / 1000).toFixed(1)} km</span></div><p>OSRM baseline estimate · map selection does not establish camera alignment.</p></button>)}
-          <p className="form-note">Nearby candidates use the first returned route steps only; parallel/unreturned roads may be missing. Accuracy gates reduce risk but cannot establish real-world alignment without field validation. Recalculate if GPS moves more than 25 m or the route is older than two minutes.</p></>}
+          <details className="source-popover"><summary>Positioning limitations</summary><p className="form-note">Nearby candidates use the first returned route steps only; parallel/unreturned roads may be missing. Accuracy gates reduce risk but cannot establish real-world alignment without field validation. Recalculate if GPS moves more than 25 m or the route is older than two minutes.</p></details></>}
       </section></div>
   </section>;
 }

@@ -24,15 +24,15 @@ test('evening departure reaches routing and carries to AI and map-only AR', asyn
     expect(route.request().postDataJSON()).toEqual({ originId: '1', destinationId: '2', mode: 'LATER_TODAY', departureAt: '2026-11-11T19:00:00+05:30' });
     return route.fulfill({ status: 503, json: { message: 'Test provider unavailable; no invented route.' } });
   });
-  await page.getByRole('button', { name: /Calculate road routes/ }).click();
-  await expect(page.getByRole('alert')).toContainText('no invented route');
-  await page.getByRole('button', { name: /Explore AI scenarios for this departure/ }).click();
+  await page.getByRole('button', { name: /Find routes/ }).click();
+  await expect(page.getByRole('alert')).toContainText('temporarily unavailable');
+  await page.getByText('Location search & privacy',{exact:true}).click();await page.getByRole('link',{name:'Research & scenarios',exact:true}).click();
   await expect(page.getByLabel('FORECAST DATE AND TIME', { exact: false })).toHaveValue('2026-11-11T19:00');
   await expect(page.getByText('No geographic route-to-scenario mapping', { exact: false })).toBeVisible();
   await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'AR Navigation', exact: true }).click();
   await expect(page.getByLabel('JOURNEY MODE')).toHaveValue('LATER_TODAY');
   await expect(page.getByText('Scheduled departure · map planning only.', { exact: false })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Map fallback · alignment uncertain' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Use the map for now' })).toBeVisible();
 });
 test('scheduled timestamp input requires future date and exposes a seven-day maximum', async ({ page }) => {
   await expect(page.getByRole('option', { name: 'Future Date' })).toBeEnabled();
@@ -43,7 +43,7 @@ test('scheduled timestamp input requires future date and exposes a seven-day max
   await expect(page.getByText('Use Later Today for this evening;', { exact: false })).toBeVisible();
 });
 test('history is explicit opt-in and shows storage outcome without changing model result', async ({ page }) => {
-  await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'AI Predictions', exact: true }).click();
+  await page.getByText('Location search & privacy',{exact:true}).click();await page.getByRole('link',{name:'Research & scenarios',exact:true}).click();
   const save = page.getByRole('checkbox', { name: /Save my next synthetic scenario/ });
   await expect(save).not.toBeChecked(); await save.check();
   await page.route('**/api/forecasts', route => {
@@ -59,7 +59,7 @@ test('history is explicit opt-in and shows storage outcome without changing mode
 });
 test('model evaluation is accessible and explicitly synthetic', async ({ page }) => {
   await page.route('**/api/forecasts/model', route => route.fulfill({ json: { experimental: true, dataSource: 'SYNTHETIC', modelStatus: 'ready', metadata: { modelVersion: 'evaluated-fixture', datasetVersion: 'fictional-fixture', features: ['hour','weekday'], evaluation: { majority_baseline: { test: { macro_f1: 0.22 } }, random_forest: { test: { macro_f1: 0.71 } } } } } }));
-  await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'AI Predictions', exact: true }).click();
+  await page.getByText('Location search & privacy',{exact:true}).click();await page.getByRole('link',{name:'Research & scenarios',exact:true}).click();
   await page.getByRole('button', { name: 'View synthetic model evaluation' }).click();
   await expect(page.getByText('Version: evaluated-fixture', { exact: false })).toBeVisible();
   await page.getByText('Training, validation and held-out test metrics', { exact: true }).click();

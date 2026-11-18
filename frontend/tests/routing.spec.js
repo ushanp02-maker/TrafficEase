@@ -33,24 +33,24 @@ test.beforeEach(async ({ page }) => {
 test('no automatic geocoding, explicit selection, genuine response geometry and comparison labels', async ({ page }) => {
   let searches = 0; page.on('request', request => { if (request.url().includes('/api/locations')) searches++; });
   await page.getByRole('textbox', { name: 'STARTING POINT' }).fill('Ka');
-  await expect(page.getByRole('button', { name: /Calculate road routes/ })).toBeDisabled();
+  await expect(page.getByRole('button', { name: /Find routes/ })).toBeDisabled();
   expect(searches).toBe(0);
   await selectLocations(page);
-  await page.getByRole('button', { name: /Calculate road routes/ }).click();
-  await expect(page.getByRole('button', { name: /Fastest available.*Shortest available/ })).toBeVisible();
+  await page.getByRole('button', { name: /Find routes/ }).click();
+  await expect(page.getByRole('button', { name: /Route 1 Fastest available/ })).toBeVisible();await page.getByText('About these results',{exact:true}).click();
   await expect(page.getByText('The same route is fastest and shortest', { exact: false })).toBeVisible();
-  await expect(page.getByText('OSRM baseline estimate · not live traffic')).toBeVisible();
+  await expect(page.getByText('Baseline estimate')).toBeVisible();
   await expect(page.locator('.leaflet-overlay-pane path')).toHaveCount(3);
   await page.getByRole('textbox', { name: 'DESTINATION' }).fill('Different');
-  await expect(page.getByRole('button', { name: /Calculate road routes/ })).toBeDisabled();
-  await expect(page.getByText('OSRM baseline estimate · not live traffic')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: /Find routes/ })).toBeDisabled();
+  await expect(page.getByText('Baseline estimate')).toHaveCount(0);
 });
 test('unavailable geocoder and tiles show honest errors without sample routes', async ({ page }) => {
-  await page.route('**/api/locations?*', route => route.fulfill({ status: 503, json: { message: 'Location provider unavailable' } }));
+  await page.route('**/api/locations?*', route => route.fulfill({ status: 503, json: { message: 'temporarily unavailable' } }));
   await page.getByRole('textbox', { name: 'STARTING POINT' }).fill('Jaffna');
   await page.getByRole('button', { name: 'Search starting point' }).click();
-  await expect(page.getByRole('alert')).toContainText('Location provider unavailable');
-  await expect(page.getByText('Map tiles are unavailable.', { exact: false })).toBeVisible();
+  await expect(page.getByRole('alert')).toContainText('temporarily unavailable');
+  await expect(page.getByText('Map background unavailable.', { exact: false })).toBeVisible();
   await expect(page.locator('.route-card')).toHaveCount(0);
 });
 test('empty search results are distinct from failure', async ({ page }) => {
@@ -61,8 +61,8 @@ test('empty search results are distinct from failure', async ({ page }) => {
 test('snapping rejection is shown without a fabricated route', async ({ page }) => {
   await selectLocations(page);
   await page.route('**/api/routes', route => route.fulfill({ status: 422, json: { code: 'EXCESSIVE_SNAPPING', message: 'Destination is approximately 2776 m from the routed road.' } }));
-  await page.getByRole('button', { name: /Calculate road routes/ }).click();
-  await expect(page.getByRole('alert')).toContainText('2776 m');
+  await page.getByRole('button', { name: /Find routes/ }).click();
+  await expect(page.getByRole('alert')).toContainText('closer to a road');
   await expect(page.locator('.route-card')).toHaveCount(0);
 });
 test('loading and stale responses cannot overwrite edited locations', async ({ page }) => {
@@ -80,7 +80,7 @@ test('navigation and map stay within mobile and tablet viewports', async ({ page
     await page.setViewportSize({ width, height: 850 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   }
-  for (const name of ['AI Predictions', 'AR Navigation', 'Route Planner']) {
+  for (const name of ['Traffic Predictions', 'AR Navigation', 'Plan Journey']) {
     await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name, exact: true }).click();
     await expect(page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name, exact: true })).toHaveAttribute('aria-current', 'page');
   }
@@ -93,21 +93,21 @@ test('alternative routes are selectable and comparisons stay scoped to returned 
   response.routes[0].shortestAvailable = false;
   response.routes.push({ ...response.routes[0], id: 'route-2', distanceMeters: 23000, durationSeconds: 2100, fastestAvailable: false, shortestAvailable: true });
   await page.route('**/api/routes', route => route.fulfill({ json: response }));
-  await page.getByRole('button', { name: /Calculate road routes/ }).click();
-  await expect(page.getByText('Fastest and shortest available routes differ.', { exact: false })).toBeVisible();
-  const alternative = page.getByRole('button', { name: /Shortest available Road route 2/ });
+  await page.getByRole('button', { name: /Find routes/ }).click();
+  await page.getByText('About these results',{exact:true}).click();await expect(page.getByText('Fastest and shortest available routes differ.', { exact: false })).toBeVisible();
+  const alternative = page.getByRole('button', { name: /Route 2 Shortest available/ });
   await alternative.click();
   await expect(alternative).toHaveAttribute('aria-pressed', 'true');
-  await expect(page.getByText('OSRM does not calculate a true shortest-distance route.', { exact: false })).toBeVisible();
+  await expect(page.getByText('not a true minimum-distance objective.', { exact: false })).toBeVisible();
 });
 
 test('pending route cannot repopulate results after a location is edited', async ({ page }) => {
   await selectLocations(page);
   let release; const wait = new Promise(resolve => { release = resolve; });
   await page.route('**/api/routes', async route => { await wait; await route.fulfill({ json: fixture }).catch(() => {}); });
-  await page.getByRole('button', { name: /Calculate road routes/ }).click();
-  await expect(page.getByRole('status').filter({ hasText: 'Calculating genuine' })).toBeVisible();
+  await page.getByRole('button', { name: /Find routes/ }).click();
+  await expect(page.getByRole('status',{name:'Finding your journey'})).toBeVisible();
   await page.getByRole('textbox', { name: 'DESTINATION' }).fill('Jaffna'); release();
   await expect(page.locator('.route-card')).toHaveCount(0);
-  await expect(page.getByRole('button', { name: /Calculate road routes/ })).toBeDisabled();
+  await expect(page.getByRole('button', { name: /Find routes/ })).toBeDisabled();
 });
