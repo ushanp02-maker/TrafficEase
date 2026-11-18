@@ -1,194 +1,84 @@
-import { test, expect } from '@playwright/test';
-const destination = { id: 'dest', name: 'Mapped destination, Sri Lanka', latitude: 7.001, longitude: 80, countryCode: 'LK' };
-const geometry = { type: 'LineString', coordinates: [[80,7],[80,7.0005],[80,7.001]] };
-const routing = () => ({ source: 'OSRM / OpenStreetMap', estimateKind: 'BASELINE_ROUTING_ESTIMATE', generatedAt: new Date().toISOString(), comparisonScope: 'RETURNED_ROUTES_ONLY', trueShortestSupported: false,
-  snapping: [{ endpoint: 'origin', latitude: 7, longitude: 80, distanceMeters: 2 }, { endpoint: 'destination', latitude: 7.001, longitude: 80, distanceMeters: 3 }],
-  limitations: ['No live traffic'], routes: [{ id: 'route-1', distanceMeters: 120, durationSeconds: 60, fastestAvailable: true, shortestAvailable: true, geometry }] });
-async function devices(page, mode = 'granted') {
-  await page.addInitScript(({ mode }) => {
-    window.arTest = { stopped: 0, cleared: 0, compassRemoved: 0, compassAdded: 0, currentWatch: null };
-    const originalAdd = window.addEventListener.bind(window);
-    window.addEventListener = (type, listener, options) => { if (type.startsWith('deviceorientation')) window.arTest.compassAdded++; return originalAdd(type, listener, options); };
-    const originalRemove = window.removeEventListener.bind(window);
-    window.removeEventListener = (type, listener, options) => { if (type.startsWith('deviceorientation')) window.arTest.compassRemoved++; return originalRemove(type, listener, options); };
-    if (mode === 'missing') {
-      Object.defineProperty(navigator,'mediaDevices',{ configurable: true, value: undefined });
-      Object.defineProperty(navigator,'geolocation',{ configurable: true, value: undefined });
-      Object.defineProperty(window,'DeviceOrientationEvent',{ configurable: true, value: undefined });
-      return;
-    }
-    const geo = {
-      watchPosition(success, failure) {
-        if (mode === 'denied') { setTimeout(() => failure({ code: 1 }), 0); return 1; }
-        window.arTest.currentWatch = () => success({ timestamp: Date.now(), coords: { latitude: 7, longitude: 80, accuracy: mode === 'poor' ? 100 : 5, speed: 0 } });
-        window.arTest.currentWatch(); return 1;
-      },
-      clearWatch() { window.arTest.cleared++; window.arTest.currentWatch = null; },
-    };
-    Object.defineProperty(navigator,'geolocation',{ configurable: true, value: geo });
-    const orientation = window.DeviceOrientationEvent || function() {};
-    orientation.requestPermission = async () => mode === 'lateCompass' ? await new Promise(resolve => { window.arTest.releaseCompass = resolve; }) : mode === 'denied' ? 'denied' : 'granted';
-    Object.defineProperty(window,'DeviceOrientationEvent',{ configurable: true, value: orientation });
-    Object.defineProperty(navigator,'mediaDevices',{ configurable: true, value: { getUserMedia: async () => {
-      if (mode === 'denied') throw new DOMException('Denied','NotAllowedError');
-      const canvas = document.createElement('canvas'); canvas.width = 100; canvas.height = 100;
-      canvas.getContext('2d').fillRect(0,0,100,100);
-      const stream = canvas.captureStream(5), track = stream.getVideoTracks()[0];
-      const stop = track.stop.bind(track); track.stop = () => { window.arTest.stopped++; stop(); };
-      track.getSettings = () => ({ facingMode: 'environment' });
-      if (mode === 'late') await new Promise(resolve => { window.arTest.releaseCamera = resolve; });
-      return stream;
-    } } });
-  }, { mode });
+import {test,expect} from '@playwright/test';
+const destination={id:'dest',name:'Mapped destination, Sri Lanka',latitude:7.001,longitude:80.001,countryCode:'LK'};
+const geometry={type:'LineString',coordinates:[[80,7],[80,7.001],[80.001,7.001]]};
+function response(){return {originSource:'GPS',destination,routing:{source:'OSRM / OpenStreetMap',estimateKind:'BASELINE_ROUTING_ESTIMATE',generatedAt:new Date().toISOString(),comparisonScope:'RETURNED_ROUTES_ONLY',trueShortestSupported:false,snapping:[{endpoint:'origin',latitude:7,longitude:80,distanceMeters:0},{endpoint:'destination',latitude:7.001,longitude:80.001,distanceMeters:0}],limitations:[],routes:[{id:'route-1',distanceMeters:222,durationSeconds:90,fastestAvailable:true,shortestAvailable:true,geometry}]},directions:[{routeId:'route-1',complete:true,steps:[{type:'depart',roadName:'First Road',location:[80,7],distanceMeters:111,durationSeconds:45},{type:'turn',modifier:'right',roadName:'Second Road',location:[80,7.001],distanceMeters:111,durationSeconds:45},{type:'arrive',location:[80.001,7.001],distanceMeters:0,durationSeconds:0}]}],candidates:[]};}
+async function devices(page,mode='granted'){
+ await page.addInitScript(({mode})=>{
+  window.arTest={stopped:0,cleared:0,compassRemoved:0,compassAdded:0,watches:0,cameraCalls:0,accuracy:mode==='poor'?100:5,latitude:7,longitude:80,heading:0,feed:true};
+  Object.defineProperty(window.screen,'orientation',{configurable:true,value:{angle:0}});
+  const add=window.addEventListener.bind(window),remove=window.removeEventListener.bind(window);
+  window.addEventListener=(type,fn,options)=>{if(type.startsWith('deviceorientation'))window.arTest.compassAdded++;return add(type,fn,options);};
+  window.removeEventListener=(type,fn,options)=>{if(type.startsWith('deviceorientation'))window.arTest.compassRemoved++;return remove(type,fn,options);};
+  if(mode==='missing'){Object.defineProperty(navigator,'geolocation',{configurable:true,value:undefined});Object.defineProperty(window,'DeviceOrientationEvent',{configurable:true,value:undefined});Object.defineProperty(navigator,'mediaDevices',{configurable:true,value:undefined});return;}
+  Object.defineProperty(navigator,'geolocation',{configurable:true,value:{watchPosition(success,failure){window.arTest.watches++;if(mode==='denied'){setTimeout(()=>failure({code:1}),0);return 1;}window.arTest.updateGps=()=>success({timestamp:Date.now(),coords:{latitude:window.arTest.latitude,longitude:window.arTest.longitude,accuracy:window.arTest.accuracy,speed:0}});window.arTest.updateGps();return 1;},clearWatch(){window.arTest.cleared++;window.arTest.updateGps=null;}}});
+  const orientation=function(){};if(mode!=='android')orientation.requestPermission=async()=>mode==='lateCompass'?await new Promise(resolve=>{window.arTest.releaseCompass=resolve;}):mode==='denied'?'denied':'granted';
+  Object.defineProperty(window,'DeviceOrientationEvent',{configurable:true,value:mode==='noCompass'?undefined:orientation});
+  Object.defineProperty(navigator,'mediaDevices',{configurable:true,value:{getUserMedia:async options=>{
+   window.arTest.cameraCalls++;if(mode==='denied')throw new DOMException('Denied','NotAllowedError');if(mode==='front'&&options.video.facingMode.exact)throw new DOMException('No rear','OverconstrainedError');
+   const c=document.createElement('canvas');c.width=320;c.height=480;const g=c.getContext('2d');g.fillStyle='#294353';g.fillRect(0,0,320,480);const stream=c.captureStream(5),track=stream.getVideoTracks()[0],stop=track.stop.bind(track);track.stop=()=>{window.arTest.stopped++;stop();};track.getSettings=()=>({facingMode:mode==='front'?'user':'environment'});if(mode==='late')await new Promise(resolve=>{window.arTest.releaseCamera=resolve;});return stream;
+  }}});
+  setInterval(()=>{
+   if(!window.arTest.feed)return;window.arTest.updateGps?.();if(mode==='noCompass'||mode==='missing')return;
+   const e=new Event(mode==='android'?'deviceorientationabsolute':'deviceorientation');Object.assign(e,mode==='android'?{alpha:0,beta:90,gamma:0,absolute:true}:{webkitCompassHeading:window.arTest.heading,webkitCompassAccuracy:5,beta:90,gamma:0});window.dispatchEvent(e);
+  },200);
+ },{mode});
 }
-async function open(page) {
-  await page.route('https://tile.openstreetmap.org/**', r => r.abort());
-  await page.route('**/api/locations?*', r => r.fulfill({ json: { locations: [new URL(r.request().url()).searchParams.get('query') === 'Origin' ? { ...destination, id: 'origin', name: 'Mapped origin, Sri Lanka' } : destination], source: 'Nominatim / OpenStreetMap' } }));
-  await page.route('**/api/ar/routes', r => r.fulfill({ json: { routing: routing(), destination, originSource: 'GPS', candidates: [{ name: 'Mapped Road', routeId: 'route-1', geometry }] } }));
-  await page.route('**/api/routes', r => r.fulfill({ json: routing() }));
-  await page.goto('/'); await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link',{ name: 'AR Navigation', exact: true }).click();await page.getByText('Camera & navigation help',{exact:true}).click();
+async function open(page){
+ await page.route('https://tile.openstreetmap.org/**',r=>r.abort());
+ await page.route('**/api/locations?*',r=>r.fulfill({json:{locations:[new URL(r.request().url()).searchParams.get('query')==='Origin'?{id:'origin',name:'Mapped origin',latitude:7,longitude:80,countryCode:'LK'}:destination]}}));
+ await page.route('**/api/ar/routes',r=>r.fulfill({json:response()}));await page.route('**/api/routes',r=>r.fulfill({json:response().routing}));
+ await page.goto('/ar-navigation');
 }
-async function consent(page) { await page.getByRole('checkbox',{name:/I am stationary/}).check(); }
-async function destinationSelection(page) {
-  await page.getByRole('textbox',{name:'DESTINATION',exact:true}).fill('A station');
-  await page.getByRole('button',{name:'Search destination',exact:true}).click();
-  await page.getByRole('button',{name:destination.name,exact:true}).click();
-}
-async function compassSamples(page) {
-  for (let i=0;i<5;i++) {
-    await page.evaluate(() => {
-      window.arTest.currentWatch?.();
-      const event = new Event('deviceorientation');
-      Object.assign(event,{ webkitCompassHeading: 0, webkitCompassAccuracy: 5, beta: 90, gamma: 0, absolute: true });
-      window.dispatchEvent(event);
-    });
-    await page.waitForTimeout(110); // Establish a minimum physical-time sample window.
-  }
-}
-test('simulated camera/GPS/compass match with cleanup on page navigation',async({page})=>{
-  await devices(page); await open(page);
-  await expect(page.getByRole('button',{name:'Start rear camera'})).toBeDisabled();
-  await consent(page); await page.getByRole('button',{name:'Start rear camera'}).click();
-  await page.getByRole('button',{name:'Enable GPS'}).click(); await page.getByRole('button',{name:'Enable compass'}).click();
-  await compassSamples(page); await destinationSelection(page);
-  await page.getByRole('button',{name:'Calculate AR/map routes'}).click(); await compassSamples(page);
-  await expect(page.getByRole('heading',{name:'Candidate road: Mapped Road'})).toBeVisible();
-  await expect(page.getByText('No better directional alternative is established', {exact:false})).toBeVisible();
-  if (process.env.M4_SCREENSHOT_DIR) {
-    await page.evaluate(() => {
-      const banner = document.createElement('p'); banner.textContent = 'SIMULATION TEST — no real smartphone camera, GPS or compass';
-      Object.assign(banner.style, { background: '#ffe28a', color: '#102333', padding: '14px', fontWeight: 'bold' });
-      document.querySelector('.ar-page').prepend(banner);
-    });
-    await compassSamples(page);
-    await page.screenshot({ path: `${process.env.M4_SCREENSHOT_DIR}/m4-simulated-desktop.png`, fullPage: true });
-    await page.setViewportSize({ width: 390, height: 844 }); await compassSamples(page);
-    await page.screenshot({ path: `${process.env.M4_SCREENSHOT_DIR}/m4-simulated-mobile.png`, fullPage: true });
-  }
-  await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link',{name:'Home',exact:true}).click();
-  await expect(page.getByTestId('home-hero')).toBeVisible();
-  await expect.poll(()=>page.evaluate(()=>window.arTest.stopped)).toBeGreaterThan(0);
-  const cleanup = await page.evaluate(()=>window.arTest);
-  expect(cleanup.stopped).toBeGreaterThan(0); expect(cleanup.cleared).toBeGreaterThan(0); expect(cleanup.compassRemoved).toBeGreaterThanOrEqual(2);
+async function start(page){await page.getByRole('checkbox',{name:/I am stationary/}).check();await page.getByRole('button',{name:'Start rear camera',exact:true}).click();}
+async function destinationSelection(page){await page.getByRole('textbox',{name:'DESTINATION',exact:true}).fill('Station');await page.getByRole('button',{name:'Search destination',exact:true}).click();await page.getByRole('button',{name:destination.name,exact:true}).click();}
+const source=page=>page.getByRole('status',{name:'Guidance data source'});
+test('startup preview is animated, source-labelled and works without services or sensors',async({page})=>{
+ let calls=0;await page.route('**/api/**',r=>{calls++;return r.abort();});await page.goto('/ar-navigation');await expect(source(page)).toHaveText('Guided Preview');await expect(page.getByText('Preview distance',{exact:true})).toBeVisible();await expect(page.getByText('Preview time',{exact:true})).toBeVisible();await expect(page.getByText('Preview congestion',{exact:true})).toBeVisible();await expect(page.locator('.hud-arrow svg')).toHaveCSS('animation-name','hud-float');await expect(page.getByLabel('Measured compass')).toHaveText('Compass —');expect(calls).toBe(0);await expect(page.getByRole('combobox',{name:/mode/i})).toHaveCount(0);
 });
-test('permission denial preserves a functioning manual map route',async({page})=>{
-  await devices(page,'denied'); await open(page); await consent(page);
-  for (const name of ['Start rear camera','Enable GPS','Enable compass']) await page.getByRole('button',{name}).click();
-  await expect(page.getByText('Camera permission denied',{exact:false})).toBeVisible();
-  await expect(page.getByText('GPS permission denied',{exact:false})).toBeVisible();
-  await expect(page.getByText('Compass permission denied',{exact:false})).toBeVisible();
-  await page.getByRole('combobox',{name:'STARTING POINT SOURCE'}).selectOption('manual');
-  await page.getByRole('textbox',{name:'MANUAL STARTING POINT',exact:true}).fill('Origin');
-  await page.getByRole('button',{name:'Search manual starting point',exact:true}).click();
-  await page.getByRole('button',{name:'Mapped origin, Sri Lanka',exact:true}).click();
-  await destinationSelection(page); await page.getByRole('button',{name:'Calculate AR/map routes'}).click();
-  await expect(page.getByRole('button',{name:/Road route 1/})).toBeVisible();
-  await expect(page.getByRole('heading',{name:'Use the map for now'})).toBeVisible();
+test('one start gesture opens camera and sensors, then automatically qualifies a live route',async({page})=>{
+ await devices(page);await open(page);await start(page);await expect(page.locator('video')).not.toHaveJSProperty('srcObject',null);await expect(source(page)).not.toHaveText('Live Route');await destinationSelection(page);await expect(source(page)).toHaveText('Live Route',{timeout:12000});await expect(page.getByRole('heading',{name:'Turn right onto Second Road',exact:true})).toBeVisible();await expect(page.getByText('Baseline time',{exact:true})).toBeVisible();await expect(page.locator('.traffic-unavailable')).toHaveText('Unavailable');await expect(page.getByText('Preview congestion',{exact:true})).toHaveCount(0);
+ await page.evaluate(()=>window.arTest.latitude=7.0008);await expect.poll(async()=>parseInt(await page.locator('.hud-journey-progress b').innerText())).toBeGreaterThan(30);
+ await page.getByRole('navigation',{name:'Main navigation'}).getByRole('link',{name:'Plan Journey',exact:true}).click();await expect.poll(()=>page.evaluate(()=>window.arTest.stopped)).toBeGreaterThan(0);await expect.poll(()=>page.evaluate(()=>window.arTest.cleared)).toBeGreaterThan(0);await expect.poll(()=>page.evaluate(()=>window.arTest.compassRemoved)).toBeGreaterThanOrEqual(2);
 });
-test('missing sensors and camera are explicit unsupported states',async({page})=>{
-  await devices(page,'missing'); await open(page); await consent(page);
-  for (const name of ['Start rear camera','Enable GPS','Enable compass']) await page.getByRole('button',{name}).click();
-  await expect(page.getByText('Camera API unavailable',{exact:false})).toBeVisible();
-  await expect(page.getByText('GPS API unavailable',{exact:false})).toBeVisible();
-  await expect(page.getByText('Orientation API unavailable',{exact:false})).toBeVisible();
+test('no destination never requests routing or becomes live',async({page})=>{await devices(page);await open(page);let routes=0;await page.route('**/api/ar/routes',r=>{routes++;return r.abort();});await start(page);await page.waitForTimeout(4000);expect(routes).toBe(0);await expect(source(page)).not.toHaveText('Live Route');await expect(page.getByRole('textbox',{name:'DESTINATION',exact:true})).toBeVisible();});
+test('uncertain GPS keeps preview; later good GPS automatically recovers',async({page})=>{await devices(page,'poor');await open(page);await start(page);await destinationSelection(page);let calls=0;await page.route('**/api/ar/routes',r=>{calls++;return r.fulfill({json:response()});});await page.waitForTimeout(1800);await expect(source(page)).not.toHaveText('Live Route');expect(calls).toBe(0);await page.evaluate(()=>window.arTest.accuracy=5);await expect(source(page)).toHaveText('Live Route',{timeout:12000});});
+test('missing compass allows genuine map data but never pretends alignment',async({page})=>{await devices(page,'noCompass');await open(page);await start(page);await destinationSelection(page);await page.waitForTimeout(4000);await expect(source(page)).not.toHaveText('Live Route');await page.getByRole('button',{name:'Open map & manual fallback'}).click();await expect(page.locator('.hybrid-route-cards .route-card')).toHaveCount(1);await expect(page.getByLabel('Measured compass')).toHaveText('Compass —');});
+test('unreliable live readings remove instructions immediately and enforce reacquisition cooldown',async({page})=>{
+ await devices(page);await open(page);await start(page);await destinationSelection(page);await expect(source(page)).toHaveText('Live Route',{timeout:12000});await page.evaluate(()=>window.arTest.accuracy=50);await expect(source(page)).not.toHaveText('Live Route');await expect(page.getByRole('heading',{name:'Turn right onto Second Road',exact:true})).toHaveCount(0);await page.evaluate(()=>window.arTest.accuracy=5);await page.waitForTimeout(1500);await expect(source(page)).not.toHaveText('Live Route');await expect(source(page)).toHaveText('Live Route',{timeout:10000});
 });
-test('poor GPS blocks camera-aligned routing and shows map fallback',async({page})=>{
-  await devices(page,'poor'); await open(page); await consent(page); await page.getByRole('button',{name:'Enable GPS'}).click();
-  await destinationSelection(page); await expect(page.getByRole('button',{name:'Calculate AR/map routes'})).toBeDisabled();
-  await expect(page.getByRole('heading',{name:'Use the map for now'})).toBeVisible();
+test('routing failure leaves animated preview and bounded retry recovers',async({page})=>{
+ await devices(page);await open(page);let requests=0;await page.route('**/api/ar/routes',r=>{requests++;return requests===1?r.fulfill({status:503,json:{message:'Provider failure'}}):r.fulfill({json:response()});});await start(page);await destinationSelection(page);await expect(page.getByText('Route connection paused.',{exact:false})).toBeVisible();await expect(source(page)).not.toHaveText('Live Route');await expect(source(page)).toHaveText('Live Route',{timeout:15000});expect(requests).toBe(2);
 });
-test('late camera resolution after stop still stops the returned tracks',async({page})=>{
-  await devices(page,'late'); await open(page); await consent(page);
-  await page.getByRole('button',{name:'Start rear camera'}).click();
-  await page.waitForFunction(()=>!!window.arTest.releaseCamera);
-  await page.getByRole('button',{name:'Stop camera and sensors'}).click();
-  await page.evaluate(()=>window.arTest.releaseCamera());
-  await page.waitForFunction(()=>window.arTest.stopped>0);
-  await expect(page.locator('video')).toHaveJSProperty('srcObject',null);
+test('a late route response after destination edit cannot activate guidance',async({page})=>{
+ await devices(page);await open(page);let release;const wait=new Promise(resolve=>{release=resolve;});await page.route('**/api/ar/routes',async r=>{await wait;await r.fulfill({json:response()}).catch(()=>{});});await start(page);await destinationSelection(page);await page.waitForTimeout(800);await page.getByRole('textbox',{name:'DESTINATION',exact:true}).fill('Changed');release();await page.waitForTimeout(3500);await expect(source(page)).not.toHaveText('Live Route');
 });
-test('background pagehide stops streams and sensor listeners',async({page})=>{
-  await devices(page); await open(page); await consent(page);
-  await page.getByRole('button',{name:'Start rear camera'}).click();
-  await page.getByRole('button',{name:'Enable GPS'}).click(); await page.getByRole('button',{name:'Enable compass'}).click();
-  await page.evaluate(()=>window.dispatchEvent(new Event('pagehide')));
-  await page.waitForFunction(()=>window.arTest.stopped>0&&window.arTest.cleared>0&&window.arTest.compassRemoved>=2);
+test('denied permissions do not loop and manual map fallback remains functional',async({page})=>{
+ await devices(page,'denied');await open(page);await start(page);await page.getByText('Camera & navigation help',{exact:true}).click();await expect(page.getByText('Camera permission denied',{exact:false})).toBeVisible();await expect(page.getByText('Location permission denied',{exact:false})).toBeVisible();await expect(page.getByText('Compass permission denied',{exact:false})).toBeVisible();await destinationSelection(page);await page.getByRole('button',{name:'Open map & manual fallback'}).click();await page.getByRole('textbox',{name:'MANUAL STARTING POINT',exact:true}).fill('Origin');await page.getByRole('button',{name:'Search manual starting point',exact:true}).click();await page.getByRole('button',{name:'Mapped origin',exact:true}).click();await page.getByRole('button',{name:'Calculate map route',exact:true}).click();await expect(page.locator('.hybrid-route-cards .route-card')).toHaveCount(1);await expect(source(page)).not.toHaveText('Live Route');expect(await page.evaluate(()=>window.arTest.watches)).toBe(1);expect(await page.evaluate(()=>window.arTest.cameraCalls)).toBe(1);
 });
-test('sensor UI is responsive at mobile and tablet widths',async({page})=>{
-  await devices(page,'missing'); await open(page);
-  for(const width of [320,390,768,1440]) { await page.setViewportSize({width,height:844}); expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true); }
+test('missing devices and insecure contexts retain preview without opening devices',async({page})=>{
+ await devices(page,'missing');await page.addInitScript(()=>Object.defineProperty(window,'isSecureContext',{value:false}));await open(page);await start(page);await expect(source(page)).not.toHaveText('Live Route');await expect(page.getByText('Preview time',{exact:true})).toBeVisible();await page.getByText('Camera & navigation help',{exact:true}).click();await expect(page.getByText('HTTPS or localhost is required',{exact:false})).toBeVisible();
 });
-
-test('insecure HTTP context offers manual fallback without opening devices', async ({ page }) => {
-  await devices(page);
-  await page.addInitScript(() => Object.defineProperty(window, 'isSecureContext', { value: false }));
-  await open(page); await consent(page);
-  await page.getByRole('button', { name: 'Start rear camera' }).click();
-  await expect(page.getByText('HTTPS or localhost is required', { exact: false })).toBeVisible();
-  await page.getByRole('button', { name: 'Enable GPS' }).click();
-  await expect(page.getByText('GPS API unavailable', { exact: false })).toBeVisible();
-  await page.getByRole('combobox', { name: 'STARTING POINT SOURCE' }).selectOption('manual');
-  await expect(page.getByRole('textbox', { name: 'MANUAL STARTING POINT', exact: true })).toBeVisible();
+test('a front-camera fallback is preview-only and tries the camera at most twice',async({page})=>{await devices(page,'front');await open(page);await start(page);await destinationSelection(page);await page.waitForTimeout(4000);await expect(page.locator('video')).not.toHaveJSProperty('srcObject',null);await expect(source(page)).not.toHaveText('Live Route');expect(await page.evaluate(()=>window.arTest.cameraCalls)).toBe(2);});
+test('late camera and compass permission responses are cleaned up after stopping',async({page})=>{
+ await devices(page,'late');await open(page);await start(page);await page.waitForFunction(()=>!!window.arTest.releaseCamera);await page.getByRole('button',{name:'Stop camera and sensors'}).click();await page.evaluate(()=>window.arTest.releaseCamera());await expect.poll(()=>page.evaluate(()=>window.arTest.stopped)).toBeGreaterThan(0);await expect(page.locator('video')).toHaveJSProperty('srcObject',null);
 });
-
-test('starting the camera does not invalidate GPS or compass already enabled', async ({ page }) => {
-  await devices(page); await open(page); await consent(page);
-  await page.getByRole('button', { name: 'Enable GPS' }).click();
-  await page.getByRole('button', { name: 'Enable compass' }).click();
-  await compassSamples(page);
-  await page.getByRole('button', { name: 'Start rear camera' }).click();
-  await destinationSelection(page);
-  await page.getByRole('button', { name: 'Calculate AR/map routes' }).click();
-  await compassSamples(page);
-  await expect(page.getByRole('heading', { name: 'Candidate road: Mapped Road' })).toBeVisible();
-  await page.waitForTimeout(2200);
-  await expect(page.getByRole('heading', { name: 'Use the map for now' })).toBeVisible();
+test('late iOS compass permission cannot attach listeners after stop',async({page})=>{await devices(page,'lateCompass');await open(page);await start(page);await page.waitForFunction(()=>!!window.arTest.releaseCompass);await page.getByRole('button',{name:'Stop camera and sensors'}).click();await page.evaluate(()=>window.arTest.releaseCompass('granted'));await page.waitForTimeout(200);expect(await page.evaluate(()=>window.arTest.compassAdded)).toBe(0);});
+test('pagehide stops camera, GPS, compass and pending guidance',async({page})=>{await devices(page);await open(page);await start(page);await page.evaluate(()=>window.dispatchEvent(new Event('pagehide')));await expect.poll(()=>page.evaluate(()=>window.arTest.stopped)).toBeGreaterThan(0);await expect.poll(()=>page.evaluate(()=>window.arTest.cleared)).toBeGreaterThan(0);await expect(page.locator('video')).toHaveJSProperty('srcObject',null);await expect(source(page)).not.toHaveText('Live Route');});
+test('Android absolute events support the same automatic route transition',async({page})=>{await devices(page,'android');await open(page);await start(page);await destinationSelection(page);await expect(source(page)).toHaveText('Live Route',{timeout:12000});await page.getByText('Camera & navigation help',{exact:true}).click();await expect(page.getByText('error not reported',{exact:false})).toBeVisible();});
+test('HUD and controls fit mobile/tablet sizes and honor reduced motion',async({page})=>{await open(page);for(const width of [320,390,768,1440]){await page.setViewportSize({width,height:850});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);}await page.emulateMedia({reducedMotion:'reduce'});await expect(page.locator('.hud-arrow svg')).toHaveCSS('animation-name','none');});
+test('GPS acquisition retries have three windows and backoff, then stop until user action',async({page})=>{
+ await page.clock.install();await devices(page,'poor');await open(page);await start(page);await expect.poll(()=>page.evaluate(()=>window.arTest.watches)).toBe(1);
+ await page.clock.fastForward(21000);await page.clock.fastForward(15000);await expect.poll(()=>page.evaluate(()=>window.arTest.watches)).toBe(2);
+ await page.clock.fastForward(21000);await page.clock.fastForward(30000);await expect.poll(()=>page.evaluate(()=>window.arTest.watches)).toBe(3);
+ await page.clock.fastForward(21000);await page.clock.fastForward(120000);expect(await page.evaluate(()=>window.arTest.watches)).toBe(3);await expect(source(page)).toHaveText('Guided Preview');
+ await page.getByRole('button',{name:'Stop camera and sensors'}).click();await page.clock.fastForward(60000);expect(await page.evaluate(()=>window.arTest.watches)).toBe(3);
 });
-
-test('Android-style absolute events without a permission method remain approximate', async ({ page }) => {
-  await devices(page); await open(page); await consent(page);
-  await page.evaluate(() => { delete window.DeviceOrientationEvent.requestPermission; });
-  await page.getByRole('button', { name: 'Start rear camera' }).click();
-  await page.getByRole('button', { name: 'Enable GPS' }).click();
-  await page.getByRole('button', { name: 'Enable compass' }).click();
-  await destinationSelection(page); await page.getByRole('button', { name: 'Calculate AR/map routes' }).click();
-  for (let i = 0; i < 5; i++) {
-    await page.evaluate(() => {
-      window.arTest.currentWatch?.();
-      const event = new Event('deviceorientationabsolute');
-      Object.assign(event, { alpha: 0, beta: 90, gamma: 0, absolute: true }); window.dispatchEvent(event);
-    });
-    await page.waitForTimeout(110);
-  }
-  await expect(page.getByRole('heading', { name: 'Candidate road: Mapped Road' })).toBeVisible();
-  await expect(page.getByText('error not reported', { exact: false })).toBeVisible();
+test('interrupted sensors never leave stale instructions current and recover automatically',async({page})=>{
+ await devices(page);await open(page);await start(page);await destinationSelection(page);await expect(source(page)).toHaveText('Live Route',{timeout:12000});await page.evaluate(()=>window.arTest.feed=false);await expect(source(page)).not.toHaveText('Live Route',{timeout:7000});await expect(page.getByRole('heading',{name:'Turn right onto Second Road',exact:true})).toHaveCount(0);await expect(page.locator('video')).not.toHaveJSProperty('srcObject',null);await page.evaluate(()=>window.arTest.feed=true);await expect(source(page)).toHaveText('Live Route',{timeout:12000});
 });
-
-test('late compass permission after stopping never attaches sensor listeners', async ({ page }) => {
-  await devices(page, 'lateCompass'); await open(page); await consent(page);
-  await page.getByRole('button', { name: 'Enable compass' }).click();
-  await page.waitForFunction(() => !!window.arTest.releaseCompass);
-  await page.getByRole('button', { name: 'Stop camera and sensors' }).click();
-  await page.evaluate(() => window.arTest.releaseCompass('granted'));
-  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(resolve)));
-  expect(await page.evaluate(() => window.arTest.compassAdded)).toBe(0);
+test('incomplete provider instructions preserve real map geometry but never activate live HUD',async({page})=>{
+ await devices(page);await open(page);await page.route('**/api/ar/routes',r=>{const data=response();data.directions[0].complete=false;data.directions[0].steps=[];return r.fulfill({json:data});});await start(page);await destinationSelection(page);await expect(page.getByText('Route connection paused.',{exact:false})).toBeVisible();await page.getByRole('button',{name:'Open map & manual fallback'}).click();await expect(page.locator('.hybrid-route-cards .route-card')).toHaveCount(1);await expect(source(page)).not.toHaveText('Live Route');
+});
+test('destination control remains interactive in the camera HUD without a mode switch',async({page})=>{
+ await open(page);await page.getByRole('button',{name:'Choose navigation destination',exact:true}).click();await expect(page.getByRole('textbox',{name:'DESTINATION',exact:true})).toBeFocused();await expect(source(page)).toHaveText('Guided Preview');
 });

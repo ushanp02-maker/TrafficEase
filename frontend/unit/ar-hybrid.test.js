@@ -1,0 +1,32 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createRouteBudget,evaluateNavigation,initialTransition,mayRequest,maneuverText,prepareMapRoute,prepareNavigation,previewAt,requestFinished,requestStarted,transition} from '../src/ar/hybrid.js';
+const now=Date.parse('2026-11-19T10:00:00Z');
+const gps={latitude:7,longitude:80,accuracy:5,timestamp:now};
+const destination={id:'dest',latitude:7.001,longitude:80.001};
+const route={id:'route-1',distanceMeters:222,durationSeconds:90,geometry:{type:'LineString',coordinates:[[80,7],[80,7.001],[80.001,7.001]]}};
+const steps=[{type:'depart',roadName:'First Road',location:[80,7],distanceMeters:111,durationSeconds:45},{type:'turn',modifier:'right',roadName:'Second Road',location:[80,7.001],distanceMeters:111,durationSeconds:45},{type:'arrive',location:[80.001,7.001],distanceMeters:0,durationSeconds:0}];
+const result={originSource:'GPS',routing:{source:'OSRM / OpenStreetMap',estimateKind:'BASELINE_ROUTING_ESTIMATE',comparisonScope:'RETURNED_ROUTES_ONLY',generatedAt:new Date(now).toISOString(),routes:[route]},directions:[{routeId:'route-1',complete:true,steps}]};
+const nav=prepareNavigation(result,'route-1',destination,gps);
+const settings={nav,gps,heading:{degrees:0,stable:true,timestamp:now,accuracy:5},now,enabled:true};
+test('predefined preview repeats and never needs network or simulated compass values',()=>{assert.deepEqual(previewAt(1234),previewAt(41234));assert.equal(previewAt(8100).turn,'left');assert.equal(previewAt(32000).traffic,'LOW');assert.equal(previewAt(0).heading,undefined);});
+test('complete provider maneuvers supply actual turn and baseline remaining metrics',()=>{assert.ok(nav);const q=evaluateNavigation(settings);assert.equal(q.usable,true);assert.match(q.instruction,/Turn right onto Second Road/);assert.equal(q.remainingMeters,222);assert.equal(q.baselineSeconds,90);assert.equal(q.turnDistance,111);});
+test('remaining distance/time advance along full geometry beyond original GPS anchor',()=>{const q=evaluateNavigation({...settings,gps:{...gps,latitude:7.0008}});assert.equal(q.usable,true);assert.ok(q.progress>.39&&q.progress<.41);assert.ok(q.baselineSeconds<56&&q.baselineSeconds>53);assert.ok(q.remainingMeters<135&&q.remainingMeters>130);});
+test('missing directions retain a genuine map but cannot create navigation',()=>{const missing={...result,directions:[]};assert.ok(prepareMapRoute(missing,'route-1',destination,gps));assert.equal(prepareNavigation(missing,'route-1',destination,gps),null);});
+test('recorded or inconsistent route sources never qualify as genuine',()=>{assert.equal(prepareNavigation({...result,originSource:'MANUAL'},'route-1',destination,gps),null);assert.equal(prepareNavigation({...result,routing:{...result.routing,estimateKind:'RECORDED_BASELINE_ESTIMATE'}},'route-1',destination,gps),null);assert.equal(prepareNavigation({...result,directions:[{routeId:'route-1',complete:true,steps:[{...steps[0],durationSeconds:200}]}]},'route-1',destination,gps),null);});
+for(const [label,changes] of [
+ ['inaccurate GPS',{gps:{...gps,accuracy:40}}],['stale GPS',{gps:{...gps,timestamp:now-11000}}],['future GPS',{gps:{...gps,timestamp:now+2000}}],['missing compass',{heading:null}],['stale compass',{heading:{...settings.heading,timestamp:now-3000}}],['unstable compass',{heading:{...settings.heading,stable:false}}],['wrong direction',{heading:{...settings.heading,degrees:180}}],['stale route',{nav:{...nav,generatedAt:now-120001}}],['failed provider',{failed:true}],['no destination/camera/consent',{enabled:false}],
+])test(`${label} immediately makes genuine instructions unusable`,()=>assert.equal(evaluateNavigation({...settings,...changes}).usable,false));
+test('entry and hold thresholds differ to resist harmless accuracy fluctuation',()=>{assert.equal(evaluateNavigation({...settings,gps:{...gps,accuracy:25}}).usable,false);assert.equal(evaluateNavigation({...settings,gps:{...gps,accuracy:25},holding:true}).usable,true);});
+test('parallel or looping route sections cannot produce a confident match',()=>{const shape={...nav,length:350,segments:[{a:{latitude:7,longitude:80},b:{latitude:7.001,longitude:80},start:0,length:111},{a:{latitude:7.001,longitude:80.00005},b:{latitude:7,longitude:80.00005},start:230,length:111}]};assert.equal(evaluateNavigation({...settings,nav:shape,gps:{...gps,latitude:7.0005}}).usable,false);});
+test('continuous qualification, immediate preview on loss, cooldown and recovery',()=>{
+ const yes={usable:true},no={usable:false};let s=initialTransition();
+ for(let t=0;t<=3000;t+=500)s=transition(s,{key:'a',quality:yes,holdQuality:yes,now:now+t});assert.equal(s.phase,'LIVE');
+ s=transition(s,{key:'a',quality:no,holdQuality:no,now:now+3500});assert.equal(s.phase,'PREVIEW');
+ for(let t=4000;t<=8000;t+=500)s=transition(s,{key:'a',quality:yes,holdQuality:yes,now:now+t});assert.equal(s.phase,'PREVIEW');
+ s=transition(s,{key:'a',quality:yes,holdQuality:yes,now:now+8500});assert.equal(s.phase,'LIVE');
+ s=transition(s,{key:'new destination',quality:yes,holdQuality:yes,now:now+9000});assert.equal(s.phase,'PREVIEW');
+});
+test('long suspension and clock rollback cannot count toward continuous confidence',()=>{let s=transition(initialTransition(),{key:'a',quality:{usable:true},holdQuality:{usable:true},now});s=transition(s,{key:'a',quality:{usable:true},holdQuality:{usable:true},now:now+5000});assert.equal(s.phase,'PREVIEW');assert.equal(s.stableSince,now+5000);});
+test('route attempts have backoff, failure cap and a persistent ten-minute budget',()=>{const b=createRouteBudget();for(let i=0;i<4;i++){const t=now+i*60000;assert.ok(mayRequest(b,t));requestStarted(b,t);requestFinished(b,t,false);assert.equal(mayRequest(b,t+1000),false);}assert.equal(mayRequest(b,now+300000),false);b.failures=0;for(let i=4;i<12;i++){const t=now+240000+(i-4)*40000;assert.ok(mayRequest(b,t));requestStarted(b,t);requestFinished(b,t,true);}assert.equal(mayRequest(b,now+550000),false);assert.equal(mayRequest(b,now+1000000),true);});
+test('unknown instruction types do not invent turns or roundabout exit numbers',()=>{assert.equal(maneuverText({type:'unsupported',roadName:''}),'Continue on the route');assert.equal(maneuverText({type:'roundabout'}),'Follow the roundabout');assert.equal(maneuverText({type:'roundabout',exit:3}),'At the roundabout, take exit 3');assert.equal(maneuverText({type:'continue',modifier:'uturn',roadName:'Mapped Road'}),'Make a U-turn onto Mapped Road');});

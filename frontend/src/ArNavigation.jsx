@@ -1,85 +1,94 @@
-import React, { useEffect, useRef, useState } from 'react';
-import {Link} from 'react-router-dom';
-import { GeographicMap, LocationSearch, request } from './RoutePlanner.jsx';
-import {InlineError} from './components/Feedback.jsx';
+import './ar/hybrid.css';
+import React,{useCallback,useEffect,useMemo,useRef,useState} from 'react';
+import {GeographicMap,LocationSearch,request} from './RoutePlanner.jsx';
+import {InlineError,SourceInfo} from './components/Feedback.jsx';
+import {DepartureControls,useJourney,journeyPayload} from './JourneyContext.jsx';
 import useArSensors from './ar/useArSensors.js';
-import { DepartureControls, useJourney, journeyPayload } from './JourneyContext.jsx';
-import { alignment, angleDelta, bearing, recommendation } from './ar/geometry.js';
+import {createRouteBudget,evaluateNavigation,initialTransition,mayRequest,prepareMapRoute,prepareNavigation,previewAt,requestFinished,requestStarted,transition} from './ar/hybrid.js';
 
-export default function ArNavigation() {
-  const { journey } = useJourney();
-  const video = useRef(); const sensors = useArSensors(video);
-  const [safe, setSafe] = useState(false), [mode, setMode] = useState('gps');
-  const [destination, setDestination] = useState(null), [origin, setOrigin] = useState(null);
-  const [data, setData] = useState(null), [anchor, setAnchor] = useState(null), [selected, setSelected] = useState('');
-  const [busy, setBusy] = useState(false), [error, setError] = useState(''), [now, setNow] = useState(Date.now());
-  const active = useRef();
-  useEffect(() => { const timer = setInterval(() => setNow(Date.now()), 500); return () => { clearInterval(timer); active.current?.abort(); }; }, []);
-  function clear() { active.current?.abort(); setBusy(false); setData(null); setAnchor(null); setSelected(''); setError(''); }
-  async function calculate(event) {
-    event.preventDefault();
-    if (!destination || (mode === 'gps' ? !gpsFresh : !origin)) { setError('Choose a destination and a fresh GPS fix or manual starting point.'); return; }
-    clear(); const controller = new AbortController(); active.current = controller; setBusy(true);
-    try {
-      let result, snapshot = null;
-      if (mode === 'gps') {
-        snapshot = sensors.gps;
-        result = await request('/ar/routes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: controller.signal,
-          body: JSON.stringify({ origin: { latitude: snapshot.latitude, longitude: snapshot.longitude, accuracyMeters: snapshot.accuracy, timestamp: snapshot.timestamp }, destinationId: destination.id, ...journeyPayload(journey) }) });
-      } else {
-        const routing = await request('/routes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: controller.signal,
-          body: JSON.stringify({ originId: origin.id, destinationId: destination.id, ...journeyPayload(journey) }) });
-        result = { routing, destination, candidates: [], originSource: 'MANUAL' };
-      }
-      if (controller.signal.aborted) return;
-      setData(result); setAnchor(snapshot); setSelected(result.routing.routes.find(r => r.fastestAvailable)?.id || result.routing.routes[0].id);
-    } catch (err) { if (!controller.signal.aborted) setError(err.message); }
-    finally { if (!controller.signal.aborted) setBusy(false); }
-  }
-  const gpsFresh = sensors.gps && now - sensors.gps.timestamp <= 10000 && sensors.gps.accuracy > 0 && sensors.gps.accuracy <= 30;
-  const match = journey.mode !== 'LEAVE_NOW' ? { reliable: false, reason: 'Scheduled journeys use map planning only. Current sensors cannot establish future conditions or departure-specific camera recommendations.' } : alignment({ gps: sensors.gps, heading: (window.screen.orientation?.angle ?? window.orientation ?? Number.NaN) === 0 ? sensors.heading : null,
-    rearCamera: journey.mode === 'LEAVE_NOW' && safe && sensors.camera === 'on' && sensors.rear, routeAnchor: anchor, generatedAt: data?.routing.generatedAt, candidates: data?.candidates, now });
-  const better = recommendation(match, data?.routing);
-  const direction = match.reliable && sensors.gps && destination ? angleDelta(bearing(sensors.gps, destination), sensors.heading.degrees) : null;
-  return <section className="ar-page" aria-label="Smartphone AR navigation">
-    <div className="safety-guidance"><b>Stationary or passengers only.</b> Never use the camera while driving.</div>
-    <label className="checkbox-label safety-check"><input type="checkbox" checked={safe} onChange={event => { setSafe(event.target.checked); if (!event.target.checked) sensors.stop(); }}/><span>I am stationary or a passenger, not the driver.</span></label>
-    <div className="ar-permissions">
-      <button type="button" className="primary" disabled={!safe || sensors.camera === 'requesting'} onClick={sensors.startCamera}>Start rear camera</button>
-      <button type="button" className="secondary-light" disabled={!safe} onClick={sensors.startGps}>Enable GPS</button>
-      <button type="button" className="secondary-light" disabled={!safe} onClick={sensors.startCompass}>Enable compass</button>
-      <button type="button" className="secondary-light" onClick={sensors.stop}>Stop camera and sensors</button>
-    </div>
-    {!["off","on","requesting"].includes(sensors.camera)&&<div className="inline-feedback" role="status">Camera unavailable. Use the map or try Start rear camera again.</div>}
-
-    <div className="camera-stage">
-      <video ref={video} autoPlay muted playsInline aria-label="Live rear-camera view"/>
-      {sensors.camera !== 'on' && <p className="camera-placeholder">Rear camera is off or unavailable. The map and manual origin remain usable.</p>}
-      <div className={`ar-overlay ${match.reliable ? 'aligned' : ''}`} role="status" aria-label="AR alignment status">
-        {match.reliable ? <><span className="pill">APPROXIMATE · NOT VISUALLY RECOGNIZED</span><h3>Candidate road: {match.candidate.name}</h3><p>Estimated route bearing {Math.round(match.candidate.bearing)}° · heading difference {Math.round(match.candidate.headingError)}°</p>
-          <div className="direction-display"><span aria-hidden="true" style={{ transform: `rotate(${direction}deg)` }}>↑</span><p>Destination {Math.round(Math.abs(direction))}° {direction < 0 ? 'left' : 'right'} of camera heading{Math.abs(direction) > 90 ? ' (behind you)' : ''}. Straight-line direction, not a turn instruction.</p></div>
-          {better ? <p>Returned {better.routeId} has {better.seconds} seconds less baseline duration than the direction-associated route. Compare it on the map; not live traffic savings.</p> : <p>No better directional alternative is established by comparable returned routes.</p>}
-          <p>Compass error may remain even when stable. Check the map before relying on direction.</p></> : <><h3>Use the map for now</h3><p>We need a reliable position and direction to align the camera view.</p></>}
-      </div>
-    </div>
-    <form className="planner ar-plan" onSubmit={calculate}>
-      <h2>Choose a destination and route</h2><details className="ar-help"><summary>Camera & navigation help</summary>    <div className="sensor-status" role="status"><p>Camera: {sensors.camera}</p><p>GPS: {sensors.gpsStatus}{sensors.gps ? ` · reported accuracy ${Math.round(sensors.gps.accuracy)} m` : ''}</p><p>Compass: {sensors.compassStatus}{sensors.heading ? ` · ${Math.round(sensors.heading.degrees)}° · ${sensors.heading.accuracy === null ? 'error not reported' : `reported error ±${sensors.heading.accuracy}°`}` : ''}</p></div><p>{match.reason}</p><p className="form-note">Departure context is shared with Route Planner. Scheduled journeys use baseline map routes only; camera alignment is paused because present sensors cannot establish future road conditions. Precise GPS coordinates are sent to Nominatim (country check) and OSRM only when you calculate a route; camera frames stay on your device.</p></details>
-      <DepartureControls onChange={clear}/>
-      {journey.mode !== 'LEAVE_NOW' && <p role="status">Scheduled departure · map planning only. Future traffic, camera route alignment and departure-specific ETAs are unsupported.</p>}
-      <label><span>STARTING POINT SOURCE</span><select value={mode} onChange={event => { clear(); setMode(event.target.value); }}><option value="gps">GPS fix</option><option value="manual">Manual location (map fallback)</option></select></label>
-      {mode === 'manual' && <LocationSearch title="MANUAL STARTING POINT" location={origin} onEdit={() => { clear(); setOrigin(null); }} onSelect={value => { clear(); setOrigin(value); }}/>}
-      <LocationSearch title="DESTINATION" location={destination} onEdit={() => { clear(); setDestination(null); }} onSelect={value => { clear(); setDestination(value); }}/>
-      <button className="primary" type="submit" disabled={busy || !destination || (mode === 'gps' ? !gpsFresh : !origin)}>{busy ? 'Calculating baseline routes…' : 'Calculate AR/map routes'}</button>
-      <p className="map-credit">Search and country check: Nominatim · © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>. Leave at least one second between searches/calculations; no automatic routing or reverse-geocoding loop.</p>
-    </form>
-    {busy && <p role="status">Loading genuine road geometry…</p>}
-    {error && <InlineError onRetry={()=>calculate({preventDefault(){}})}>{error}</InlineError>}
-    <div className="route-layout"><section className="map-panel"><div className="section-title"><h2>Map fallback · always available</h2><span className="pill">GENUINE GEOMETRY</span></div><GeographicMap data={data?.routing} selected={selected}/></section>
-      <section className="results"><h2>Baseline route comparison</h2>
-        {!data && <div className="empty-state"><p>Choose locations manually when positioning is uncertain.</p><Link className="subtle-link" to="/ai-predictions?simulation=1">Explore a recorded journey simulation →</Link></div>}
-        {data && <><details className="source-popover"><summary>Route information</summary><p className="comparison-note">Source: {data.routing.source}. Calculated {new Intl.DateTimeFormat('en-LK', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Colombo' }).format(new Date(data.routing.generatedAt))} (Sri Lanka). Fastest/shortest among returned routes only; not true shortest-distance optimization. No live traffic.</p></details>
-          {data.routing.routes.map((route, index) => <button key={route.id} className={`route-card ${selected === route.id ? 'selected' : ''}`} aria-pressed={selected === route.id} onClick={() => setSelected(route.id)}><h3>Road route {index + 1}</h3><span className="route-tag">{[route.fastestAvailable && 'Fastest available', route.shortestAvailable && 'Shortest available'].filter(Boolean).join(' · ') || 'Returned alternative'}</span><div className="metrics"><strong>{Math.round(route.durationSeconds / 60)}<small> min</small></strong><span>{(route.distanceMeters / 1000).toFixed(1)} km</span></div><p>OSRM baseline estimate · map selection does not establish camera alignment.</p></button>)}
-          <details className="source-popover"><summary>Positioning limitations</summary><p className="form-note">Nearby candidates use the first returned route steps only; parallel/unreturned roads may be missing. Accuracy gates reduce risk but cannot establish real-world alignment without field validation. Recalculate if GPS moves more than 25 m or the route is older than two minutes.</p></details></>}
-      </section></div>
-  </section>;
+const kilometres=n=>n>=1000?`${(n/1000).toFixed(1)} km`:`${Math.max(0,Math.round(n))} m`;
+export default function ArNavigation(){
+ const {journey}=useJourney();const video=useRef();const destinationBox=useRef();const sensors=useArSensors(video);
+ const [safe,setSafe]=useState(false),[running,setRunning]=useState(false),[destination,setDestination]=useState(null);
+ const [routeRecord,setRouteRecord]=useState(null),[routeId,setRouteId]=useState(''),[failed,setFailed]=useState(false),[busy,setBusy]=useState(false);
+ const [manualOrigin,setManualOrigin]=useState(null),[manualData,setManualData]=useState(null),[manualId,setManualId]=useState(''),[manualBusy,setManualBusy]=useState(false),[manualError,setManualError]=useState('');
+ const [mapOpen,setMapOpen]=useState(false),[now,setNow]=useState(Date.now()),[pausedAt,setPausedAt]=useState(null),[session,setSession]=useState(0);
+ const destinationSelectedAt=useRef(0);const active=useRef(),manualActive=useRef(),budget=useRef(createRouteBudget()),serial=useRef(0),previewStart=useRef(Date.now());
+ const [state,setState]=useState(initialTransition);const [retryTick,setRetryTick]=useState(0);
+ useEffect(()=>{const timer=setInterval(()=>setNow(Date.now()),500);return()=>{clearInterval(timer);active.current?.abort();active.current=null;manualActive.current?.abort();manualActive.current=null;};},[]);
+ const stop=useCallback(()=>{
+  active.current?.abort();active.current=null;manualActive.current?.abort();setBusy(false);setManualBusy(false);sensors.stop();setRunning(false);setPausedAt(Date.now());setRouteRecord(null);setFailed(false);setSession(s=>s+1);
+ },[sensors.stop]);
+ useEffect(()=>{const hide=()=>{if(document.hidden)stop();};window.addEventListener('pagehide',stop);document.addEventListener('visibilitychange',hide);return()=>{window.removeEventListener('pagehide',stop);document.removeEventListener('visibilitychange',hide);};},[stop]);
+ function start(){
+  if(!safe)return;
+  // A single gesture starts iOS orientation permission, GPS and camera; no source-mode chooser.
+  sensors.startCompass();sensors.startGps();if(sensors.camera!=='on')sensors.startCamera();
+  setRunning(true);setPausedAt(null);setRouteRecord(null);setRouteId('');previewStart.current=Date.now();setNow(Date.now());setSession(s=>s+1);
+  budget.current.failures=0;budget.current.nextAt=Date.now();setFailed(false);setRetryTick(t=>t+1);
+ }
+ function editDestination(value){
+  destinationSelectedAt.current=Date.now();
+  active.current?.abort();active.current=null;manualActive.current?.abort();setDestination(value);setRouteRecord(null);setManualData(null);setRouteId('');setManualId('');setBusy(false);setManualBusy(false);setFailed(false);setManualError('');budget.current.failures=0;budget.current.nextAt=Date.now();
+ }
+ function departureChanged(){active.current?.abort();active.current=null;manualActive.current?.abort();setRouteRecord(null);setManualData(null);setBusy(false);setManualBusy(false);setFailed(false);}
+ const gpsGood=sensors.gps&&sensors.gps.accuracy>0&&sensors.gps.accuracy<=30&&now-sensors.gps.timestamp<=5000&&sensors.gps.timestamp<=now+1000;
+ useEffect(()=>{
+  if(!running||!safe||!destination||now-destinationSelectedAt.current<1200||!gpsGood||journey.mode!=='LEAVE_NOW'||active.current||!mayRequest(budget.current,now))return;
+  const age=routeRecord?now-Date.parse(routeRecord.response.routing.generatedAt):Infinity;
+  if(routeRecord&&!failed&&age<60000)return;
+  const controller=new AbortController();active.current=controller;const anchor={...sensors.gps};requestStarted(budget.current,now);setBusy(true);
+  request('/ar/routes',{method:'POST',headers:{'Content-Type':'application/json'},signal:controller.signal,body:JSON.stringify({origin:{latitude:anchor.latitude,longitude:anchor.longitude,accuracyMeters:anchor.accuracy,timestamp:anchor.timestamp},destinationId:destination.id,mode:'LEAVE_NOW',departureAt:null})})
+   .then(response=>{
+    if(controller.signal.aborted)return;
+    const id=response.routing?.routes?.find(r=>r.fastestAvailable)?.id||response.routing?.routes?.[0]?.id;
+    if(response.destination?.id!==destination.id||!prepareMapRoute(response,id,destination,anchor))throw new Error('Valid road geometry unavailable.');
+    const complete=!!prepareNavigation(response,id,destination,anchor);setRouteRecord({response,anchor,serial:++serial.current});setRouteId(id);setFailed(!complete);requestFinished(budget.current,Date.now(),complete);
+   }).catch(()=>{if(!controller.signal.aborted){setFailed(true);requestFinished(budget.current,Date.now(),false);}})
+   .finally(()=>{if(active.current===controller){active.current=null;setBusy(false);}});
+ },[now,running,safe,destination,gpsGood,sensors.gps,journey.mode,routeRecord,failed,retryTick]);
+ const nav=useMemo(()=>routeRecord?prepareNavigation(routeRecord.response,routeId,destination,routeRecord.anchor):null,[routeRecord,routeId,destination]);
+ const enabled=!!(safe&&running&&sensors.camera==='on'&&sensors.rear&&destination&&journey.mode==='LEAVE_NOW'&&(window.screen.orientation?.angle??window.orientation??Number.NaN)===0);
+ const quality=evaluateNavigation({nav,gps:sensors.gps,heading:sensors.heading,now,enabled,failed});
+ const holdQuality=evaluateNavigation({nav,gps:sensors.gps,heading:sensors.heading,now,enabled,failed,holding:true});
+ const key=`${session}/${destination?.id||''}/${routeId}`;
+ useEffect(()=>{setState(previous=>transition(previous,{key,quality,holdQuality,now}));},[key,now,quality.usable,holdQuality.usable]);
+ const live=state.key===key&&state.phase==='LIVE'&&holdQuality.usable&&now>=state.lastAt&&now-state.lastAt<=1500;
+ const preview=previewAt((pausedAt??now)-previewStart.current),guidance=live?holdQuality:preview;
+ const compass=sensors.heading&&now-sensors.heading.timestamp<=2000&&sensors.heading.timestamp<=now+1000;
+ const locating=running&&['Connecting GPS','Location uncertain','Waiting for a better location'].includes(sensors.gpsStatus);
+ const source=live?'Live Route':locating?'Guided Preview · Connecting GPS':running&&(busy||state.stableSince!==null)?'Guided Preview · Aligning route':'Guided Preview';
+ const routing=manualData||routeRecord?.response.routing,selected=manualData?manualId:routeId;
+ async function planManual(event){
+  event.preventDefault();if(!manualOrigin||!destination)return;
+  manualActive.current?.abort();const c=new AbortController();manualActive.current=c;setManualBusy(true);setManualError('');setManualData(null);
+  try{const data=await request('/routes',{method:'POST',headers:{'Content-Type':'application/json'},signal:c.signal,body:JSON.stringify({originId:manualOrigin.id,destinationId:destination.id,...journeyPayload(journey)})});if(!c.signal.aborted){setManualData(data);setManualId(data.routes.find(r=>r.fastestAvailable)?.id||data.routes[0].id);}}
+  catch(e){if(!c.signal.aborted)setManualError(e.message);}finally{if(!c.signal.aborted)setManualBusy(false);}
+ }
+ return <section className="hybrid-ar" aria-label="Hybrid AR navigation">
+  <div className="safety-guidance"><b>Stationary or passengers only.</b> Never operate this view while driving.</div>
+  <div className="hybrid-stage camera-stage" data-source={live?'LIVE':'PREVIEW'} data-paused={pausedAt!==null}>
+   <video ref={video} autoPlay muted playsInline aria-label="Live rear-camera view"/>
+   {sensors.camera!=='on'&&<div className="hybrid-camera-background" aria-hidden="true"><div className="hud-grid"/><span>{sensors.camera==='requesting'?'Opening camera…':pausedAt?'Camera paused':'Camera off · guidance preview'}</span></div>}
+   <div className="hud-top"><span className={`hud-source ${live?'live':''}`} role="status" aria-label="Guidance data source">{source}</span><time aria-label="Actual device time">{new Date(now).toLocaleTimeString('en-GB',{hour12:false})}</time></div>
+   <div className="hud-actions"><button type="button" onClick={()=>setMapOpen(v=>!v)}>Map</button><button type="button" aria-label="Choose navigation destination" onClick={()=>{destinationBox.current?.scrollIntoView({behavior:'smooth',block:'center'});destinationBox.current?.querySelector('input')?.focus({preventScroll:true});}}>{destination?'Destination set':'Add destination'}</button></div>
+   <div className="hud-compass" aria-label="Measured compass">{compass?`${Math.round(sensors.heading.degrees)}° · ${sensors.heading.stable?'Compass (approx.)':'Compass settling'}`:'Compass —'}</div>
+   <div className="hud-turn" key={`${live?'live':'preview'}-${live?guidance.instruction:preview.instruction}`}>
+    <div className="hud-arrow" aria-hidden="true" style={{'--turn-angle':`${live?guidance.arrowDegrees:preview.turn==='left'?-45:preview.turn==='right'?45:0}deg`}}><svg viewBox="0 0 100 120"><path d="M42 111V42L21 63 8 49 50 7l42 42-13 14-21-21v69Z"/></svg><span/></div>
+    <span className="hud-turn-distance">{kilometres(live?guidance.turnDistance:preview.turnDistance)} <small>{live?'to maneuver':'· preview'}</small></span>
+    <h2>{guidance.instruction}</h2><p>{live?guidance.roadName:preview.road}</p>
+   </div>
+   <div className="hud-journey-progress"><div><span>{live?'Route progress':'Preview progress'}</span><b>{Math.round(guidance.progress*100)}%</b></div><div className="hud-progress-track"><span style={{width:`${guidance.progress*100}%`}}/></div></div>
+   <div className="hud-metrics"><div><small>{live?'Remaining route':'Preview distance'}</small><strong>{kilometres(live?guidance.remainingMeters:preview.remaining)}</strong></div><div><small>{live?'Baseline time':'Preview time'}</small><strong>{live?Math.ceil(guidance.baselineSeconds/60):preview.minutes}<em> min</em></strong></div><div><small>{live?'Traffic':'Preview congestion'}</small><strong className={live?'traffic-unavailable':`preview-traffic ${preview.traffic.toLowerCase()}`}>{live?'Unavailable':preview.traffic}</strong></div></div>
+   <div className="hud-footnote">{live?'GPS + provider directions · approximate alignment · no traffic-adjusted ETA':'Simulated guidance, distance, time and congestion · not current road conditions'}</div>
+  </div>
+  <div className="hybrid-controls"><label className="checkbox-label safety-check"><input type="checkbox" checked={safe} onChange={e=>{setSafe(e.target.checked);if(!e.target.checked)stop();}}/><span>I am stationary or a passenger, not the driver.</span></label><div><button type="button" className="primary" disabled={!safe||sensors.camera==='requesting'} onClick={start}>{running?'Reconnect sensors':'Start rear camera'}</button><button type="button" className="secondary-light" onClick={stop}>Stop camera and sensors</button><button type="button" className="text-button" onClick={()=>setMapOpen(v=>!v)}>{mapOpen?'Close map':'Open map & manual fallback'}</button></div></div>
+  <div className="hybrid-destination planner" ref={destinationBox}><div><h2>{destination?'Your destination':'Where would you like to go?'}</h2><p>{destination?'We’ll connect a genuine route automatically when positioning is reliable.':'Preview continues until you choose a destination and usable positioning is available.'}</p></div><LocationSearch title="DESTINATION" location={destination} onEdit={()=>editDestination(null)} onSelect={editDestination}/></div>
+  {failed&&<p className="hybrid-notice" role="status">Route connection paused. Guided preview continues while we retry within the connection limit.</p>}
+  {!["off","on","requesting"].includes(sensors.camera)&&<p className="hybrid-notice" role="status">Camera unavailable. Guided preview remains interactive; you can retry or use the map.</p>}
+  {journey.mode!=='LEAVE_NOW'&&<p className="hybrid-notice">Scheduled departure · map planning only. The camera stays in Guided Preview.</p>}
+  {mapOpen&&<div className="hybrid-map-fallback"><form className="planner ar-plan" onSubmit={planManual}><h2>Plan on the map</h2><DepartureControls onChange={departureChanged}/><LocationSearch title="MANUAL STARTING POINT" location={manualOrigin} onEdit={()=>{manualActive.current?.abort();setManualOrigin(null);setManualData(null);setManualBusy(false);}} onSelect={setManualOrigin}/><button className="primary" disabled={!manualOrigin||!destination||manualBusy}>{manualBusy?'Finding routes…':'Calculate map route'}</button></form>{manualError&&<InlineError onRetry={()=>planManual({preventDefault(){}})}>{manualError}</InlineError>}<section className="map-panel"><h2>{manualData?'Manual map route':'GPS route map'}</h2><GeographicMap data={routing} selected={selected}/></section>{routing&&<div className="hybrid-route-cards">{routing.routes.map((r,i)=><button key={r.id} type="button" className={`route-card ${r.id===selected?'selected':''}`} aria-pressed={r.id===selected} onClick={()=>manualData?setManualId(r.id):setRouteId(r.id)}><b>Road route {i+1}</b><span>{(r.distanceMeters/1000).toFixed(1)} km · {Math.round(r.durationSeconds/60)} baseline min</span></button>)}</div>}</div>}
+  <details className="ar-help"><summary>Camera & navigation help</summary><div className="sensor-status"><p>Camera: {sensors.camera}</p><p>GPS: {sensors.gpsStatus}{sensors.gps?` · reported accuracy ${Math.round(sensors.gps.accuracy)} m`:''}</p><p>Compass: {sensors.compassStatus}{sensors.heading?.accuracy===null?' · error not reported':''}</p></div><p>{quality.reason}</p><p>Camera and iOS compass permissions require the Start gesture. Keep the phone upright in portrait. Guided Preview is a predefined simulation, not camera road recognition, live traffic or an actual journey.</p><p>GPS uses at most three acquisition windows with 15/30-second backoff. Route refreshes are bounded to twelve requests per ten minutes, with up to four consecutive failed attempts. Reconnect sensors starts a new user-requested acquisition attempt; route-budget limits still apply.</p><p>Precise GPS is sent to geocoding and routing providers only when a destination is selected and a usable fix is available. Camera frames stay on this device. A manual map route cannot activate real camera guidance.</p></details>
+  <SourceInfo><p>Guided Preview: predefined fictional journey, simulated distance/time/progress/congestion. Device clock and any displayed compass reading are real measurements, kept separate.</p><p>Live Route: genuine OSRM road geometry and validated provider maneuvers; current GPS/compass alignment is approximate. Remaining distance is projected along mapped geometry; baseline remaining duration uses provider step durations scaled within the current step, not measured delay or a traffic-aware ETA. Traffic is unavailable in live guidance.</p><p>Activation requires continuous confidence for three seconds. Quality loss immediately removes genuine instructions; reacquisition has a five-second cooldown and must qualify again. Stale instructions never remain labeled Live Route.</p></SourceInfo>
+ </section>;
 }

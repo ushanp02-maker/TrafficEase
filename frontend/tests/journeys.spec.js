@@ -30,9 +30,9 @@ test('evening departure reaches routing and carries to AI and map-only AR', asyn
   await expect(page.getByLabel('FORECAST DATE AND TIME', { exact: false })).toHaveValue('2026-11-11T19:00');
   await expect(page.getByText('No geographic route-to-scenario mapping', { exact: false })).toBeVisible();
   await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'AR Navigation', exact: true }).click();
-  await expect(page.getByLabel('JOURNEY MODE')).toHaveValue('LATER_TODAY');
+  await page.getByRole('button',{name:'Open map & manual fallback'}).click();await expect(page.getByLabel('JOURNEY MODE')).toHaveValue('LATER_TODAY');
   await expect(page.getByText('Scheduled departure · map planning only.', { exact: false })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Use the map for now' })).toBeVisible();
+  await expect(page.getByRole('status', {name:'Guidance data source'})).toContainText('Guided Preview');
 });
 test('scheduled timestamp input requires future date and exposes a seven-day maximum', async ({ page }) => {
   await expect(page.getByRole('option', { name: 'Future Date' })).toBeEnabled();
