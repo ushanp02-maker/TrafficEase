@@ -2,6 +2,18 @@
 
 HNDSE Emerging Technologies coursework: a Sri Lanka-focused smart routing, experimental AI congestion prediction and AR navigation project. The target application supports Sri Lanka nationwide wherever usable data is available. M1 now implements nationwide geographic search and genuine baseline road routing; provider coverage and network availability remain limited.
 
+## Start on Windows
+
+From this repository folder, run one command in PowerShell:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Start-TrafficEase.ps1 -Simulation
+```
+
+Requires JDK 17, Maven 3.9+, Node 22.12+ and Python 3.12. The launcher prepares dependencies and both models, checks all 30 simulation journeys, starts the services and opens the website. Use the same command with `-Stop` to stop it. See [startup and prerequisites](docs/windows-startup.md), [consumer experience](docs/consumer-redesign.md) and [validation/screenshots](docs/consumer-redesign-validation.md). Native Windows execution remains a manual platform check; full orchestration was exercised in PowerShell on Linux.
+
+Traffic Predictions at `/ai-predictions` is now the mapped-journey experience. `/route-forecasts` remains supported. The independent scenario tool is available at `/research/scenarios`. Simulation explicitly uses genuine archived roads, repeatable weather scenarios and actual synthetic-trained inference; it never pretends a failed live request succeeded.
+
 ## What exists
 
 - `frontend/`: React 19, Vite 7 and Tailwind 4 responsive dashboard, route planner, AI and AR navigation views. Explicit Nominatim place selection, Leaflet/OpenStreetMap map and genuine OSRM route geometry, durations/distances and scoped comparisons. No live traffic or future estimates.
@@ -25,7 +37,7 @@ npm ci --prefix frontend
 npm run build --prefix frontend
 python -m venv ai-service/.venv
 ai-service/.venv/bin/pip install -r ai-service/requirements.lock.txt
-(cd ai-service && .venv/bin/python train.py)
+(cd ai-service && .venv/bin/python prepare_models.py)
 (cd ai-service && .venv/bin/python -m pytest -q)
 (cd backend && mvn verify)
 ```

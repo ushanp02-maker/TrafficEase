@@ -30,3 +30,7 @@ The separate-page redesign and functional government demonstration are now imple
 ## Mapped-route forecasting extension
 
 Added a separate versioned route-shape model and `/route-forecasts` workflow for 30 reviewed journeys. Spring orchestrates current genuine OSRM geometry, sampled hourly Open-Meteo forecasts and private FastAPI route inference; it preserves baseline durations. Public/model outages abstain explicitly. Existing scenario, unrestricted routing, AR and government modules remain independent. See [architecture/API/model and limitations](mapped-route-forecasting.md) and [coverage evidence](mapped-journey-coverage.md).
+
+## Consumer experience and repeatable simulation
+
+The primary Traffic Predictions page now uses mapped journeys; the independent model tool remains at `/research/scenarios`. Explicit SIMULATION mode validates packaged archived route geometry, generates deterministic weather categories and calls the actual mapped-route model. It never falls back silently from LIVE or fabricates successful inference when the model is unavailable. Home has a working simulation planner when started with the simulation flag. Java 17, API compatibility, optional MySQL and existing AWS configurations are preserved. See [consumer architecture](consumer-redesign.md), [Windows startup](windows-startup.md) and [validation](consumer-redesign-validation.md).

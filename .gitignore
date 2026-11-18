@@ -52,3 +52,6 @@ ai-service/data/generated/
 
 # Local HTTPS credentials for smartphone testing
 .local-tls/
+
+# Local launcher logs, runtime copies and PID records
+.local-run/
