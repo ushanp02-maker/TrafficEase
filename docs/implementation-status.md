@@ -34,3 +34,7 @@ Added a separate versioned route-shape model and `/route-forecasts` workflow for
 ## Consumer experience and repeatable simulation
 
 The primary Traffic Predictions page now uses mapped journeys; the independent model tool remains at `/research/scenarios`. Explicit SIMULATION mode validates packaged archived route geometry, generates deterministic weather categories and calls the actual mapped-route model. It never falls back silently from LIVE or fabricates successful inference when the model is unavailable. Home has a working simulation planner when started with the simulation flag. Java 17, API compatibility, optional MySQL and existing AWS configurations are preserved. See [consumer architecture](consumer-redesign.md), [Windows startup](windows-startup.md) and [validation](consumer-redesign-validation.md).
+
+## Automatic Hybrid AR
+
+AR now starts with a local, clearly labeled animated Guided Preview. A single permission gesture starts camera/GPS/orientation; a selected destination and continuous confidence enable automatic genuine route guidance. The existing AR endpoint now carries validated complete OSRM maneuvers. Freshness gates, three-second qualification, five-second reentry cooldown and bounded retries prevent stale or rapidly switching guidance. Manual map routes never become camera-aligned live guidance. See [design and source boundaries](m4-hybrid-ar.md) and [validation](m4-hybrid-validation.md).

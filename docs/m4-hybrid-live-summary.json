@@ -1,0 +1,42 @@
+{
+  "testOriginSource": "PUBLIC_LANDMARK_COORDINATE_NOT_GPS_MEASUREMENT",
+  "note": "Real Java → Nominatim country check → OSRM request. No physical camera, GPS receiver, compass or field alignment was tested.",
+  "source": "OSRM / OpenStreetMap",
+  "estimateKind": "BASELINE_ROUTING_ESTIMATE",
+  "generatedAt": "2026-11-18T21:34:04.184376452Z",
+  "destination": {
+    "id": "254499964",
+    "name": "Piliyandala Clock Tower, Colombo-Horana Road, Puwakgas Junction, Kesbewa, Colombo District, Western Province, 10300, Sri Lanka",
+    "latitude": 6.8013784,
+    "longitude": 79.9229672,
+    "countryCode": "LK"
+  },
+  "routes": [
+    {
+      "id": "route-1",
+      "distanceMeters": 19420.0,
+      "baselineDurationSeconds": 1537.3
+    }
+  ],
+  "directions": [
+    {
+      "routeId": "route-1",
+      "complete": true,
+      "stepCount": 24
+    }
+  ],
+  "snapping": [
+    {
+      "endpoint": "origin",
+      "distanceMeters": 8.582812033198062,
+      "latitude": 6.933804,
+      "longitude": 79.850087
+    },
+    {
+      "endpoint": "destination",
+      "distanceMeters": 6.658215553,
+      "latitude": 6.801427,
+      "longitude": 79.923002
+    }
+  ]
+}

@@ -107,3 +107,7 @@ See [redesign, security setup and local/redeployment commands](docs/ui-redesign.
 ## Mapped journey traffic experiments
 
 The new `/route-forecasts` page compares synthetic congestion on 30 verified mapped journeys while preserving the independent scenario tool and unrestricted baseline planner. Train **both** `train.py` and `train_routes.py` before starting FastAPI. Open-Meteo automatic weather requires outbound HTTPS; failed weather is explicit and offers only opt-in manual simulation. No traffic-aware ETA is invented. See [implementation, model, API and run/deployment guide](docs/mapped-route-forecasting.md), [all 30 journeys and verification evidence](docs/mapped-journey-coverage.md), and [validation](docs/mapped-route-validation.md).
+
+## Automatic Hybrid AR Navigation
+
+Open `/ar-navigation` for an immediate animated Guided Preview. Start the camera/sensors once and choose a destination; sufficiently reliable genuine route data automatically enables Live Route guidance. No Demo/Live selector, weather service or AI model is required for the local preview. Preview distance/time/congestion remain simulated; genuine navigation uses OSRM baseline directions and never invents live traffic or adjusted ETA. Read the [source/confidence/retry design](docs/m4-hybrid-ar.md) and [test results / physical-device limitations](docs/m4-hybrid-validation.md). Camera and iOS compass permission still require a Start gesture and trusted HTTPS or localhost.
