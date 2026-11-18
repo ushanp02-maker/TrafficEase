@@ -42,7 +42,7 @@ def create_app(artifact_dir=None, clock=None):
     )
     if (directory / "metadata.json").exists() or (directory / "model.joblib").exists():
         try:
-            meta = json.loads((directory / "metadata.json").read_text())
+            meta = json.loads((directory / "metadata.json").read_text(encoding='utf-8'))
             artifact = directory / "model.joblib"
             if (
                 meta["features"] != FEATURES

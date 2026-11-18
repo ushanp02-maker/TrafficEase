@@ -11,8 +11,8 @@ from route_features import extract, FEATURES
 from train_routes import train, dataset, ROOT
 
 NOW=datetime(2026,11,18,12,tzinfo=ZoneInfo('Asia/Colombo'))
-OBS=json.loads((ROOT/'data/journeys/routing-observations.json').read_text())
-CAT=json.loads(CATALOG.read_text())
+OBS=json.loads((ROOT/'data/journeys/routing-observations.json').read_text(encoding='utf-8'))
+CAT=json.loads(CATALOG.read_text(encoding='utf-8'))
 
 @pytest.fixture(scope='module')
 def engine(tmp_path_factory):

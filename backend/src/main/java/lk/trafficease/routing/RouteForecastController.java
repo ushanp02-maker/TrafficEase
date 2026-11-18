@@ -9,7 +9,9 @@ import static lk.trafficease.routing.RoutingModels.*;
 @RestController
 @RequestMapping("/api/route-forecasts")
 public class RouteForecastController {
-    public record Input(String journeyId,String mode,String departureAt,String weatherMode,String manualWeather) {}
+    public record Input(String journeyId,String mode,String departureAt,String weatherMode,String manualWeather,String dataMode) {
+        public Input(String journeyId,String mode,String departureAt,String weatherMode,String manualWeather) { this(journeyId,mode,departureAt,weatherMode,manualWeather,"LIVE"); }
+    }
     private record Cached(RouteResponse response,Instant until) {}
     private final Map<String,Cached> cache=new LinkedHashMap<>();
     private final ForecastJourneyCatalog catalog;
@@ -33,13 +35,15 @@ public class RouteForecastController {
     }
     @PostMapping public Map<String,Object> predict(@RequestBody Input input) {
         if(input==null)throw new ApiFailure(400,"INVALID_REQUEST","Choose a supported journey and departure.");
+        String dataMode=input.dataMode()==null?"LIVE":input.dataMode();
+        if(!Set.of("LIVE","SIMULATION").contains(dataMode))throw new ApiFailure(400,"INVALID_DATA_MODE","Choose online or simulation mode.");
         var j=catalog.selected(input.journeyId());var departure=JourneyTime.resolve(input.mode(),input.departureAt(),Clock.systemUTC());
         String mode=input.weatherMode()==null?"AUTO":input.weatherMode();
         if(!Set.of("AUTO","MANUAL_SIMULATION").contains(mode)||mode.equals("AUTO")&&input.manualWeather()!=null)throw new ApiFailure(400,"INVALID_WEATHER_MODE","Choose automatic weather or an explicitly labeled manual simulation.");
         if(mode.equals("MANUAL_SIMULATION")&&(input.manualWeather()==null||!Set.of("CLEAR","RAIN","HEAVY_RAIN").contains(input.manualWeather())))throw new ApiFailure(400,"INVALID_WEATHER_SIMULATION","Choose a supported manual weather category.");
-        var road=routes(j,departure);boolean now=departure.mode().equals("LEAVE_NOW");
+        var road=dataMode.equals("SIMULATION")?JourneySimulation.routing(mapper,j,catalog,departure):routes(j,departure);boolean now=departure.mode().equals("LEAVE_NOW");
         Instant at=now?Instant.now():OffsetDateTime.parse(departure.departureAt()).toInstant();
-        var forecastWeather=mode.equals("MANUAL_SIMULATION")?weather.manual(road,input.manualWeather()):weather.automatic(road,at);
+        var forecastWeather=dataMode.equals("SIMULATION")?JourneySimulation.weather(road,input.journeyId(),at):mode.equals("MANUAL_SIMULATION")?weather.manual(road,input.manualWeather()):weather.automatic(road,at);
         Map<String,Object> forecast;
         if(forecastWeather.status().equals("UNAVAILABLE"))forecast=Map.of("status","WEATHER_UNAVAILABLE","message","Automatic weather unavailable. No congestion predictions generated. Choose explicit manual weather simulation if desired.");
         else {
@@ -49,9 +53,9 @@ public class RouteForecastController {
                 var r=road.routes().get(i);var candidate=candidates.addObject();candidate.put("id",r.id());candidate.put("distanceMeters",r.distanceMeters());candidate.put("durationSeconds",r.durationSeconds());candidate.set("geometry",mapper.valueToTree(r.geometry()));candidate.put("weather",forecastWeather.routes().get(i).category());
             }
             try { forecast=Map.of("status","AVAILABLE","result",ai.predict(request)); }
-            catch(ApiFailure error) { forecast=Map.of("status","MODEL_UNAVAILABLE","message",error.getMessage(),"code",error.code); }
+            catch(ApiFailure error) { org.slf4j.LoggerFactory.getLogger(getClass()).warn("Route inference unavailable: {}",error.code); forecast=Map.of("status","MODEL_UNAVAILABLE","message",error.getMessage(),"code",error.code); }
         }
-        return Map.of("journey",j,"routing",road,"weather",forecastWeather,"forecast",forecast,"experimental",true,"dataSource","SYNTHETIC","trafficAwareDuration",Map.of("status","UNAVAILABLE","message","No licensed Sri Lankan traffic-aware duration provider is configured/verified. OSRM baseline times are unchanged; no simulated or traffic-aware ETA is calculated."),"attribution","© OpenStreetMap contributors (ODbL) · OSRM · Weather by Open-Meteo (CC BY 4.0)");
+        return Map.of("dataMode",dataMode,"journey",j,"routing",road,"weather",forecastWeather,"forecast",forecast,"experimental",true,"dataSource","SYNTHETIC","trafficAwareDuration",Map.of("status","UNAVAILABLE","message","No licensed Sri Lankan traffic-aware duration provider is configured/verified. OSRM baseline times are unchanged; no simulated or traffic-aware ETA is calculated."),"attribution","© OpenStreetMap contributors (ODbL) · OSRM"+(forecastWeather.status().equals("AVAILABLE")?" · Weather by Open-Meteo (CC BY 4.0)":" · Weather scenario or unavailable; no provider forecast supplied"));
     }
     @ExceptionHandler(ApiFailure.class) public ResponseEntity<?> failure(ApiFailure error) { return ResponseEntity.status(error.status).body(Map.of("code",error.code,"message",error.getMessage())); }
 }

@@ -24,7 +24,7 @@ public class ForecastService {
     private final RestClient client;
     @Autowired
     public ForecastService(@Value("${trafficease.ai-service-url:http://127.0.0.1:8000}") String baseUrl) {
-        var factory = new JdkClientHttpRequestFactory(HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(3)).build());
+        var factory = new JdkClientHttpRequestFactory(HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).connectTimeout(Duration.ofSeconds(3)).build());
         factory.setReadTimeout(Duration.ofSeconds(10));
         this.client = RestClient.builder().baseUrl(baseUrl).requestFactory(factory).build();
     }

@@ -161,8 +161,8 @@ def train(output_dir=Path("artifacts"), report_path=Path("reports/evaluation.jso
             "No calibrated probabilities, road speeds, journey times or routing overrides are produced.",
         ],
     )
-    (output_dir / "metadata.json").write_text(json.dumps(metadata, indent=2) + "\n")
-    report_path.write_text(json.dumps(metadata, indent=2) + "\n")
+    (output_dir / "metadata.json").write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
+    report_path.write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
     print("Model", version, "selected:", selected)
     for name, result in evaluations.items():
         print(

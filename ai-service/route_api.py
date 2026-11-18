@@ -51,12 +51,12 @@ def recommendation(predictions):
 class RouteEngine:
     def __init__(self,directory):
         self.status='not_trained';self.model=None;self.metadata=None;self.catalog={}
-        try:self.catalog=json.loads(CATALOG.read_text())
+        try:self.catalog=json.loads(CATALOG.read_text(encoding='utf-8'))
         except Exception:self.status='unavailable'
         directory=Path(directory)
         if (directory/'metadata.json').exists() or (directory/'model.joblib').exists():
             try:
-                meta=json.loads((directory/'metadata.json').read_text());artifact=directory/'model.joblib'
+                meta=json.loads((directory/'metadata.json').read_text(encoding='utf-8'));artifact=directory/'model.joblib'
                 if meta['features']!=FEATURES or meta['featureVersion']!=FEATURE_VERSION or meta['dataSource']!='SYNTHETIC' or meta['experimental'] is not True or meta['libraries']['sklearn']!=sklearn.__version__ or meta['artifactSha256']!=hashlib.sha256(artifact.read_bytes()).hexdigest():
                     raise ValueError('Route model schema/provenance/checksum mismatch')
                 if not self.catalog:raise ValueError('Verified journey catalog missing')
