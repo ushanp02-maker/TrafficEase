@@ -16,7 +16,7 @@ public class ArRoutingController {
         public Request(GpsOrigin origin, String destinationId) { this(origin, destinationId, null, null); }
     }
     public record Candidate(String name, String routeId, Geometry geometry) {}
-    public record Result(RouteResponse routing, List<Candidate> candidates, Location destination, String originSource, List<String> limitations) {}
+    public record Result(RouteResponse routing, List<Candidate> candidates, Location destination, String originSource, List<String> limitations, List<ArDirections.Directions> directions) {}
     private final ProviderClient client;
     private final LocationService locations;
     private final String baseUrl;
@@ -67,7 +67,7 @@ public class ArRoutingController {
         return new Result(routing, candidates, destination, "GPS",
             List.of("Candidate roads are limited to returned route steps, not the entire surrounding road network.",
                 "GPS and compass do not visually recognize roads. Overlay alignment is approximate and requires real-device validation.",
-                "Driving baseline estimates only; no live traffic, future forecast or turn-by-turn guarantee."));
+                "Driving baseline estimates only; no live traffic or traffic-adjusted ETA. Directions require complete validated provider steps."),ArDirections.parse(data,routing));
     }
     private synchronized void verifyCountry(GpsOrigin origin) {
         String key = String.format(Locale.ROOT, "%.5f,%.5f", origin.latitude(), origin.longitude());
