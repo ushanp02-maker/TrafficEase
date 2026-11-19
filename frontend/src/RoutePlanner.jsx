@@ -14,7 +14,7 @@ export async function request(path, options) {
   let body;
   try { body = await response.json(); }
   catch { throw new Error('The backend returned an unreadable response. Check the API connection.'); }
-  if (!response.ok) throw new Error(body.message || 'The request failed. Please try again.');
+  if (!response.ok) throw new Error(body?.message || 'The request failed. Please try again.');
   return body;
 }
 export function LocationSearch({ title, location, onSelect, onEdit }) {
