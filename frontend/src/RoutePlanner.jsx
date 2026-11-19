@@ -112,7 +112,14 @@ export default function RoutePlanner({ onExploreForecast }) {
           result.routes.some(route =>
             !route || !route.id ||
             !Number.isFinite(route.distanceMeters) || route.distanceMeters < 0 ||
-            !Number.isFinite(route.durationSeconds) || route.durationSeconds < 0)) {
+            !Number.isFinite(route.durationSeconds) || route.durationSeconds < 0 ||
+            route.geometry?.type !== 'LineString' ||
+            !Array.isArray(route.geometry.coordinates) ||
+            route.geometry.coordinates.length < 2 ||
+            route.geometry.coordinates.some(point =>
+              !Array.isArray(point) || point.length < 2 ||
+              !Number.isFinite(point[0]) || Math.abs(point[0]) > 180 ||
+              !Number.isFinite(point[1]) || Math.abs(point[1]) > 90))) {
         throw new Error('No valid road routes were returned. Please try different locations.');
       }
       setData(result);
