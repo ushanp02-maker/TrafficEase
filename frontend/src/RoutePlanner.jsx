@@ -100,7 +100,7 @@ export default function RoutePlanner({ onExploreForecast }) {
   function clear() { active.current?.abort(); setBusy(false); setData(null); setError(''); setSelected(''); }
   function choose(setter, value) { clear(); setter(value); }
   async function plan(event) {
-    event.preventDefault(); if (!origin || !destination) return;
+    event.preventDefault(); if (!origin || !destination || origin.id === destination.id) return;
     clear(); const controller = new AbortController(); active.current = controller; setBusy(true);
     try {
       const result = await request('/routes', { method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -110,6 +110,7 @@ export default function RoutePlanner({ onExploreForecast }) {
     } catch (err) { if (!controller.signal.aborted) setError(err.message); }
     finally { if (!controller.signal.aborted) setBusy(false); }
   }
+  const sameLocation = Boolean(origin && destination && origin.id === destination.id);
   const sameWinner = data?.routes.some(r => r.fastestAvailable && r.shortestAvailable);
   return <>
     <section className="planner"><div className="section-title"><h2>Where are you heading?</h2><span>NATIONWIDE LOCATION SEARCH</span></div>
@@ -117,7 +118,8 @@ export default function RoutePlanner({ onExploreForecast }) {
         <LocationSearch title="STARTING POINT" location={origin} onEdit={() => choose(setOrigin, null)} onSelect={value => choose(setOrigin, value)}/>
         <LocationSearch title="DESTINATION" location={destination} onEdit={() => choose(setDestination, null)} onSelect={value => choose(setDestination, value)}/>
         <DepartureControls onChange={clear}/>
-        <button className="primary calculate-button" type="submit" disabled={!origin || !destination || busy}>{busy ? 'Calculating…' : 'Calculate road routes →'}</button>
+        {sameLocation && <p role="alert" className="error-message">Starting point and destination cannot be the same location.</p>}
+        <button className="primary calculate-button" type="submit" disabled={!origin || !destination || sameLocation || busy}>{busy ? 'Calculating…' : 'Calculate road routes →'}</button>
       </form>
       <p className="form-note">Search explicitly, then select each location. No autocomplete. Place names in Sinhala, Tamil or English depend on available OpenStreetMap data. Searches go to Nominatim; routes go to OSRM. Do not submit confidential locations.</p>
       <p className="map-credit">Geocoding: Nominatim · © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> (ODbL). Please leave at least one second between new searches.</p>
