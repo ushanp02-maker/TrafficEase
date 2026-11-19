@@ -108,7 +108,12 @@ export default function RoutePlanner({ onExploreForecast }) {
       const result = await request('/routes', { method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ originId: origin.id, destinationId: destination.id, ...journeyPayload(journey) }), signal: controller.signal });
       if (controller.signal.aborted) return;
-      setData(result); setSelected(result.routes.find(r => r.fastestAvailable)?.id || result.routes[0].id);
+      if (!Array.isArray(result?.routes) || result.routes.length === 0 ||
+          result.routes.some(route => !route || !route.id)) {
+        throw new Error('No valid road routes were returned. Please try different locations.');
+      }
+      setData(result);
+      setSelected(result.routes.find(r => r.fastestAvailable)?.id || result.routes[0].id);
     } catch (err) { if (!controller.signal.aborted) setError(err.message); }
     finally { if (!controller.signal.aborted) setBusy(false); }
   }
