@@ -109,7 +109,10 @@ export default function RoutePlanner({ onExploreForecast }) {
         body: JSON.stringify({ originId: origin.id, destinationId: destination.id, ...journeyPayload(journey) }), signal: controller.signal });
       if (controller.signal.aborted) return;
       if (!Array.isArray(result?.routes) || result.routes.length === 0 ||
-          result.routes.some(route => !route || !route.id)) {
+          result.routes.some(route =>
+            !route || !route.id ||
+            !Number.isFinite(route.distanceMeters) || route.distanceMeters < 0 ||
+            !Number.isFinite(route.durationSeconds) || route.durationSeconds < 0)) {
         throw new Error('No valid road routes were returned. Please try different locations.');
       }
       setData(result);
