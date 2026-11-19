@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { HistoryControls, ModelDetails } from './ForecastExtras.jsx';
 import { useJourney } from './JourneyContext.jsx';
+import { validateForecastTime } from './utils/forecastValidation.js';
 
 const apiBase = (import.meta.env.VITE_API_BASE || '').replace(/\/$/, '');
 // Asia/Colombo is UTC+05:30. Do not use the browser's local timezone for the controls.
@@ -41,7 +42,25 @@ export default function ForecastPanel() {
   }
   useEffect(() => { load(); return () => { active.current?.abort(); loading.current?.abort(); }; }, []);
   async function forecast(event) {
-    event.preventDefault(); clear(); const controller = new AbortController(); active.current = controller; setBusy(true);
+    event.preventDefault();
+    clear();
+
+    if (!now) {
+      const validationError = validateForecastTime(
+        time,
+        catalog.now,
+        catalog.maxForecastAt
+      );
+
+      if (validationError) {
+        setError(validationError);
+        return;
+      }
+    }
+
+    const controller = new AbortController();
+    active.current = controller;
+    setBusy(true);
     try {
       const data = await aiRequest('', { method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: controller.signal,
         body: JSON.stringify({ targetId, forecastAt: now ? null : `${time}:00+05:30`, weather, isHoliday: holiday, saveHistory }) });
