@@ -19,6 +19,7 @@ export async function request(path, options) {
 }
 export function LocationSearch({ title, location, onSelect, onEdit }) {
   const [query, setQuery] = useState('');
+  const validQuery = query.trim().length >= 2 && /\p{L}/u.test(query);
   const [results, setResults] = useState([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -26,6 +27,7 @@ export function LocationSearch({ title, location, onSelect, onEdit }) {
   const active = useRef();
   useEffect(() => () => active.current?.abort(), []);
   async function search() {
+    if (!validQuery) return;
     active.current?.abort();
     const controller = new AbortController(); active.current = controller;
     setBusy(true); setError(''); setResults([]); setSearched(false);
@@ -43,8 +45,8 @@ export function LocationSearch({ title, location, onSelect, onEdit }) {
   return <div className="location-search">
     <label><span>{title}</span><input value={query} maxLength={160}
       placeholder="Search anywhere in Sri Lanka" onChange={e => edit(e.target.value)}
-      onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); if (query.trim().length >= 2 && !busy) search(); } }}/></label>
-    <button className="search-button" type="button" onClick={search} disabled={busy || query.trim().length < 2}>{busy ? 'Searching…' : `Search ${title.toLowerCase()}`}</button>
+      onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); if (validQuery && !busy) search(); } }}/></label>
+    <button className="search-button" type="button" onClick={search} disabled={busy || !validQuery}>{busy ? 'Searching…' : `Search ${title.toLowerCase()}`}</button>
     {busy && <p role="status">Searching Sri Lankan locations…</p>}
     {error && <p className="error-message" role="alert">{error}</p>}
     {searched && results.length === 0 && <p role="status">No matching Sri Lankan locations. Try a nearby town, street or landmark.</p>}
