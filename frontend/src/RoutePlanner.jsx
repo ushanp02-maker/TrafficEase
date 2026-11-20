@@ -16,11 +16,12 @@ export async function request(path, options) {
   let body;
   try { body = await response.json(); }
   catch { throw new Error('This service is temporarily unavailable. Please try again.'); }
-  if (!response.ok) { const error=new Error(friendlyError(body.code,response.status));error.code=body.code;error.status=response.status;throw error; }
+  if (!response.ok) { const error=new Error(friendlyError(body?.code,response.status));error.code=body?.code;error.status=response.status;throw error; }
   return body;
 }
 export function LocationSearch({ title, location, onSelect, onEdit }) {
   const [query, setQuery] = useState('');
+  const validQuery = query.trim().length >= 2 && /\p{L}/u.test(query);
   const [results, setResults] = useState([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -28,6 +29,7 @@ export function LocationSearch({ title, location, onSelect, onEdit }) {
   const active = useRef();
   useEffect(() => () => active.current?.abort(), []);
   async function search() {
+    if (!validQuery) return;
     active.current?.abort();
     const controller = new AbortController(); active.current = controller;
     setBusy(true); setError(''); setResults([]); setSearched(false);
@@ -45,8 +47,8 @@ export function LocationSearch({ title, location, onSelect, onEdit }) {
   return <div className="location-search">
     <label><span>{title}</span><input value={query} maxLength={160}
       placeholder="Search anywhere in Sri Lanka" onChange={e => edit(e.target.value)}
-      onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); if (query.trim().length >= 2 && !busy) search(); } }}/></label>
-    <button className="search-button" type="button" onClick={search} disabled={busy || query.trim().length < 2}>{busy ? 'Searching…' : `Search ${title.toLowerCase()}`}</button>
+      onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); if (validQuery && !busy) search(); } }}/></label>
+    <button className="search-button" type="button" onClick={search} disabled={busy || !validQuery}>{busy ? 'Searching…' : `Search ${title.toLowerCase()}`}</button>
     {busy && <p role="status">Searching Sri Lankan locations…</p>}
     {error && <InlineError onRetry={search}>{error}</InlineError>}
     {searched && results.length === 0 && <p role="status">No matching Sri Lankan locations. Try a nearby town, street or landmark.</p>}
@@ -106,16 +108,32 @@ export default function RoutePlanner({ home=false }) {
   function clear() { active.current?.abort(); setBusy(false); setData(null); setError(''); setSelected(''); }
   function choose(setter, value) { clear(); setter(value); }
   async function plan(event) {
-    event.preventDefault(); if (!origin || !destination) return;
+    event.preventDefault(); if (!origin || !destination || origin.id === destination.id) return;
     clear(); const controller = new AbortController(); active.current = controller; setBusy(true);
     try {
       const result = await request('/routes', { method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ originId: origin.id, destinationId: destination.id, ...journeyPayload(journey) }), signal: controller.signal });
       if (controller.signal.aborted) return;
-      setData(result); setSelected(result.routes.find(r => r.fastestAvailable)?.id || result.routes[0].id);
+      if (!Array.isArray(result?.routes) || result.routes.length === 0 ||
+          result.routes.some(route =>
+            !route || !route.id ||
+            !Number.isFinite(route.distanceMeters) || route.distanceMeters < 0 ||
+            !Number.isFinite(route.durationSeconds) || route.durationSeconds < 0 ||
+            route.geometry?.type !== 'LineString' ||
+            !Array.isArray(route.geometry.coordinates) ||
+            route.geometry.coordinates.length < 2 ||
+            route.geometry.coordinates.some(point =>
+              !Array.isArray(point) || point.length < 2 ||
+              !Number.isFinite(point[0]) || Math.abs(point[0]) > 180 ||
+              !Number.isFinite(point[1]) || Math.abs(point[1]) > 90))) {
+        throw new Error('No valid road routes were returned. Please try different locations.');
+      }
+      setData(result);
+      setSelected(result.routes.find(r => r.fastestAvailable)?.id || result.routes[0].id);
     } catch (err) { if (!controller.signal.aborted) setError(err.message); }
     finally { if (!controller.signal.aborted) setBusy(false); }
   }
+  const sameLocation = Boolean(origin && destination && origin.id === destination.id);
   const sameWinner = data?.routes.some(r => r.fastestAvailable && r.shortestAvailable);
   return <div className="journey-workbench">
     <aside className="journey-sidebar planner"><div className="section-title"><h2>Where to?</h2><span>SRI LANKA</span></div>
@@ -123,7 +141,8 @@ export default function RoutePlanner({ home=false }) {
         <LocationSearch title="STARTING POINT" location={origin} onEdit={() => choose(setOrigin, null)} onSelect={value => choose(setOrigin, value)}/>
         <LocationSearch title="DESTINATION" location={destination} onEdit={() => choose(setDestination, null)} onSelect={value => choose(setDestination, value)}/>
         <DepartureControls onChange={clear}/>
-        <button className="primary calculate-button" disabled={!origin||!destination||busy}>{busy?'Finding routes…':home?'Find My Route':'Find routes →'}</button>
+        {sameLocation && <p role="alert" className="form-note">Starting point and destination cannot be the same location.</p>}
+        <button className="primary calculate-button" type="submit" disabled={!origin||!destination||sameLocation||busy}>{busy?'Finding routes…':home?'Find My Route':'Find routes →'}</button>
       </form>
       {error&&<><InlineError onRetry={()=>plan({preventDefault(){}})}>{error}</InlineError><Link className="secondary-light" to="/ai-predictions?simulation=1">Try a recorded journey simulation →</Link></>}
       <section className="results" aria-label="Route results">
