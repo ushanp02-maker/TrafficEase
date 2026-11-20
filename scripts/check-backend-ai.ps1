@@ -1,4 +1,4 @@
-﻿# TrafficEase - Backend to AI Integration Check
+# TrafficEase - Backend to AI Integration Check
 # Run from project root:
 # powershell -ExecutionPolicy Bypass -File .\scripts\check-backend-ai.ps1
 
@@ -30,6 +30,7 @@ try {
     $body = @{
         journeyId     = "pettah--piliyandala"
         mode          = "LEAVE_NOW"
+        dataMode      = "SIMULATION"
         weatherMode   = "MANUAL_SIMULATION"
         manualWeather = "CLEAR"
     } | ConvertTo-Json
@@ -39,6 +40,11 @@ try {
         -Method POST `
         -ContentType "application/json" `
         -Body $body
+
+    if ($response.dataMode -ne "SIMULATION" -or
+        $response.routing.source -ne "RECORDED_OSRM_DEMONSTRATION") {
+        throw "Expected explicit recorded-route simulation."
+    }
 
     if ($response.forecast.status -ne "AVAILABLE") {
         throw "AI prediction is unavailable."
